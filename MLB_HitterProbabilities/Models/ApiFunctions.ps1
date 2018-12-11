@@ -19,7 +19,7 @@ function GetApiData($theUri, $theFields) {
     }
     else
     {
-        LogWrite "Successful!"
+        #LogWrite "Successful!"
 		$retMsg = $($response.$($theFields))
     } 
 

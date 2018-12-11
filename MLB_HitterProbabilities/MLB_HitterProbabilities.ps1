@@ -3,55 +3,82 @@
 #
 
 $a = Get-Date -format yyyyMMddhhmmss
-$basePath = "C:\Users\pencez\source\repos\MLB_HitterProbabilities\MLB_HitterProbabilities"  #for LT
+$basePath = "C:\Users\pencez\source\repos\MLBApp\MLB_HitterProbabilities"  #for LT
 $logFile = "$($basePath)\Logs\MLB_HitterProbabilities_$($a).log"
 
 # Location of external functions
 . "$basePath\Functions\TheHitters.ps1"
 . "$basePath\Functions\ThePitchers.ps1"
-. "$basePath\Functions\TheMatchUps.ps1"
+. "$basePath\Functions\TheGames.ps1"
+. "$basePath\Functions\TheMatchups.ps1"
 #. "$basePath\Functions\TheCalculation.ps1"
 . "$basePath\Models\ApiFunctions.ps1"
+. "$basePath\Models\FileFunctions.ps1"
 . "$basePath\Models\HelperFunctions.ps1"
 
+#<#
+#>
 
 
-
-
-<#
 # Set the API query parameters
 $limit = "25"
 $season = "2018"
-$gameType = "R"
-
+$gameType = "P"
+$theDay = Get-Date -format MMddyyyy
 # Lookup top 20-30 hitters (by Average) and their preferences
-$theHitters = GetTopAvgHitters $limit $season $gameType
+	#Get chunk data like preseason and regular season
+#$theHitters = GetTopAvgHitters $limit $season $gameType
 
-# Save results to a json file
-$jsonFile = "$($basePath)\Data\$($season)$($gameType).json"
-$theHitters | ConvertTo-Json | Set-Content $jsonFile
-#>
+# ****************************************************************************************************
+# Use this for testing to get best average during date range(s)
+$gameType = "R"
+$seasonStartDate = "03/29/$season".Replace("/","%2F")
+$seasonCurrDate = "04/10/$season".Replace("/","%2F")
+$theDay = "04/11/$season"
+$lastSeason = "2017"
+$theHitters = GetTopAvgHittersTesting $limit $lastSeason $gameType $seasonStartDate $seasonCurrDate
+# ****************************************************************************************************
+
+$theFilename = "hittingLeaders_$($theDay.Replace('/',''))"
+$test = WriteToJsonFile $basePath $theFilename $theHitters
+
+
+# Check matchups for today
+#$season = "2018"
+#$gameType = "R"
+#$date = "03/29/$season".Replace("/","%2F")
+#$startDate = "03/29/$season".Replace("/","%2F")
+#$endDate = "03/30/$season".Replace("/","%2F")
+
+#$theGameInfo = GetGameInfo $gameType $startDate $endDate
+$theGameInfo = GetGameInfo $gameType $theDay.Replace("/","%2F")
+
+	# Get matchups for *testing* day
+	$theGameResults = GetGameResults $gameType $theDay.Replace("/","%2F")
+
+# Build results
+# getMatchupData($includeResultsYN Yes/No) -- typically this is no for actual use but yes during testing
+$theMatchups = getMatchupData "Yes"
+
+
+
+
+
+
+
+
+#Get list of hit leaders and team id
+##$theTopHitters = GetHitterList
+#Get info from postgame for each hitter and get gamepk
+#Query each game specifically https://statsapi.mlb.com/api/v1/people/<batterid>/stats/game/<gamepk>
+
 
 # Get players last 10-15 days of stats
 #$theRecentStats = GetHittersRecentActivity $peopleId
 
-# Check matchups for today
-$season = "2018"
-$gameType = "R"
-$startDate = "03/29/$season".Replace("/","%2F")
-$endDate = "03/30/$season".Replace("/","%2F")
-
-$theGameInfo = GetGameInfo $gameType $startDate $endDate
-
-	# get team
-	# get location - home/away, dome/open, grass/turf
-	# get date/time - day of week, day/night
-	# get pitcher
-		# throws left/right
-		# pitchers ERA
 
 # Calculate Probabilities
-	# start with players average
+	# start with players average or 30 out of 100
 	# +1 if playing at home
 	# +.5 if dome/open preference
 	# +.5 if grass/turf preference
@@ -63,5 +90,9 @@ $theGameInfo = GetGameInfo $gameType $startDate $endDate
 
 # determine hot vs cold streaks
 
+
+
+# This will clear all variables used in script
+Get-UserVariable | Clear-Variable
 
 Exit

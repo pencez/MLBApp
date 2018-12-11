@@ -32,14 +32,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Functions\TheHitters.ps1" />
-    <Compile Include="Functions\TheMatchUps.ps1" />
+    <Compile Include="Functions\TheGames.ps1" />
+    <Compile Include="Functions\TheMatchups.ps1" />
     <Compile Include="Functions\ThePitchers.ps1" />
+    <Compile Include="Functions\theResults.ps1" />
     <Compile Include="MLB_HitterProbabilities.ps1" />
+    <Compile Include="Models\FileFunctions.ps1" />
     <Compile Include="Models\ApiFunctions.ps1" />
     <Compile Include="Models\HelperFunctions.ps1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\2018R.json" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="Build" />

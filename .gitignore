@@ -3,3 +3,7 @@
 ################################################################################
 
 /.vs/MLB_HitterProbabilities/v15/Server/sqlite3
+/MLB_HitterProbabilities_Web/node_modules
+/MLB_HitterProbabilities_Web/obj/Debug
+/MLB_WebHitterProbabilitiesOLD
+/packages
