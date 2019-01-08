@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\js\main.js" />
     <Content Include="Controllers\CallData.aspx" />
     <Content Include="error.html" />
     <Content Include="Global.asax" />
@@ -110,7 +111,6 @@
   <ItemGroup>
     <Folder Include="Assets\css\" />
     <Folder Include="Assets\img\" />
-    <Folder Include="Assets\js\" />
     <Folder Include="Models\" />
     <Folder Include="Views\components\" />
   </ItemGroup>

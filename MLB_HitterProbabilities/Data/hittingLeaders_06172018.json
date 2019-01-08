@@ -1,0 +1,204 @@
+{
+    "TopHitters":  [
+                       {
+                           "BatterID":  605141,
+                           "BatterName":  "Mookie Betts",
+                           "BatterTeamID":  111,
+                           "BatterTeamName":  "Boston Red Sox",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  1,
+                           "BatterCurrentAverage":  ".346",
+                           "BatterCurrentBABIP":  ".335"
+                       },
+                       {
+                           "BatterID":  516416,
+                           "BatterName":  "Jean Segura",
+                           "BatterTeamID":  136,
+                           "BatterTeamName":  "Seattle Mariners",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  2,
+                           "BatterCurrentAverage":  ".343",
+                           "BatterCurrentBABIP":  ".379"
+                       },
+                       {
+                           "BatterID":  518692,
+                           "BatterName":  "Freddie Freeman",
+                           "BatterTeamID":  144,
+                           "BatterTeamName":  "Atlanta Braves",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  3,
+                           "BatterCurrentAverage":  ".342",
+                           "BatterCurrentBABIP":  ".374"
+                       },
+                       {
+                           "BatterID":  461314,
+                           "BatterName":  "Matt Kemp",
+                           "BatterTeamID":  119,
+                           "BatterTeamName":  "Los Angeles Dodgers",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  4,
+                           "BatterCurrentAverage":  ".340",
+                           "BatterCurrentBABIP":  ".399"
+                       },
+                       {
+                           "BatterID":  514888,
+                           "BatterName":  "Jose Altuve",
+                           "BatterTeamID":  117,
+                           "BatterTeamName":  "Houston Astros",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  5,
+                           "BatterCurrentAverage":  ".337",
+                           "BatterCurrentBABIP":  ".381"
+                       },
+                       {
+                           "BatterID":  571697,
+                           "BatterName":  "Scooter Gennett",
+                           "BatterTeamID":  113,
+                           "BatterTeamName":  "Cincinnati Reds",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  6,
+                           "BatterCurrentAverage":  ".336",
+                           "BatterCurrentBABIP":  ".387"
+                       },
+                       {
+                           "BatterID":  592743,
+                           "BatterName":  "Andrelton Simmons",
+                           "BatterTeamID":  108,
+                           "BatterTeamName":  "Los Angeles Angels",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  7,
+                           "BatterCurrentAverage":  ".324",
+                           "BatterCurrentBABIP":  ".324"
+                       },
+                       {
+                           "BatterID":  592696,
+                           "BatterName":  "Eddie Rosario",
+                           "BatterTeamID":  142,
+                           "BatterTeamName":  "Minnesota Twins",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  8,
+                           "BatterCurrentAverage":  ".323",
+                           "BatterCurrentBABIP":  ".343"
+                       },
+                       {
+                           "BatterID":  545361,
+                           "BatterName":  "Mike Trout",
+                           "BatterTeamID":  108,
+                           "BatterTeamName":  "Los Angeles Angels",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  9,
+                           "BatterCurrentAverage":  ".323",
+                           "BatterCurrentBABIP":  ".341"
+                       },
+                       {
+                           "BatterID":  546991,
+                           "BatterName":  "Albert Almora Jr.",
+                           "BatterTeamID":  112,
+                           "BatterTeamName":  "Chicago Cubs",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  10,
+                           "BatterCurrentAverage":  ".321",
+                           "BatterCurrentBABIP":  ".381"
+                       },
+                       {
+                           "BatterID":  455976,
+                           "BatterName":  "Nick Markakis",
+                           "BatterTeamID":  144,
+                           "BatterTeamName":  "Atlanta Braves",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  11,
+                           "BatterCurrentAverage":  ".321",
+                           "BatterCurrentBABIP":  ".335"
+                       },
+                       {
+                           "BatterID":  500874,
+                           "BatterName":  "Jose Martinez",
+                           "BatterTeamID":  138,
+                           "BatterTeamName":  "St. Louis Cardinals",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  12,
+                           "BatterCurrentAverage":  ".321",
+                           "BatterCurrentBABIP":  ".34"
+                       },
+                       {
+                           "BatterID":  543063,
+                           "BatterName":  "Brandon Crawford",
+                           "BatterTeamID":  137,
+                           "BatterTeamName":  "San Francisco Giants",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  13,
+                           "BatterCurrentAverage":  ".317",
+                           "BatterCurrentBABIP":  ".374"
+                       },
+                       {
+                           "BatterID":  488726,
+                           "BatterName":  "Michael Brantley",
+                           "BatterTeamID":  114,
+                           "BatterTeamName":  "Cleveland Indians",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  14,
+                           "BatterCurrentAverage":  ".316",
+                           "BatterCurrentBABIP":  ".309"
+                       },
+                       {
+                           "BatterID":  502110,
+                           "BatterName":  "J.D. Martinez",
+                           "BatterTeamID":  111,
+                           "BatterTeamName":  "Boston Red Sox",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  15,
+                           "BatterCurrentAverage":  ".316",
+                           "BatterCurrentBABIP":  ".353"
+                       },
+                       {
+                           "BatterID":  622110,
+                           "BatterName":  "Matt Duffy",
+                           "BatterTeamID":  139,
+                           "BatterTeamName":  "Tampa Bay Rays",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  16,
+                           "BatterCurrentAverage":  ".311",
+                           "BatterCurrentBABIP":  ".37"
+                       },
+                       {
+                           "BatterID":  592206,
+                           "BatterName":  "Nicholas Castellanos",
+                           "BatterTeamID":  116,
+                           "BatterTeamName":  "Detroit Tigers",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  17,
+                           "BatterCurrentAverage":  ".310",
+                           "BatterCurrentBABIP":  ".385"
+                       },
+                       {
+                           "BatterID":  572816,
+                           "BatterName":  "Corey Dickerson",
+                           "BatterTeamID":  134,
+                           "BatterTeamName":  "Pittsburgh Pirates",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  18,
+                           "BatterCurrentAverage":  ".309",
+                           "BatterCurrentBABIP":  ".335"
+                       },
+                       {
+                           "BatterID":  445055,
+                           "BatterName":  "Jon Jay",
+                           "BatterTeamID":  109,
+                           "BatterTeamName":  "Arizona Diamondbacks",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  19,
+                           "BatterCurrentAverage":  ".309",
+                           "BatterCurrentBABIP":  ".368"
+                       },
+                       {
+                           "BatterID":  571448,
+                           "BatterName":  "Nolan Arenado",
+                           "BatterTeamID":  115,
+                           "BatterTeamName":  "Colorado Rockies",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  20,
+                           "BatterCurrentAverage":  ".308",
+                           "BatterCurrentBABIP":  ".341"
+                       }
+                   ]
+}

@@ -13,6 +13,8 @@ function GetGameInfo($gameType, $date) {
 	$theUri = "https://statsapi.mlb.com/api/v1/schedule?sportId=1&gameType=$($gameType)&date=$($date)"	
 	$theFields = "dates"
 	$getGameData = GetApiData $theUri $theFields
+	
+	LogWrite "Getting pregame_$($theDay.Replace('/','')) file started..."
 
 	$theGameData = @()
 	foreach($date in $getGameData) {
@@ -40,6 +42,8 @@ function GetGameResults($gameType, $date) {
 	$theUri = "https://statsapi.mlb.com/api/v1/schedule?sportId=1&gameType=$($gameType)&date=$($date)"	
 	$theFields = "dates"
 	$getGameData = GetApiData $theUri $theFields
+	
+	LogWrite "Getting postgame_$($theDay.Replace('/','')) file started..."
 
 	$theGameData = @()
 	foreach($date in $getGameData) {
@@ -47,7 +51,7 @@ function GetGameResults($gameType, $date) {
 		$dateStamp = $gameDate.replace('-','')
 		foreach($game in $date.games) {
 			$gamePk = $game.gamePk
-			$feedUri = "https://statsapi.mlb.com/api/v1/game/$($gamePk)/feed/live?timecode=$($dateStamp)_235500"
+			$feedUri = "https://statsapi.mlb.com/api/v1/game/$($gamePk)/feed/live?timecode=$($dateStamp)_235900"
 			$gameDetails = GetGameDetails $feedUri
 			$theGameData += $gameDetails
 		}
@@ -70,7 +74,7 @@ function GetGameDetails($feedUri) {
 	$theFields = "liveData"
 	$getLiveData = GetApiData $feedUri $theFields
 		
-	$gameDayofWk = $getGameData.datetime.day
+	$gameDayofWk = (Get-Date $theDay -UFormat %a).ToUpper()
 	$gameTime = $getGameData.datetime.home.time
 	$gameAmPm = $getGameData.datetime.home.ampm
 	$gameDayNight = $getGameData.datetime.dayNight
@@ -93,7 +97,7 @@ function GetGameDetails($feedUri) {
 	$awayPitcherName = $awayPlayerById.name.first + " " + $awayPlayerById.name.last
 	$awayPitcherRightLeft = $awayPlayerById.rightLeft
 	$awayPitcherWins = $awayPlayerById.seasonStats.pitching.wins
-	$awayPitcherWins = $awayPlayerById.seasonStats.pitching.losses
+	$awayPitcherLoss = $awayPlayerById.seasonStats.pitching.losses
 	$awayPitcherEra = $awayPlayerById.seasonStats.pitching.era
 	
 	#home team details

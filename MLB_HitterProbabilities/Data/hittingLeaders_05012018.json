@@ -1,0 +1,204 @@
+{
+    "TopHitters":  [
+                       {
+                           "BatterID":  592518,
+                           "BatterName":  "Manny Machado",
+                           "BatterTeamID":  110,
+                           "BatterTeamName":  "Baltimore Orioles",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  1,
+                           "BatterCurrentAverage":  ".361",
+                           "BatterCurrentBABIP":  ".361"
+                       },
+                       {
+                           "BatterID":  514888,
+                           "BatterName":  "Jose Altuve",
+                           "BatterTeamID":  117,
+                           "BatterTeamName":  "Houston Astros",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  2,
+                           "BatterCurrentAverage":  ".347",
+                           "BatterCurrentBABIP":  ".386"
+                       },
+                       {
+                           "BatterID":  605141,
+                           "BatterName":  "Mookie Betts",
+                           "BatterTeamID":  111,
+                           "BatterTeamName":  "Boston Red Sox",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  3,
+                           "BatterCurrentAverage":  ".344",
+                           "BatterCurrentBABIP":  ".324"
+                       },
+                       {
+                           "BatterID":  546318,
+                           "BatterName":  "Odubel Herrera",
+                           "BatterTeamID":  143,
+                           "BatterTeamName":  "Philadelphia Phillies",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  4,
+                           "BatterCurrentAverage":  ".343",
+                           "BatterCurrentBABIP":  ".388"
+                       },
+                       {
+                           "BatterID":  502054,
+                           "BatterName":  "Tommy Pham",
+                           "BatterTeamID":  138,
+                           "BatterTeamName":  "St. Louis Cardinals",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  5,
+                           "BatterCurrentAverage":  ".341",
+                           "BatterCurrentBABIP":  ".415"
+                       },
+                       {
+                           "BatterID":  452678,
+                           "BatterName":  "Asdrubal Cabrera",
+                           "BatterTeamID":  121,
+                           "BatterTeamName":  "New York Mets",
+                           "BatterHittingSide":  "Switch",
+                           "BatterRank":  6,
+                           "BatterCurrentAverage":  ".340",
+                           "BatterCurrentBABIP":  ".358"
+                       },
+                       {
+                           "BatterID":  476704,
+                           "BatterName":  "Jed Lowrie",
+                           "BatterTeamID":  133,
+                           "BatterTeamName":  "Oakland Athletics",
+                           "BatterHittingSide":  "Switch",
+                           "BatterRank":  7,
+                           "BatterCurrentAverage":  ".339",
+                           "BatterCurrentBABIP":  ".388"
+                       },
+                       {
+                           "BatterID":  502110,
+                           "BatterName":  "J.D. Martinez",
+                           "BatterTeamID":  111,
+                           "BatterTeamName":  "Boston Red Sox",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  8,
+                           "BatterCurrentAverage":  ".337",
+                           "BatterCurrentBABIP":  ".446"
+                       },
+                       {
+                           "BatterID":  621002,
+                           "BatterName":  "Daniel Robertson",
+                           "BatterTeamID":  139,
+                           "BatterTeamName":  "Tampa Bay Rays",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  9,
+                           "BatterCurrentAverage":  ".333",
+                           "BatterCurrentBABIP":  ".432"
+                       },
+                       {
+                           "BatterID":  621043,
+                           "BatterName":  "Carlos Correa",
+                           "BatterTeamID":  117,
+                           "BatterTeamName":  "Houston Astros",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  10,
+                           "BatterCurrentAverage":  ".330",
+                           "BatterCurrentBABIP":  ".405"
+                       },
+                       {
+                           "BatterID":  434670,
+                           "BatterName":  "Hanley Ramirez",
+                           "BatterTeamID":  111,
+                           "BatterTeamName":  "Boston Red Sox",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  11,
+                           "BatterCurrentAverage":  ".330",
+                           "BatterCurrentBABIP":  ".392"
+                       },
+                       {
+                           "BatterID":  605480,
+                           "BatterName":  "Mallex Smith",
+                           "BatterTeamID":  139,
+                           "BatterTeamName":  "Tampa Bay Rays",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  12,
+                           "BatterCurrentAverage":  ".329",
+                           "BatterCurrentBABIP":  ".406"
+                       },
+                       {
+                           "BatterID":  544369,
+                           "BatterName":  "Didi Gregorius",
+                           "BatterTeamID":  147,
+                           "BatterTeamName":  "New York Yankees",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  13,
+                           "BatterCurrentAverage":  ".327",
+                           "BatterCurrentBABIP":  ".289"
+                       },
+                       {
+                           "BatterID":  408234,
+                           "BatterName":  "Miguel Cabrera",
+                           "BatterTeamID":  116,
+                           "BatterTeamName":  "Detroit Tigers",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  14,
+                           "BatterCurrentAverage":  ".326",
+                           "BatterCurrentBABIP":  ".366"
+                       },
+                       {
+                           "BatterID":  592450,
+                           "BatterName":  "Aaron Judge",
+                           "BatterTeamID":  147,
+                           "BatterTeamName":  "New York Yankees",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  15,
+                           "BatterCurrentAverage":  ".317",
+                           "BatterCurrentBABIP":  ".446"
+                       },
+                       {
+                           "BatterID":  518735,
+                           "BatterName":  "Yasmani Grandal",
+                           "BatterTeamID":  119,
+                           "BatterTeamName":  "Los Angeles Dodgers",
+                           "BatterHittingSide":  "Switch",
+                           "BatterRank":  16,
+                           "BatterCurrentAverage":  ".315",
+                           "BatterCurrentBABIP":  ".364"
+                       },
+                       {
+                           "BatterID":  518692,
+                           "BatterName":  "Freddie Freeman",
+                           "BatterTeamID":  144,
+                           "BatterTeamName":  "Atlanta Braves",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  17,
+                           "BatterCurrentAverage":  ".314",
+                           "BatterCurrentBABIP":  ".354"
+                       },
+                       {
+                           "BatterID":  572816,
+                           "BatterName":  "Corey Dickerson",
+                           "BatterTeamID":  134,
+                           "BatterTeamName":  "Pittsburgh Pirates",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  18,
+                           "BatterCurrentAverage":  ".313",
+                           "BatterCurrentBABIP":  ".318"
+                       },
+                       {
+                           "BatterID":  429664,
+                           "BatterName":  "Robinson Cano",
+                           "BatterTeamID":  136,
+                           "BatterTeamName":  "Seattle Mariners",
+                           "BatterHittingSide":  "Left",
+                           "BatterRank":  19,
+                           "BatterCurrentAverage":  ".313",
+                           "BatterCurrentBABIP":  ".355"
+                       },
+                       {
+                           "BatterID":  516770,
+                           "BatterName":  "Starlin Castro",
+                           "BatterTeamID":  146,
+                           "BatterTeamName":  "Miami Marlins",
+                           "BatterHittingSide":  "Right",
+                           "BatterRank":  20,
+                           "BatterCurrentAverage":  ".312",
+                           "BatterCurrentBABIP":  ".382"
+                       }
+                   ]
+}

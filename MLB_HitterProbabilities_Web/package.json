@@ -5,6 +5,8 @@
   "devDependencies": {},
   "dependencies": {
     "bootstrap": "4.1.0",
+    "bootstrap-datepicker": "1.8.0",
+    "datatables.net-dt": "1.10.19",
     "jquery": "3.3.0",
     "jquery-ui": "1.12.0"
   }

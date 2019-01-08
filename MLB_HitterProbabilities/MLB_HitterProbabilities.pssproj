@@ -31,6 +31,7 @@
     <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Functions\theCalculations.ps1" />
     <Compile Include="Functions\TheHitters.ps1" />
     <Compile Include="Functions\TheGames.ps1" />
     <Compile Include="Functions\TheMatchups.ps1" />

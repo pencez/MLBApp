@@ -1,0 +1,38 @@
+{
+    "GameResults":  [
+                        {
+                            "GamePk":  530857,
+                            "GameDate":  "2018-07-19",
+                            "GameTime":  "6:05",
+                            "GameAMPM":  "PM",
+                            "GameDayofWk":  "THU",
+                            "GameDayNight":  "night",
+                            "GameTimeZone":  "CT",
+                            "WeatherCond":  "Cloudy",
+                            "WeatherTemp":  "85",
+                            "WeatherWind":  "5mph Out To CF",
+                            "VenueCity":  "Chicago, IL",
+                            "VenueSite":  "Wrigley Field",
+                            "AwayTeamId":  "138",
+                            "AwayTeamName":  "St. Louis Cardinals",
+                            "AwayTeamWins":  "48",
+                            "AwayTeamLoss":  "46",
+                            "AwayPitcherId":  "593372",
+                            "AwayPitcherName":  "Carlos Martínez",
+                            "AwayPitcherHand":  "R",
+                            "AwayPitcherWins":  "6",
+                            "AwayPitcherLoss":  "5",
+                            "AwayPitcherEra":  "3.01",
+                            "HomeTeamId":  "112",
+                            "HomeTeamName":  "Chicago Cubs",
+                            "HomeTeamWins":  "55",
+                            "HomeTeamLoss":  "38",
+                            "HomePitcherId":  "543294",
+                            "HomePitcherName":  "Kyle Hendricks",
+                            "HomePitcherHand":  "R",
+                            "HomePitcherWins":  "6",
+                            "HomePitcherLoss":  "8",
+                            "HomePitcherEra":  "3.97"
+                        }
+                    ]
+}
