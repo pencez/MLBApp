@@ -2,6 +2,9 @@
 # Script.ps1
 #
 
+#clear all vars to start
+Get-UserVariable | Clear-Variable
+
 $a = Get-Date -format yyyyMMddhhmmss
 $basePath = "C:\Users\pencez\source\repos\MLBApp\MLB_HitterProbabilities"  #for LT
 $webPath = "C:\Users\pencez\source\repos\MLBApp\MLB_HitterProbabilities_Web"  #for LT
@@ -27,9 +30,9 @@ Exit
 #>
 
 
-$theDate = Get-Date "04/10/2018"
+$theDate = Get-Date "06/10/2018"
 
-while ($testDate -ne "09/30/2018") {	
+while ($testDate -ne "06/12/2018") {	
 	$testDate = $theDate.ToString("MM/dd/yyyy")
 	$testDtM1 = $theDate.AddDays(-1).ToString("MM/dd/yyyy")
 
@@ -50,9 +53,10 @@ while ($testDate -ne "09/30/2018") {
 	$seasonCurrDate = $testDtM1.Replace("/","%2F")
 	$theDay = $testDate
 	$lastSeason = "2017"
+	$currSeason = "2018"
 	
 	#<# 
-	#$theHitters = GetTopAvgHittersTesting $limit $lastSeason $gameType $seasonStartDate $seasonCurrDate
+	$theHitters = GetTopAvgHittersTesting $limit $lastSeason $gameType $seasonStartDate $seasonCurrDate
 	# ****************************************************************************************************
 	
 	#<#

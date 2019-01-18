@@ -11,7 +11,7 @@ function buildHitterDetailsObject($getTopHitters, $testing) {
 	}
 
 	$theTopHittersDetails = @()
-	for ($z=0; $z -lt $getTopHitters.splits.length; $z++){
+	for ($z=0; $z -lt $getTopHitters.splits.length; $z++) {
 		$batterID = $getTopHitters.splits[$z].player.id
 		# Do we need details for hitter?			
 		if ($theBatterList -match $batterID) {
@@ -23,27 +23,121 @@ function buildHitterDetailsObject($getTopHitters, $testing) {
 
 		if ($getDetailsYN -eq "Yes") {
 			# Get the details for the batter
-			$batterName = $getTopHitters.splits[$z].player.fullname
+			$batterName = $getTopHitters.splits[$z].player.fullname			
+			$batterDebut = $getTopHitters.splits[$z].player.mlbDebutDate
 			$batterTeamID = $getTopHitters.splits[$z].team.id
 			$batterTeamName = $getTopHitters.splits[$z].team.name	
-			$batterCareerAvg = $getTopHitters.splits[$z].player.stats[$($x - 1)].splits[0].stat.avg
-			$batterCareerBabip = $getTopHitters.splits[$z].player.stats[$($x - 1)].splits[0].stat.babip
-			# Should we get BABIP for Home vs Away???
-			$batterAvgAway = $getTopHitters.splits[$z].player.stats[$x].splits[0].stat.avg
-			$batterAvgHome = $getTopHitters.splits[$z].player.stats[$x].splits[10].stat.avg
-			$batterAvgDay = $getTopHitters.splits[$z].player.stats[$x].splits[1].stat.avg
-			$batterAvgNight = $getTopHitters.splits[$z].player.stats[$x].splits[11].stat.avg
-			$batterAvgMon = $getTopHitters.splits[$z].player.stats[$x].splits[3].stat.avg
-			$batterAvgTue = $getTopHitters.splits[$z].player.stats[$x].splits[7].stat.avg
-			$batterAvgWed = $getTopHitters.splits[$z].player.stats[$x].splits[8].stat.avg
-			$batterAvgThu = $getTopHitters.splits[$z].player.stats[$x].splits[6].stat.avg
-			$batterAvgFri = $getTopHitters.splits[$z].player.stats[$x].splits[2].stat.avg
-			$batterAvgSat = $getTopHitters.splits[$z].player.stats[$x].splits[4].stat.avg
-			$batterAvgSun = $getTopHitters.splits[$z].player.stats[$x].splits[5].stat.avg
-			$batterAvgGrass = $getTopHitters.splits[$z].player.stats[$x].splits[9].stat.avg
-			$batterAvgTurf = $getTopHitters.splits[$z].player.stats[$x].splits[12].stat.avg
-			$batterAvgLeft = $getTopHitters.splits[$z].player.stats[$x].splits[17].stat.avg
-			$batterAvgRight = $getTopHitters.splits[$z].player.stats[$x].splits[20].stat.avg
+			$batterCareerAvg = $getTopHitters.splits[$z].player.stats[0].splits[0].stat.avg
+			$batterCareerBabip = $getTopHitters.splits[$z].player.stats[0].splits[0].stat.babip
+			
+			write-host "********** Stats for $($batterName) **********"
+			
+			
+			$sitCodes = @("a","h","d","n","g","t","vl","vr","preas","posas","4","5","6","7","8","9","dmo","dtu","dwe","dth","dfr","dsa","dsu","twn","tls","taw","tal")
+			$sitDescs = @("Away","Home","Day","Night","Grass","Turf","VsLefty","VsRighty","PreAllStar","PostAllStar","Apr","May","Jun","Jul","Aug","Sep","Mon","Tue","Wed","Thu","Fri","Sat","Sun","TeamWins","TeamLoss","TeamAfterW","TeamAfterL")
+			#$sitCodes = @("a","h")
+			#$sitDescs = @("Away","Home")
+			
+			foreach ($sitDesc in $sitDescs) {
+				Set-Variable -Name "batterTotalHits$sitDesc" -Value 0
+				Set-Variable -Name "batterTotalAtBats$sitDesc" -Value 0
+				Set-Variable -Name "batterTotalHomeRuns$sitDesc" -Value 0
+				Set-Variable -Name "batterTotalStrikeOuts$sitDesc" -Value 0
+				Set-Variable -Name "batterTotalSacFlies$sitDesc" -Value 0
+			}
+
+
+			$theSeason = $batterDebut.substring(0,4)
+			do {
+				$theSeason = [int]$theSeason
+				#write-host "Season is $($theSeason):"
+				$theUri = "https://statsapi.mlb.com/api/v1/people/$($batterID)?hydrate=stats(type=statSplits,sitCodes=[a,h,d,n,g,t,vl,vr,dsa,dsu,preas,posas,4,5,6,7,8,9,dmo,dtu,dwe,dth,dfr,twn,tls,taw,tal],sportId=1,gameType=$($gameType),season=$($theSeason))"
+				#$theUri = "https://statsapi.mlb.com/api/v1/people/$($batterID)?hydrate=stats(type=statSplits,sitCodes=[a,h],sportId=1,gameType=$($gameType),season=$($theSeason))"
+				$theFields = "people"
+				$getHittersStats = GetApiData $theUri $theFields
+
+
+				$hitsDesc = "$($sitDesc)Hits"
+				$atBatsDesc = "$($sitDesc)AtBats"
+				$homeRunsDesc = "$($sitDesc)HRs"
+				$strikOutsDesc = "$($sitDesc)Ks"
+				$sacFliesDesc = "$($sitDesc)SFs"
+				foreach ($sitCode in $sitCodes) {
+					$codeIndex = $sitCodes.IndexOf($sitCode)
+					$sitDesc = $sitDescs[$sitCodes.IndexOf($sitCode)]
+					$c = 0
+					do {
+						$tmpHits = $getHittersStats.stats[0].splits[$c] | where { $_.split.code -eq "$sitCode" } | Select-Object -Property @{ Name="$($hitsDesc)"; Expression={$getHittersStats.stats[0].splits[$c].stat.hits}} | Select -ExpandProperty $($hitsDesc)
+						if ($tmpHits) {
+							$tmpAtBats = $getHittersStats.stats[0].splits[$c] | where { $_.split.code -eq "$sitCode" } | Select-Object -Property @{ Name="$($atBatsDesc)"; Expression={$getHittersStats.stats[0].splits[$c].stat.atBats}} | Select -ExpandProperty $($atBatsDesc)
+							$tmpHomeRuns = $getHittersStats.stats[0].splits[$c] | where { $_.split.code -eq "$sitCode" } | Select-Object -Property @{ Name="$($homeRunsDesc)"; Expression={$getHittersStats.stats[0].splits[$c].stat.homeRuns}} | Select -ExpandProperty $($homeRunsDesc)
+							$tmpStrikeOuts = $getHittersStats.stats[0].splits[$c] | where { $_.split.code -eq "$sitCode" } | Select-Object -Property @{ Name="$($strikOutsDesc)"; Expression={$getHittersStats.stats[0].splits[$c].stat.strikeOuts}} | Select -ExpandProperty $($strikOutsDesc)
+							$tmpSacFlies = $getHittersStats.stats[0].splits[$c] | where { $_.split.code -eq "$sitCode" } | Select-Object -Property @{ Name="$($sacFliesDesc)"; Expression={$getHittersStats.stats[0].splits[$c].stat.sacFlies}} | Select -ExpandProperty $($sacFliesDesc)
+							Set-Variable -Name "batterHits$sitDesc" -Value $tmpHits
+							Set-Variable -Name "batterAtBats$sitDesc" -Value $tmpAtBats
+							Set-Variable -Name "batterHomeRuns$sitDesc" -Value $tmpHomeRuns
+							Set-Variable -Name "batterStrikeOuts$sitDesc" -Value $tmpStrikeOuts
+							Set-Variable -Name "batterSacFlies$sitDesc" -Value $tmpSacFlies
+							
+			<#
+			write-host "batterHits$sitDesc $(Get-Variable -Name "batterHits$sitDesc" -ValueOnly)"
+			write-host "batterAtBats$sitDesc $(Get-Variable -Name "batterAtBats$sitDesc" -ValueOnly)"
+			write-host "batterHomeRuns$sitDesc $(Get-Variable -Name "batterHomeRuns$sitDesc" -ValueOnly)"
+			write-host "batterStrikeOuts$sitDesc $(Get-Variable -Name "batterStrikeOuts$sitDesc" -ValueOnly)"
+			write-host "batterSacFlies$sitDesc $(Get-Variable -Name "batterSacFlies$sitDesc" -ValueOnly)"
+			#>	
+							$tmpTotalHits = ([int](Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly) + [int](Get-Variable -Name "batterHits$sitDesc" -ValueOnly))
+							$tmpTotalAtBats = ([int](Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly) + [int](Get-Variable -Name "batterAtBats$sitDesc" -ValueOnly))
+							$tmpTotalHomeRuns = ([int](Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly) + [int](Get-Variable -Name "batterHomeRuns$sitDesc" -ValueOnly))
+							$tmpTotalStrikeOuts = ([int](Get-Variable -Name "batterTotalStrikeOuts$sitDesc" -ValueOnly) + [int](Get-Variable -Name "batterStrikeOuts$sitDesc" -ValueOnly))
+							$tmpTotalSacFlies = ([int](Get-Variable -Name "batterTotalSacFlies$sitDesc" -ValueOnly) + [int](Get-Variable -Name "batterSacFlies$sitDesc" -ValueOnly))
+
+							Set-Variable -Name "batterTotalHits$sitDesc" -Value $tmpTotalHits
+							Set-Variable -Name "batterTotalAtBats$sitDesc" -Value $tmpTotalAtBats
+							Set-Variable -Name "batterTotalHomeRuns$sitDesc" -Value $tmpTotalHomeRuns
+							Set-Variable -Name "batterTotalStrikeOuts$sitDesc" -Value $tmpTotalStrikeOuts
+							Set-Variable -Name "batterTotalSacFlies$sitDesc" -Value $tmpTotalSacFlies
+			<#			
+			write-host "batterTotalHits$sitDesc $(Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly)"
+			write-host "batterTotalAtBats$sitDesc $(Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly)"
+			write-host "batterTotalHomeRuns$sitDesc $(Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly)"
+			write-host "batterTotalStrikeOuts$sitDesc $(Get-Variable -Name "batterTotalStrikeOuts$sitDesc" -ValueOnly)"
+			write-host "batterTotalSacFlies$sitDesc $(Get-Variable -Name "batterTotalSacFlies$sitDesc" -ValueOnly)"
+			#>
+						}
+						if ($tmpTotalAtBats) { 
+							$tmpTotalAtBats = $null
+							break 
+						}
+						$c++
+					} while ($c -lt 35)
+				}
+			
+				$theSeason++
+			# ********** change this to LT so you don't include current season **********
+			} while ($theSeason -le [int]$currSeason) 
+			# ********** change this to LT so you don't include current season **********
+			
+			
+			write-host "Batter Career & Situational AVG/BABIP:"
+			write-host "batterCareerAvg $batterCareerAvg"
+			write-host "batterCareerBabip $batterCareerBabip"
+			foreach ($sitDesc in $sitDescs) {
+				$tempBatterAvg = [math]::round( [int](Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly) / [int](Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly) ,3)
+				Set-Variable -Name "batterAvg$sitDesc" -Value $tempBatterAvg.toString(".000")
+			
+				$tempBatterBabip = [math]::round( $(([int](Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly))/([int](Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalStrikeOuts$sitDesc" -ValueOnly) + [int](Get-Variable -Name "batterTotalSacFlies$sitDesc" -ValueOnly))) ,3)
+				Set-Variable -Name "batterBabip$sitDesc" -Value $tempBatterBabip.toString(".000")
+			
+				#<#		
+				write-host "batterAvg$sitDesc $(Get-Variable -Name "batterAvg$sitDesc" -ValueOnly)"
+				write-host "batterBabip$sitDesc $(Get-Variable -Name "batterBabip$sitDesc" -ValueOnly)"
+				#>
+			}
+
+
+			#$batterAvgAway = $batterTotalHitsAway / $batterTotalAtBatsAway
+			#$batterBabipAway = [math]::round( $(($batterTotalHitsAway - $batterTotalHRsAway)/($batterTotalAtBatsAway - $batterTotalHRsAway - $batterTotalKsAway + $batterTotalSFsAway)) ,3).toString(".###")
 			
 			# Build the json record with player details
 			$theTopHittersDetails += buildTopHitterObject $getDetailsYN
@@ -77,7 +171,7 @@ function buildHitterObject($getTopHitters, $testing) {
 			$batterTeamName = $getTopHitters.splits[$z].team.name
 			$batterSide = $getTopHitters.splits[$z].player.batSide.description
 			$batterRank = $getTopHitters.splits[$z].rank
-			$batterAverage = $getTopHitters.splits[$z].stat.avg
+			$batterAverage = $getTopHitters.splits[$z].stat.avg			
 			$batterHits = $getTopHitters.splits[$z].stat.hits
 			$batterHRs = $getTopHitters.splits[$z].stat.homeRuns
 			$batterABs = $getTopHitters.splits[$z].stat.atBats
@@ -129,13 +223,15 @@ function buildTopHitterObject($getDetailsYN) {
 
 
 function GetTopAvgHittersTesting($limit, $lastSeason, $gameType, $seasonStartDate, $seasonCurrDate) {	
-	$theUri = "https://statsapi.mlb.com/api/v1/stats?stats=byDateRange&group=hitting&gameType=$($gameType)&startDate=$($seasonStartDate)&endDate=$($seasonCurrDate)&limit=$($limit)&hydrate=person(stats(group=[hitting,pitching],type=[career,statSplits],sitCodes=[a,h,d,n,g,t,vlg,vdv,vl,vr,vls,vlr,vgo,vao,dsa,dsu,dmo,dtu,dwe,dth,dfr],sportId=1,season=$($lastSeason)))"
+	#$theUri = "https://statsapi.mlb.com/api/v1/stats?stats=byDateRange&group=hitting&gameType=$($gameType)&startDate=$($seasonStartDate)&endDate=$($seasonCurrDate)&limit=$($limit)&hydrate=person(stats(group=[hitting],type=[career,statSplits],sitCodes=[a,h,d,n,g,t,vlg,vdv,vl,vr,vls,vlr,vgo,vao,dsa,dsu,dmo,dtu,dwe,dth,dfr],sportId=1,season=$($lastSeason)))"
+	$theUri = "https://statsapi.mlb.com/api/v1/stats?stats=byDateRange&group=hitting&gameType=$($gameType)&startDate=$($seasonStartDate)&endDate=$($seasonCurrDate)&limit=$($limit)&hydrate=person(stats(group=[hitting],type=[career]))"
 	
 	LogWrite "Getting Top Hitters for season as of $($theDay)..."
 
 	$theFields = "stats"
 	$getTopHitters = GetApiData $theUri $theFields
 
+	<#
 	$findSplitStats = ""
 	$findSplitStats = $getTopHitters.splits[0].player.stats[1].splits[0].split.description
 	if ($findSplitStats -eq "Away Games") {
@@ -143,7 +239,8 @@ function GetTopAvgHittersTesting($limit, $lastSeason, $gameType, $seasonStartDat
 	} else {
 		$x = 2
 	}
-	
+	#>
+
 	$theTopHittersDetails = @()
 	$theTopHittersDetails = buildHitterDetailsObject $getTopHitters "Testing"
 	$theFilename = "hittingLeaders_Details"	
