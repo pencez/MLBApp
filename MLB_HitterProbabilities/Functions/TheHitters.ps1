@@ -97,12 +97,14 @@ function buildHitterDetailsObject($getTopHitters, $testing) {
 							Set-Variable -Name "batterTotalHomeRuns$sitDesc" -Value $tmpTotalHomeRuns
 							Set-Variable -Name "batterTotalStrikeOuts$sitDesc" -Value $tmpTotalStrikeOuts
 							Set-Variable -Name "batterTotalSacFlies$sitDesc" -Value $tmpTotalSacFlies
-			<#			
-			write-host "batterTotalHits$sitDesc $(Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly)"
-			write-host "batterTotalAtBats$sitDesc $(Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly)"
-			write-host "batterTotalHomeRuns$sitDesc $(Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly)"
-			write-host "batterTotalStrikeOuts$sitDesc $(Get-Variable -Name "batterTotalStrikeOuts$sitDesc" -ValueOnly)"
-			write-host "batterTotalSacFlies$sitDesc $(Get-Variable -Name "batterTotalSacFlies$sitDesc" -ValueOnly)"
+			#<#
+			if ($theSeason -eq "2017") {
+				write-host "batterTotalHits$sitDesc $(Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly)"
+				write-host "batterTotalAtBats$sitDesc $(Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly)"
+				write-host "batterTotalHomeRuns$sitDesc $(Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly)"
+				write-host "batterTotalStrikeOuts$sitDesc $(Get-Variable -Name "batterTotalStrikeOuts$sitDesc" -ValueOnly)"
+				write-host "batterTotalSacFlies$sitDesc $(Get-Variable -Name "batterTotalSacFlies$sitDesc" -ValueOnly)"
+			}
 			#>
 						}
 						if ($tmpTotalAtBats) { 
@@ -115,19 +117,23 @@ function buildHitterDetailsObject($getTopHitters, $testing) {
 			
 				$theSeason++
 			# ********** change this to LT so you don't include current season **********
-			} while ($theSeason -le [int]$currSeason) 
-			# ********** change this to LT so you don't include current season **********
+			} while ($theSeason -lt [int]$currSeason)
 			
 			
 			write-host "Batter Career & Situational AVG/BABIP:"
 			write-host "batterCareerAvg $batterCareerAvg"
 			write-host "batterCareerBabip $batterCareerBabip"
 			foreach ($sitDesc in $sitDescs) {
-				$tempBatterAvg = [math]::round( [int](Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly) / [int](Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly) ,3)
-				Set-Variable -Name "batterAvg$sitDesc" -Value $tempBatterAvg.toString(".000")
-			
-				$tempBatterBabip = [math]::round( $(([int](Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly))/([int](Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalStrikeOuts$sitDesc" -ValueOnly) + [int](Get-Variable -Name "batterTotalSacFlies$sitDesc" -ValueOnly))) ,3)
-				Set-Variable -Name "batterBabip$sitDesc" -Value $tempBatterBabip.toString(".000")
+				$tmpVarName = (Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly)
+				if ([int]($tmpVarName) -ne 0) {
+					$tempBatterAvg = [math]::round( [int](Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly) / [int](Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly) ,3).toString(".000")
+					$tempBatterBabip = [math]::round( $(([int](Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly))/([int](Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalStrikeOuts$sitDesc" -ValueOnly) + [int](Get-Variable -Name "batterTotalSacFlies$sitDesc" -ValueOnly))) ,3).toString(".000")
+				} else {
+					$tempBatterAvg = "???"
+					$tempBatterBabip = "???"				
+				}
+				Set-Variable -Name "batterAvg$sitDesc" -Value $tempBatterAvg			
+				Set-Variable -Name "batterBabip$sitDesc" -Value $tempBatterBabip
 			
 				#<#		
 				write-host "batterAvg$sitDesc $(Get-Variable -Name "batterAvg$sitDesc" -ValueOnly)"
@@ -135,10 +141,6 @@ function buildHitterDetailsObject($getTopHitters, $testing) {
 				#>
 			}
 
-
-			#$batterAvgAway = $batterTotalHitsAway / $batterTotalAtBatsAway
-			#$batterBabipAway = [math]::round( $(($batterTotalHitsAway - $batterTotalHRsAway)/($batterTotalAtBatsAway - $batterTotalHRsAway - $batterTotalKsAway + $batterTotalSFsAway)) ,3).toString(".###")
-			
 			# Build the json record with player details
 			$theTopHittersDetails += buildTopHitterObject $getDetailsYN
 		}
@@ -197,20 +199,60 @@ function buildTopHitterObject($getDetailsYN) {
 		$obj | Add-Member -MemberType NoteProperty -Name BatterCareerAvg -Value $batterCareerAvg 
 		$obj | Add-Member -MemberType NoteProperty -Name BatterCareerBabip -Value $batterCareerBabip
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgHome -Value $batterAvgHome
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipHome -Value $batterBabipHome
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgAway -Value $batterAvgAway
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipAway -Value $batterBabipAway
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgDay -Value $batterAvgDay
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipDay -Value $batterBabipDay
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgNight -Value $batterAvgNight
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipNight -Value $batterBabipNight
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgGrass -Value $batterAvgGrass
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipGrass -Value $batterBabipGrass
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgTurf -Value $batterAvgTurf
-		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgToLefty -Value $batterAvgLeft
-		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgToRighty -Value $batterAvgRight
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipTurf -Value $batterBabipTurf
+		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgToLefty -Value $batterAvgVsLefty
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipToLefty -Value $batterBabipVsLefty
+		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgToRighty -Value $batterAvgVsRighty
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipToRighty -Value $batterBabipVsRighty		
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgTeamWins -Value $batterAvgTeamWins
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipTeamWins -Value $batterBabipTeamWins
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgTeamLoss -Value $batterAvgTeamLoss
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipTeamLoss -Value $batterBabipTeamLoss
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgTeamAfterW -Value $batterAvgTeamAfterW
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipTeamAfterW -Value $batterBabipTeamAfterW
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgTeamAfterL -Value $batterAvgTeamAfterL
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipTeamAfterL -Value $batterBabipTeamAfterL
+		# Stats based on timeframe
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgPreAllStar -Value $batterAvgPreAllStar
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipPreAllStar -Value $batterBabipPreAllStar
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgPostAllStar -Value $batterAvgPostAllStar
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipPostAllStar -Value $batterBabipPostAllStar
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgApr -Value $batterAvgApr
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipApr -Value $batterBabipApr
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgMay -Value $batterAvgMay
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipMay -Value $batterBabipMay
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgJun -Value $batterAvgJun
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipJun -Value $batterBabipJun
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgJul -Value $batterAvgJul
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipJul -Value $batterBabipJul
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgAug -Value $batterAvgAug
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipAug -Value $batterBabipAug
+		$obj | Add-Member -MemberType NoteProperty -Name batterAvgSep -Value $batterAvgSep
+		$obj | Add-Member -MemberType NoteProperty -Name batterBabipSep -Value $batterBabipSep
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgMondays -Value $batterAvgMon
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipMondays -Value $batterBabipMon
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgTuesdays -Value $batterAvgTue
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipTuesdays -Value $batterBabipTue
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgWednesdays -Value $batterAvgWed
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipWednesdays -Value $batterBabipWed
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgThursdays -Value $batterAvgThu
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipThursdays -Value $batterBabipThu
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgFridays -Value $batterAvgFri
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipFridays -Value $batterBabipFri
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgSaturdays -Value $batterAvgSat
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipSaturdays -Value $batterBabipSat
 		$obj | Add-Member -MemberType NoteProperty -Name BatterAvgSundays -Value $batterAvgSun
+		$obj | Add-Member -MemberType NoteProperty -Name BatterBabipSundays -Value $batterBabipSun
 		#$obj | Add-Member -MemberType NoteProperty -Name BatterAvgLast10Days -Value $batterAvgLast10Days		
 	} else {		
 		$obj | Add-Member -MemberType NoteProperty -Name BatterHittingSide -Value $batterSide

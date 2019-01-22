@@ -1,5 +1,5 @@
 ﻿#
-# Script.ps1
+# MLB_HitterProbabilities.ps1
 #
 
 #clear all vars to start
@@ -30,9 +30,9 @@ Exit
 #>
 
 
-$theDate = Get-Date "06/10/2018"
+$theDate = Get-Date "04/10/2018"
 
-while ($testDate -ne "06/12/2018") {	
+while ($testDate -ne "09/30/2018") {	
 	$testDate = $theDate.ToString("MM/dd/yyyy")
 	$testDtM1 = $theDate.AddDays(-1).ToString("MM/dd/yyyy")
 
@@ -55,10 +55,10 @@ while ($testDate -ne "06/12/2018") {
 	$lastSeason = "2017"
 	$currSeason = "2018"
 	
-	#<# 
+	<# 
 	$theHitters = GetTopAvgHittersTesting $limit $lastSeason $gameType $seasonStartDate $seasonCurrDate
 	# ****************************************************************************************************
-	
+	#>
 	#<#
 	# Check matchups for today
 	###$theGameInfo = GetGameInfo $gameType $startDate $endDate
@@ -69,7 +69,7 @@ while ($testDate -ne "06/12/2018") {
 	#>
 
 
-	<#
+	#<#
 	
 	# Build results
 	# getMatchupData($includeResultsYN Yes/No) -- typically this is no for actual use but yes during testing

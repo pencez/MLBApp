@@ -9,6 +9,8 @@
 #
 
 function GetGameInfo($gameType, $date) {
+	$gamePrePost = "Pre"
+	$teamFile = Get-Content -Raw -Path "$($basePath)\Data\teamInfo.json" | Out-String | ConvertFrom-Json
 	#$theUri = "https://statsapi.mlb.com/api/v1/schedule?sportId=1&gameType=$($gameType)&startDate=$($startDate)&endDate=$($endDate)"
 	$theUri = "https://statsapi.mlb.com/api/v1/schedule?sportId=1&gameType=$($gameType)&date=$($date)"	
 	$theFields = "dates"
@@ -26,7 +28,8 @@ function GetGameInfo($gameType, $date) {
 			$gameDetails = GetGameDetails $feedUri
 			$theGameData += $gameDetails
 		}
-
+		
+		# create pregame json object structure before saving as a file
 		$theGameInfo = @()
 		$theRootObj = New-Object -TypeName psobject
 		$theRootObj| Add-Member -MemberType NoteProperty -Name GameInfo -Value $theGameData
@@ -38,24 +41,51 @@ function GetGameInfo($gameType, $date) {
 }
 
 function GetGameResults($gameType, $date) {
+	$gamePrePost = "Post"
+	$teamFile = Get-Content -Raw -Path "$($basePath)\Data\teamInfo.json" | Out-String | ConvertFrom-Json
 	#$theUri = "https://statsapi.mlb.com/api/v1/schedule?sportId=1&gameType=$($gameType)&startDate=$($startDate)&endDate=$($endDate)"
 	$theUri = "https://statsapi.mlb.com/api/v1/schedule?sportId=1&gameType=$($gameType)&date=$($date)"	
 	$theFields = "dates"
-	$getGameData = GetApiData $theUri $theFields
+	$getGames = GetApiData $theUri $theFields
 	
 	LogWrite "Getting postgame_$($theDay.Replace('/','')) file started..."
 
 	$theGameData = @()
-	foreach($date in $getGameData) {
+	foreach($date in $getGames) {
 		$gameDate = $date.date
 		$dateStamp = $gameDate.replace('-','')
 		foreach($game in $date.games) {
 			$gamePk = $game.gamePk
+			# get game status to see if "F" Final then we track the team results
+			$gameStatus = $game | where { $_.gamePk -eq $gamePk } | Select-Object -Property @{ Name="codedGameState"; Expression={$game.status.codedGameState}} | Select -ExpandProperty codedGameState
+			if ($gameStatus -eq "F") {
+				$gameAwayTmId = $game.teams.away.team.id
+				$gameAwayTmNm = $game.teams.away.team.name
+				$gameAwayTmWs = $game.teams.away.leagueRecord.wins
+				$gameAwayTmLs = $game.teams.away.leagueRecord.loss
+				$gameAwayWinTF = $game.teams.away.isWinner
+				$gameHomeTmId = $game.teams.home.team.id
+				$gameHomeTmNm = $game.teams.home.team.name
+				$gameHomeTmWs = $game.teams.home.leagueRecord.wins
+				$gameHomeTmLs = $game.teams.home.leagueRecord.loss
+				$gameHomeWinTF = $game.teams.home.isWinner
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameAwayTmId) { $_.TeamWins = "$($gameAwayTmWs)" } }				
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameAwayTmId) { $_.TeamLoss = "$($gameAwayTmLs)" } }
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameAwayTmId) { $_.LastGameWin = "$($gameAwayWinTF)" } }
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameHomeTmId) { $_.TeamWins = "$($gameHomeTmWs)" } }
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameHomeTmId) { $_.TeamLoss = "$($gameHomeTmLs)" } }
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameHomeTmId) { $_.LastGameWin = "$($gameHomeWinTF)" } }
+			}
 			$feedUri = "https://statsapi.mlb.com/api/v1/game/$($gamePk)/feed/live?timecode=$($dateStamp)_235900"
+			# call function below
 			$gameDetails = GetGameDetails $feedUri
 			$theGameData += $gameDetails
 		}
+
+		# save the updated team file with game results W/L
+		$teamFile | ConvertTo-Json  | Set-Content "$($basePath)\Data\teamInfo.json"
 		
+		# create postgame json object structure before saving as a file
 		$theGameResults = @()
 		$theRootObj = New-Object -TypeName psobject
 		$theRootObj| Add-Member -MemberType NoteProperty -Name GameResults -Value $theGameData
@@ -89,7 +119,7 @@ function GetGameDetails($feedUri) {
 	$awayTeamId = $getGameData.teams.away.teamID
 	$awayTeam = $getGameData.teams.away.name.full
 	$awayTeamW = $getGameData.teams.away.record.wins
-	$awayTeamL = $getGameData.teams.away.record.losses	
+	$awayTeamL = $getGameData.teams.away.record.losses
 	$awayPitcherId = $getLiveData.boxscore.teams.away.pitchers[0]
 	$awayPlayerPath = $getLiveData.boxscore.teams.away.players
 	$awayPlayerIDnId = "ID" + $awayPitcherId
@@ -136,6 +166,10 @@ function BuildGamesData() {
 	$obj | Add-Member -MemberType NoteProperty -Name AwayTeamName -Value $awayTeam
 	$obj | Add-Member -MemberType NoteProperty -Name AwayTeamWins -Value $awayTeamW
 	$obj | Add-Member -MemberType NoteProperty -Name AwayTeamLoss -Value $awayTeamL
+	if ($gamePrePost -eq "Pre") {
+		$awayTeamWinLast = $teamFile.TeamsData | where { $_.TeamId -eq $awayTeamId } | Select -ExpandProperty LastGameWin
+		$obj | Add-Member -MemberType NoteProperty -Name AwayTeamWinLast -Value $awayTeamWinLast
+	}
 	$obj | Add-Member -MemberType NoteProperty -Name AwayPitcherId -Value $awayPitcherId
 	$obj | Add-Member -MemberType NoteProperty -Name AwayPitcherName -Value $awayPitcherName
 	$obj | Add-Member -MemberType NoteProperty -Name AwayPitcherHand -Value $awayPitcherRightLeft
@@ -146,6 +180,10 @@ function BuildGamesData() {
 	$obj | Add-Member -MemberType NoteProperty -Name HomeTeamName -Value $homeTeam
 	$obj | Add-Member -MemberType NoteProperty -Name HomeTeamWins -Value $homeTeamW
 	$obj | Add-Member -MemberType NoteProperty -Name HomeTeamLoss -Value $homeTeamL
+	if ($gamePrePost -eq "Pre") {
+		$homeTeamWinLast = $teamFile.TeamsData | where { $_.TeamId -eq $homeTeamId } | Select -ExpandProperty LastGameWin
+		$obj | Add-Member -MemberType NoteProperty -Name HomeTeamWinLast -Value $homeTeamWinLast
+	}
 	$obj | Add-Member -MemberType NoteProperty -Name HomePitcherId -Value $homePitcherId
 	$obj | Add-Member -MemberType NoteProperty -Name HomePitcherName -Value $homePitcherName
 	$obj | Add-Member -MemberType NoteProperty -Name HomePitcherHand -Value $homePitcherRightLeft

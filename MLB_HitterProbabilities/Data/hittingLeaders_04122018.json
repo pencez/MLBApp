@@ -8,7 +8,7 @@
                            "BatterHittingSide":  "Left",
                            "BatterRank":  1,
                            "BatterCurrentAverage":  ".406",
-                           "BatterCurrentBABIP":  0.542
+                           "BatterCurrentBABIP":  ".542"
                        },
                        {
                            "BatterID":  605141,
@@ -18,7 +18,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  2,
                            "BatterCurrentAverage":  ".405",
-                           "BatterCurrentBABIP":  0.417
+                           "BatterCurrentBABIP":  ".417"
                        },
                        {
                            "BatterID":  457763,
@@ -28,7 +28,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  3,
                            "BatterCurrentAverage":  ".389",
-                           "BatterCurrentBABIP":  0.387
+                           "BatterCurrentBABIP":  ".387"
                        },
                        {
                            "BatterID":  408045,
@@ -38,7 +38,7 @@
                            "BatterHittingSide":  "Left",
                            "BatterRank":  4,
                            "BatterCurrentAverage":  ".387",
-                           "BatterCurrentBABIP":  0.48
+                           "BatterCurrentBABIP":  ".48"
                        },
                        {
                            "BatterID":  518735,
@@ -48,7 +48,7 @@
                            "BatterHittingSide":  "Switch",
                            "BatterRank":  5,
                            "BatterCurrentAverage":  ".375",
-                           "BatterCurrentBABIP":  0.5
+                           "BatterCurrentBABIP":  ".5"
                        },
                        {
                            "BatterID":  593428,
@@ -58,7 +58,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  6,
                            "BatterCurrentAverage":  ".368",
-                           "BatterCurrentBABIP":  0.414
+                           "BatterCurrentBABIP":  ".414"
                        },
                        {
                            "BatterID":  656555,
@@ -68,7 +68,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  7,
                            "BatterCurrentAverage":  ".364",
-                           "BatterCurrentBABIP":  0.476
+                           "BatterCurrentBABIP":  ".476"
                        },
                        {
                            "BatterID":  544369,
@@ -78,7 +78,7 @@
                            "BatterHittingSide":  "Left",
                            "BatterRank":  8,
                            "BatterCurrentAverage":  ".359",
-                           "BatterCurrentBABIP":  0.314
+                           "BatterCurrentBABIP":  ".314"
                        },
                        {
                            "BatterID":  434670,
@@ -88,7 +88,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  9,
                            "BatterCurrentAverage":  ".357",
-                           "BatterCurrentBABIP":  0.394
+                           "BatterCurrentBABIP":  ".394"
                        },
                        {
                            "BatterID":  461314,
@@ -98,7 +98,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  10,
                            "BatterCurrentAverage":  ".355",
-                           "BatterCurrentBABIP":  0.455
+                           "BatterCurrentBABIP":  ".455"
                        },
                        {
                            "BatterID":  514888,
@@ -108,7 +108,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  11,
                            "BatterCurrentAverage":  ".353",
-                           "BatterCurrentBABIP":  0.383
+                           "BatterCurrentBABIP":  ".383"
                        },
                        {
                            "BatterID":  435062,
@@ -118,7 +118,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  12,
                            "BatterCurrentAverage":  ".350",
-                           "BatterCurrentBABIP":  0.389
+                           "BatterCurrentBABIP":  ".389"
                        },
                        {
                            "BatterID":  592178,
@@ -128,7 +128,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  13,
                            "BatterCurrentAverage":  ".348",
-                           "BatterCurrentBABIP":  0.378
+                           "BatterCurrentBABIP":  ".378"
                        },
                        {
                            "BatterID":  592450,
@@ -138,7 +138,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  13,
                            "BatterCurrentAverage":  ".348",
-                           "BatterCurrentBABIP":  0.464
+                           "BatterCurrentBABIP":  ".464"
                        },
                        {
                            "BatterID":  621020,
@@ -148,7 +148,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  13,
                            "BatterCurrentAverage":  ".348",
-                           "BatterCurrentBABIP":  0.429
+                           "BatterCurrentBABIP":  ".429"
                        },
                        {
                            "BatterID":  656305,
@@ -158,7 +158,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  16,
                            "BatterCurrentAverage":  ".347",
-                           "BatterCurrentBABIP":  0.371
+                           "BatterCurrentBABIP":  ".371"
                        },
                        {
                            "BatterID":  592743,
@@ -168,7 +168,7 @@
                            "BatterHittingSide":  "Right",
                            "BatterRank":  17,
                            "BatterCurrentAverage":  ".345",
-                           "BatterCurrentBABIP":  0.346
+                           "BatterCurrentBABIP":  ".346"
                        },
                        {
                            "BatterID":  592567,
@@ -178,7 +178,7 @@
                            "BatterHittingSide":  "Left",
                            "BatterRank":  18,
                            "BatterCurrentAverage":  ".344",
-                           "BatterCurrentBABIP":  0.385
+                           "BatterCurrentBABIP":  ".385"
                        },
                        {
                            "BatterID":  572816,
@@ -188,7 +188,7 @@
                            "BatterHittingSide":  "Left",
                            "BatterRank":  19,
                            "BatterCurrentAverage":  ".342",
-                           "BatterCurrentBABIP":  0.387
+                           "BatterCurrentBABIP":  ".387"
                        },
                        {
                            "BatterID":  452678,
@@ -198,7 +198,7 @@
                            "BatterHittingSide":  "Switch",
                            "BatterRank":  20,
                            "BatterCurrentAverage":  ".333",
-                           "BatterCurrentBABIP":  0.333
+                           "BatterCurrentBABIP":  ".333"
                        }
                    ]
 }

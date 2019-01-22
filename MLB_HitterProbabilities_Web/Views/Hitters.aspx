@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h6>Select Date:</h6>
-                    <input type="text" id="gameDate" name="date" placeholder="MM/DD/YYYY" />
+                    <input type="text" autocomplete="off" id="gameDate" name="date" placeholder="MM/DD/YYYY" />
                 </div>
             </div>
             <div class="row">
@@ -63,6 +63,10 @@
                                 <th>AVG Day</th>
                                 <th>AVG Time</th>
                                 <th>AVG PHand</th>
+                                <th>If Team W AVG/BABIP</th>
+                                <th>If Team L AVG/BABIP</th>
+                                <th>After W AVG/BABIP</th>
+                                <th>After L AVG/BABIP</th>
                                 <th>Yesterday AVG/BABIP</th>
                                 <th>Last Week AVG/BABIP</th>
                                 <th>Last 2 Wks AVG/BABIP</th>
