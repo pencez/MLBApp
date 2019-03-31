@@ -31,7 +31,7 @@
                     bAvgHA = "", bBabipHA = "", bAvgDW = "", bBabipDW = "", bAvgMon = "", bBabipMon = "", bAvgDN = "", bBabipDN = "", bAvgH = "", bBabipH = "",
                     bAvgGr = "", bBabipGr = "", bAvgTu = "", bBabipTu = "", bAvgITW = "", bBabipITW = "", bAvgITL = "", bBabipITL = "", bAvgATW = "", bBabipATW = "",
                     bAvgATL = "", bBabipATL = "", bAvg1H = "", bBabip1H = "", bAvg2H = "", bBabip2H = "", venueAdvB = "", venueAdvP = "",
-                    rAB = "", rH = "", aYdy = "", bYdy = "", aLWk = "", bLWk = "", aL14 = "", bL14 = "";
+                    rAB = "", rH = "", aYdy = "", bYdy = "", aL3D = "", bL3D = "", aL5D = "", bL5D = "", aL7D = "", bL7D = "", aL10D = "", bL10D = "", aL14D = "", bL14D = "";
                 var myTableRows = "";
                 var favorable = "background-color:#dff0d8";
                 var mediocre = "background-color:#fcf8e3";
@@ -107,8 +107,16 @@
                         if (key == "BABIPYesterday") { bYdy = val; }
                         if (key == "AVGLastWk") { aLWk = val; }
                         if (key == "BABIPLastWk") { bLWk = val; }
-                        if (key == "AVG14Days") { aL14 = val; }
-                        if (key == "BABIP14Days") { bL14 = val; }
+                        if (key == "AVG3Days") { aL3D = val; }
+                        if (key == "BABIP3Days") { bL3D = val; }
+                        if (key == "AVG5Days") { aL5D = val; }
+                        if (key == "BABIP5Days") { bL5D = val; }
+                        if (key == "AVG7Days") { aL7D = val; }
+                        if (key == "BABIP7Days") { bL7D = val; }
+                        if (key == "AVG10Days") { aL10D = val; }
+                        if (key == "BABIP10Days") { bL10D = val; }
+                        if (key == "AVG14Days") { aL14D = val; }
+                        if (key == "BABIP14Days") { bL14D = val; }
 
                     });
 
@@ -199,6 +207,11 @@
                         if (bAvg2H >= .300) { var bAvg2HCC = favorable; hitProb = hitProb + .05; } else { var bAvg2HCC = warning; hitProb = hitProb - .1; }
                         if (bBabip2H >= .300) { var bBabip2HCC = favorable; hitProb = hitProb + .05; } else { var bBabip2HCC = warning; hitProb = hitProb - .1; }
                     }
+                    if (bLGWL == "True") {
+                        bLGWL = "Win";
+                    } else {
+                        bLGWL = "Loss";
+                    }
                     
                     if (bAvgITW >= .300) { var bAvgITWCC = favorable; hitProb = hitProb + .05; } else { var bAvgITWCC = warning; hitProb = hitProb - .1; }
                     if (bBabipITW >= .300) { var bBabipITWCC = favorable; hitProb = hitProb + .05; } else { var bBabipITWCC = warning; hitProb = hitProb - .1; }
@@ -210,19 +223,24 @@
                     if (bBabipATL >= .300) { var bBabipATLCC = favorable; hitProb = hitProb + .05; } else { var bBabipATLCC = warning; hitProb = hitProb - .1; }
 
                     if (aYdy == 1.000) { var hitsP0 = warning; hitProb = hitProb - .2; }
-                    if (bYdy == .000 && bYdy < cBabip) { var hitsP0 = favorable; hitProb = hitProb + .05; } else { var hitsP0 = warning; }
-                    if (bLWk >= .190 && bLWk < cBabip) { var hitsP1 = favorable; hitProb = hitProb + .35; } else { var hitsP1 = warning; hitProb = hitProb - .2; }
-                    if (bL14 >= .200 && bL14 < cBabip) { var hitsP2 = favorable; hitProb = hitProb + .05; } else { var hitsP2 = warning; hitProb = hitProb - .1; }
+                    if (aYdy == .000 && bYdy < cBabip) { var hitsP0 = favorable; hitProb = hitProb + .05; } else { var hitsP0 = warning; }
+                    if (aL3D >= .250 && bL3D < cBabip) { var hitsP3 = favorable; hitProb = hitProb + .35; } else { var hitsP3 = warning; hitProb = hitProb - .2; }
+                    if (aL5D >= .220 && bL5D < cBabip) { var hitsP5 = favorable; hitProb = hitProb + .35; } else { var hitsP5 = warning; hitProb = hitProb - .2; }
+                    if (aL7D >= .200 && bL7D < cBabip) { var hitsP7 = favorable; hitProb = hitProb + .35; } else { var hitsP7 = warning; hitProb = hitProb - .2; }
+                    if (aL10D >= .200 && bL10D < cBabip) { var hitsP10 = favorable; hitProb = hitProb + .35; } else { var hitsP10 = warning; hitProb = hitProb - .2; }
+                    if (aL14D >= .200 && bL14D < cBabip) { var hitsP14 = favorable; hitProb = hitProb + .05; } else { var hitsP14 = warning; hitProb = hitProb - .1; }
 
                     myNewRow = "<td>" + bName + " (" + bSide + ")</td><td>" + bTeam + "</td><td style='" + bTWLCC + "'>" + bTeamW + "-" + bTeamL + "</td><td>" + bAvg + "/" + bBabip + "</td><td>" + cAvg + "/" + cBabip + "</td>" +
                         "<td style='" + haCC + "'>" + ha + "</td><td>" + gDayWk + " - " + gTime + gAMPM + "</td><td>" + gDN + "</td>" +
                         "<td>" + pTeam + "</td><td style='" + pTWLCC + "'>" + pTeamW + "-" + pTeamL + "</td>" +
                         "<td>" + pName + " (" + pHand + ")</td><td style='" + pWLCC + "'>" + pWins + "-" + pLoss + "</td><td style='" + pEraCC + "'>" + pEra + "</td>" +
                         "<td style='" + bBabipHACC + "'>" + bAvgHA + "/" + bBabipHA + "</td><td style='" + bBabipDWCC + "'>" + bAvgDW + "/" + bBabipDW + "</td>" +
-                        "<td style='" + bBabipDNCC + "'>" + bAvgDN + "/" + bBabipDN + "</td><td style='" + bBabipHCC + "'>" + bAvgH + "/" + bBabipH + "</td><td>" + bLGWL + "</td>" +
+                        "<td style='" + bBabipDNCC + "'>" + bAvgDN + "/" + bBabipDN + "</td><td style='" + bBabipHCC + "'>" + bAvgH + "/" + bBabipH + "</td>" +
                         "<td style='" + bBabipITWCC + "'>" + bAvgITW + "/" + bBabipITW + "</td><td style='" + bBabipITLCC + "'>" + bAvgITL + "/" + bBabipITL + "</td>" +
-                        "<td style='" + bBabipATWCC + "'>" + bAvgATW + "/" + bBabipATW + "</td><td style='" + bBabipATLCC + "'>" + bAvgATL + "/" + bBabipATL + "</td>" +
-                        "<td style='" + hitsP0 + "'>" + aYdy + "/" + bYdy + "</td><td style='" + hitsP1 + "'>" + aLWk + "/" + bLWk + "</td><td style='" + hitsP2 + "'>" + aL14 + "/" + bL14 + "</td>" +
+                        "<td style='" + bBabipATWCC + "'>" + bAvgATW + "/" + bBabipATW + "</td><td style='" + bBabipATLCC + "'>" + bAvgATL + "/" + bBabipATL + "</td><td>" + bLGWL + "</td>" +
+                        "<td style='" + hitsP0 + "'>" + aYdy + "/" + bYdy + "</td><td style='" + hitsP3 + "'>" + aL3D + "/" + bL3D + "</td>" +
+                        "<td style='" + hitsP5 + "'>" + aL5D + "/" + bL5D + "</td><td style='" + hitsP7 + "'>" + aL7D + "/" + bL7D + "</td>" +
+                        "<td style='" + hitsP10 + "'>" + aL10D + "/" + bL10D + "</td><td style='" + hitsP14 + "'>" + aL14D + "/" + bL14D + "</td>" +
                         "<td>" + hitProb.toFixed(2) + "</td><td style='color:black;'> " + rH + " - " + rAB + "</td>";
                     myTableRows = myTableRows + "<tr>" + myNewRow + "</tr>"
                 });

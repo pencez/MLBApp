@@ -40,6 +40,52 @@ function GetGameInfo($gameType, $date) {
 	}
 }
 
+function updateTeamRecords($gameType, $date) {	
+	# load the team file
+	$teamFile = Get-Content -Raw -Path "$($basePath)\Data\teamInfo.json" | Out-String | ConvertFrom-Json
+	$currentDay = [datetime]::parseexact($date, 'MM/dd/yyyy', $null)
+	$yesterdayDate = $currentDay.AddDays(-$(1)).ToString("MM/dd/yyyy")
+	$theUri = "https://statsapi.mlb.com/api/v1/schedule?sportId=1&gameType=$($gameType)&date=$($yesterdayDate)"
+	$theFields = "dates"
+	$getGames = GetApiData $theUri $theFields
+	
+	LogWrite "Updating Team records..."
+	
+	$theGameData = @()
+	foreach($yesterdayDate in $getGames) {
+		$gameDate = $yesterdayDate.date
+		$dateStamp = $gameDate.replace('-','')
+		foreach($game in $yesterdayDate.games) {
+			$gamePk = $game.gamePk
+			# get game status to see if "F" Final then we track the team results
+			$gameStatus = $game | where { $_.gamePk -eq $gamePk } | Select-Object -Property @{ Name="codedGameState"; Expression={$game.status.codedGameState}} | Select -ExpandProperty codedGameState
+			if ($gameStatus -eq "F") {				
+				# find and update content
+				$gameAwayTmId = $game.teams.away.team.id
+				$gameAwayTmNm = $game.teams.away.team.name
+				$gameAwayTmWs = $game.teams.away.leagueRecord.wins
+				$gameAwayTmLs = $game.teams.away.leagueRecord.losses
+				$gameAwayWinTF = $game.teams.away.isWinner
+				$gameHomeTmId = $game.teams.home.team.id
+				$gameHomeTmNm = $game.teams.home.team.name
+				$gameHomeTmWs = $game.teams.home.leagueRecord.wins
+				$gameHomeTmLs = $game.teams.home.leagueRecord.losses
+				$gameHomeWinTF = $game.teams.home.isWinner
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameAwayTmId) { $_.TeamWins = "$($gameAwayTmWs)" } }				
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameAwayTmId) { $_.TeamLoss = "$($gameAwayTmLs)" } }
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameAwayTmId) { $_.LastGameWin = "$($gameAwayWinTF)" } }
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameHomeTmId) { $_.TeamWins = "$($gameHomeTmWs)" } }
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameHomeTmId) { $_.TeamLoss = "$($gameHomeTmLs)" } }
+				$teamFile.TeamsData | % { if ($_.TeamId -eq $gameHomeTmId) { $_.LastGameWin = "$($gameHomeWinTF)" } }
+			}
+		}
+		# save the updated team file with game results W/L
+		$teamFile | ConvertTo-Json  | Set-Content "$($basePath)\Data\teamInfo.json"
+
+		LogWrite "Team records updated!"
+	}
+}
+
 function GetGameResults($gameType, $date) {
 	$gamePrePost = "Post"
 	$teamFile = Get-Content -Raw -Path "$($basePath)\Data\teamInfo.json" | Out-String | ConvertFrom-Json
@@ -105,45 +151,56 @@ function GetGameDetails($feedUri) {
 	$getLiveData = GetApiData $feedUri $theFields
 		
 	$gameDayofWk = (Get-Date $theDay -UFormat %a).ToUpper()
-	$gameTime = $getGameData.datetime.home.time
-	$gameAmPm = $getGameData.datetime.home.ampm
+	$gameTime = $getGameData.datetime.time
+	$gameAmPm = $getGameData.datetime.ampm
 	$gameDayNight = $getGameData.datetime.dayNight
-	$gameTimeZone = $getGameData.datetime.home.timeZone
+	$gameTimeZone = $getGameData.venue.timeZone.tz
 	$weatherCond = $getGameData.weather.condition
 	$weatherTemp = $getGameData.weather.temp
 	$weatherWind = $getGameData.weather.wind
-	$venueCity = $getGameData.venue.location
+	$venueCity = $getGameData.venue.location.city
 	$venueSite = $getGameData.venue.name
 	
 	#away team details
-	$awayTeamId = $getGameData.teams.away.teamID
-	$awayTeam = $getGameData.teams.away.name.full
+	$awayTeamId = $getGameData.teams.away.id
+	$awayTeam = $getGameData.teams.away.name
 	$awayTeamW = $getGameData.teams.away.record.wins
 	$awayTeamL = $getGameData.teams.away.record.losses
-	$awayPitcherId = $getLiveData.boxscore.teams.away.pitchers[0]
+	$awayPitcherId = $getGameData.probablePitchers.away.id
+	$awayPitcherName = $getGameData.probablePitchers.away.fullName
 	$awayPlayerPath = $getLiveData.boxscore.teams.away.players
 	$awayPlayerIDnId = "ID" + $awayPitcherId
 	$awayPlayerById = $awayPlayerPath.$awayPlayerIDnId
-	$awayPitcherName = $awayPlayerById.name.first + " " + $awayPlayerById.name.last
-	$awayPitcherRightLeft = $awayPlayerById.rightLeft
 	$awayPitcherWins = $awayPlayerById.seasonStats.pitching.wins
 	$awayPitcherLoss = $awayPlayerById.seasonStats.pitching.losses
 	$awayPitcherEra = $awayPlayerById.seasonStats.pitching.era
+	$theFields = "people"
+	if ($awayPitcherId.length -ne 6) {
+		$feedUri = "https://statsapi.mlb.com/api/v1/people/$($awayPitcherId)"
+		$getAwayPitcher = GetApiData $feedUri $theFields
+	}	
+	$awayPitcherRightLeft = $getAwayPitcher.pitchHand.code
 	
 	#home team details
-	$homeTeamId = $getGameData.teams.home.teamID
-	$homeTeam = $getGameData.teams.home.name.full
+	$homeTeamId = $getGameData.teams.home.id
+	$homeTeam = $getGameData.teams.home.name
 	$homeTeamW = $getGameData.teams.home.record.wins
 	$homeTeamL = $getGameData.teams.home.record.losses
-	$homePitcherId = $getLiveData.boxscore.teams.home.pitchers[0]
+	$homePitcherId = $getGameData.probablePitchers.home.id
+	$homePitcherName = $getGameData.probablePitchers.home.fullName
 	$homePlayerPath = $getLiveData.boxscore.teams.home.players
 	$homePlayerIDnId = "ID" + $homePitcherId
 	$homePlayerById = $homePlayerPath.$homePlayerIDnId
-	$homePitcherName = $homePlayerById.name.first + " " + $homePlayerById.name.last
-	$homePitcherRightLeft = $homePlayerById.rightLeft
 	$homePitcherWins = $homePlayerById.seasonStats.pitching.wins
 	$homePitcherLoss = $homePlayerById.seasonStats.pitching.losses
 	$homePitcherEra = $homePlayerById.seasonStats.pitching.era
+	$theFields = "people"
+	if ($homePitcherId) {
+		$feedUri = "https://statsapi.mlb.com/api/v1/people/$($homePitcherId)"
+		$getHomePitcher = GetApiData $feedUri $theFields
+	}
+	$homePitcherRightLeft = $getHomePitcher.pitchHand.code	
+
 	
 	return BuildGamesData
 }

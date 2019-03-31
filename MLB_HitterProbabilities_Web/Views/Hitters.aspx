@@ -42,36 +42,43 @@
                     <table class="table-bordered table-hover table-responsive-sm" id="tbl_HitterData">
                         <thead>
                             <tr>
-                                <th colspan="7">Hitter and Game Info</th>
-                                <th colspan="6">Opposing Team & Pitcher</th>
-                                <th colspan="10">Hitter Stats</th>
+                                <th colspan="8">Hitter and Game Info</th>
+                                <th colspan="5">Opposing Team & Pitcher</th>
+                                <th colspan="8">Hitter Stats</th>
+                                <th colspan="6">Recent Stats</th>
                             </tr>
                             <tr>
                                 <th>Name</th>
                                 <th>Team</th>
-                                <th>AVG</th>
-                                <th>Career AVG/BABIP</th>
+                                <th>Team W-L</th>
+                                <th>AVG/BABIP</th>
+                                <th>Career</th>
                                 <th>Location</th>
-                                <th>Date</th>
+                                <th>GameDay Info</th>
                                 <th>Day/Nite</th>
-                                <th>Team</th>
-                                <th>Win-Loss</th>
-                                <th>Name</th>
-                                <th>Win-Loss</th>
-                                <th>ERA</th>
+                                <th>P Team</th>
+                                <th>P Team W-L</th>
+                                <th>P Name</th>
+                                <th>P Win-Loss</th>
+                                <th>P ERA</th>
                                 <th>AVG H/A</th>
                                 <th>AVG Day</th>
                                 <th>AVG Time</th>
                                 <th>AVG PHand</th>
-                                <th>If Team W AVG/BABIP</th>
-                                <th>If Team L AVG/BABIP</th>
-                                <th>After W AVG/BABIP</th>
-                                <th>After L AVG/BABIP</th>
-                                <th>Yesterday AVG/BABIP</th>
-                                <th>Last Week AVG/BABIP</th>
-                                <th>Last 2 Wks AVG/BABIP</th>
+                                <th>If Team Wins</th>
+                                <th>If Team Loses</th>
+                                <th>After Win</th>
+                                <th>After Loss</th>
+                                <th>Last Result</th>
+                                <th>Yesterday</th>
+                                <th>Last 3 Days</th>
+                                <th>Last 5 Days</th>
+                                <th>Last 7 Days</th>
+                                <th>Last 10 Days</th>
+                                <th>Last 14 Days</th>
                                 <th>Hit Prob</th>
                                 <th>Results</th>
+                                <%--<th>Results</th>--%>
                             </tr>
                         </thead>
                         <tbody id="tbody_HitterData">

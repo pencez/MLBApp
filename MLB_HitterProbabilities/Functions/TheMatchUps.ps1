@@ -273,15 +273,24 @@ function BuildMatchupsData() {
 	$hitAdvCntr = advantageCounter
 	$obj | Add-Member -MemberType NoteProperty -Name HitAdvantage -Value $hitAdvCntr
 	
-	$statsLastDy = getRecentAvg 1
-	$obj | Add-Member -MemberType NoteProperty -Name AVGYesterday -Value $statsLastDy[0]
-	$obj | Add-Member -MemberType NoteProperty -Name BABIPYesterday -Value $statsLastDy[1].toString(".###")
-	$statsLastWk = getRecentAvg 7
-	$obj | Add-Member -MemberType NoteProperty -Name AVGLastWk -Value $statsLastWk[0]
-	$obj | Add-Member -MemberType NoteProperty -Name BABIPLastWk -Value $statsLastWk[1].toString(".###")
-	$statsL2Wks = getRecentAvg 14
-	$obj | Add-Member -MemberType NoteProperty -Name AVG14Days -Value $statsL2Wks[0]
-	$obj | Add-Member -MemberType NoteProperty -Name BABIP14Days -Value $statsL2Wks[1].toString(".###")
+	$statsLast1D = getRecentAvg 1
+	$obj | Add-Member -MemberType NoteProperty -Name AVGYesterday -Value $statsLast1D[0]
+	$obj | Add-Member -MemberType NoteProperty -Name BABIPYesterday -Value $statsLast1D[1].toString(".###")
+	$statsLast3D = getRecentAvg 3
+	$obj | Add-Member -MemberType NoteProperty -Name AVG3Days -Value $statsLast3D[0]
+	$obj | Add-Member -MemberType NoteProperty -Name BABIP3Days -Value $statsLast3D[1].toString(".###")
+	$statsLast5D = getRecentAvg 5
+	$obj | Add-Member -MemberType NoteProperty -Name AVG5Days -Value $statsLast5D[0]
+	$obj | Add-Member -MemberType NoteProperty -Name BABIP5Days -Value $statsLast5D[1].toString(".###")
+	$statsLast7D = getRecentAvg 7
+	$obj | Add-Member -MemberType NoteProperty -Name AVG7Days -Value $statsLast7D[0]
+	$obj | Add-Member -MemberType NoteProperty -Name BABIP7Days -Value $statsLast7D[1].toString(".###")
+	$statsLast10D = getRecentAvg 10
+	$obj | Add-Member -MemberType NoteProperty -Name AVG10Days -Value $statsLast10D[0]
+	$obj | Add-Member -MemberType NoteProperty -Name BABIP10Days -Value $statsLast10D[1].toString(".###")
+	$statsLast14D = getRecentAvg 14
+	$obj | Add-Member -MemberType NoteProperty -Name AVG14Days -Value $statsLast14D[0]
+	$obj | Add-Member -MemberType NoteProperty -Name BABIP14Days -Value $statsLast14D[1].toString(".###")
 
 	if ($includeResultsYN -eq "Yes") {
 		$obj | Add-Member -MemberType NoteProperty -Name BatterResultAtBats -Value $resultAtBats
