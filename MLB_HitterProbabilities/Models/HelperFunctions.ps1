@@ -5,7 +5,7 @@
 Function LogWrite
 {
    Param ([string]$logstring)
-   #Add-content $logFile -value $logstring
+   Add-content $logFile -value $logstring
    Write-Host $logstring
 }
 

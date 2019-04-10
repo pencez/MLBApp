@@ -2,9 +2,10 @@
 # FileFunctions.ps1
 #
 
-function WriteToJsonFile($basePath, $fileName, $theData) {
+function WriteToJsonFile($filePath, $fileName, $theData) {
 	# Save results to a json file
-	$jsonFile = "$($basePath)\Data\$($fileName).json"
+
+	$jsonFile = "$($filePath)\$($fileName).json"
 	$theData | ConvertTo-Json | Set-Content $jsonFile
 
 	return "success"

@@ -28,6 +28,22 @@ function buildHitterDetailsObjectTesting($getTopHitters, $testing) {
 			$batterDebut = $getTopHitters.splits[$z].player.mlbDebutDate
 			$batterTeamID = $getTopHitters.splits[$z].team.id
 			$batterTeamName = $getTopHitters.splits[$z].team.name	
+			
+			$batterSide = $getTopHitters.splits[$z].player.batSide.code
+			$batterRank = $getTopHitters.splits[$z].rank
+			$batterAverage = $getTopHitters.splits[$z].stat.avg			
+			$batterHits = $getTopHitters.splits[$z].stat.hits
+			$batterHRs = $getTopHitters.splits[$z].stat.homeRuns
+			$batterABs = $getTopHitters.splits[$z].stat.atBats
+			$batterKs = $getTopHitters.splits[$z].stat.strikeOuts
+			$batterSFs = $getTopHitters.splits[$z].stat.sacFlies
+			if ( ($batterHits - $batterHRs) -eq 0 -or ($batterABs - $batterHRs - $batterKs + $batterSFs) -eq 0) {
+				$batterBABIP = ".000"
+			} else {
+				$batterBABIP = [math]::round( $(($batterHits - $batterHRs)/($batterABs - $batterHRs - $batterKs + $batterSFs)) ,3).toString(".###")
+				if ($batterBABIP -eq "1") { $batterBABIP = "1.000" }
+			}
+
 			$batterCareerAvg = $getTopHitters.splits[$z].player.stats[0].splits[0].stat.avg
 			$batterCareerBabip = $getTopHitters.splits[$z].player.stats[0].splits[0].stat.babip
 			
@@ -130,8 +146,8 @@ function buildHitterDetailsObjectTesting($getTopHitters, $testing) {
 					$tempBatterAvg = [math]::round( [int](Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly) / [int](Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly) ,3).toString(".000")
 					$tempBatterBabip = [math]::round( $(([int](Get-Variable -Name "batterTotalHits$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly))/([int](Get-Variable -Name "batterTotalAtBats$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalHomeRuns$sitDesc" -ValueOnly) - [int](Get-Variable -Name "batterTotalStrikeOuts$sitDesc" -ValueOnly) + [int](Get-Variable -Name "batterTotalSacFlies$sitDesc" -ValueOnly))) ,3).toString(".000")
 				} else {
-					$tempBatterAvg = "???"
-					$tempBatterBabip = "???"				
+					$tempBatterAvg = ".000"
+					$tempBatterBabip = ".000"				
 				}
 				Set-Variable -Name "batterAvg$sitDesc" -Value $tempBatterAvg			
 				Set-Variable -Name "batterBabip$sitDesc" -Value $tempBatterBabip
@@ -339,7 +355,7 @@ function buildHitterObject($getTopHitters, $testing) {
 			$batterName = $getTopHitters.splits[$z].player.fullname
 			$batterTeamID = $getTopHitters.splits[$z].team.id
 			$batterTeamName = $getTopHitters.splits[$z].team.name
-			$batterSide = $getTopHitters.splits[$z].player.batSide.description
+			$batterSide = $getTopHitters.splits[$z].player.batSide.code
 			$batterRank = $getTopHitters.splits[$z].rank
 			$batterAverage = $getTopHitters.splits[$z].stat.avg			
 			$batterHits = $getTopHitters.splits[$z].stat.hits
@@ -451,10 +467,10 @@ function GetTopAvgHittersTesting($limit, $lastSeason, $gameType, $seasonStartDat
 	#>
 
 	$theTopHittersDetails = @()
-	$theTopHittersDetails = buildHitterDetailsObject $getTopHitters "Testing"
+	$theTopHittersDetails = buildHitterDetailsObjectTesting $getTopHitters "Testing"
 	$theFilename = "hittingLeaders_Details"	
 
-	$hitterDetailsJson = Get-Content -Raw -Path "$($basePath)\Data\$($theFilename).json" | Out-String | ConvertFrom-Json
+	$hitterDetailsJson = Get-Content -Raw -Path "$($basePath)\Data\Test\$($theFilename).json" | Out-String | ConvertFrom-Json
 	$theExistingData = $hitterDetailsJson.TopHitterDetails		
 	$theAppendedTopHittersData = $theExistingData + $theTopHittersDetails
 	$theTopHittersDetailsObj = @()
@@ -462,7 +478,7 @@ function GetTopAvgHittersTesting($limit, $lastSeason, $gameType, $seasonStartDat
 	$theRootObj | Add-Member -Type NoteProperty -Name TopHitterDetails -Value $theAppendedTopHittersData
 	$theTopHittersDetailsObj += $theRootObj
 		
-	$test = WriteToJsonFile $basePath $theFilename $theTopHittersDetailsObj
+	$test = WriteToJsonFile "$($basePath)\Data\Test" $theFilename $theTopHittersDetailsObj
 	LogWrite "File $($theFilename) was updated!"
 	
 		
@@ -474,7 +490,7 @@ function GetTopAvgHittersTesting($limit, $lastSeason, $gameType, $seasonStartDat
 	$theRootObj | Add-Member -MemberType NoteProperty -Name TopHitters -Value $theTopHittersDaily
 	$theTopHittersObj += $theRootObj
 	
-	$test = WriteToJsonFile $basePath $theFilename $theTopHittersObj
+	$test = WriteToJsonFile "$($basePath)\Data\Test" $theFilename $theTopHittersObj
 	LogWrite "File $($theFilename) was created!"
 
 	return "Done"
@@ -501,7 +517,7 @@ function GetTopAvgHitters($limit, $season, $gameType) {
 	$theRootObj | Add-Member -Type NoteProperty -Name TopHitterDetails -Value $theAppendedTopHittersData
 	$theTopHittersDetailsObj += $theRootObj
 		
-	$test = WriteToJsonFile $basePath $theFilename $theTopHittersDetailsObj
+	$test = WriteToJsonFile "$($basePath)\Data" $theFilename $theTopHittersDetailsObj
 	LogWrite "File $($theFilename) was updated!"
 	
 		
@@ -513,7 +529,7 @@ function GetTopAvgHitters($limit, $season, $gameType) {
 	$theRootObj | Add-Member -MemberType NoteProperty -Name TopHitters -Value $theTopHittersDaily
 	$theTopHittersObj += $theRootObj
 	
-	$test = WriteToJsonFile $basePath $theFilename $theTopHittersObj
+	$test = WriteToJsonFile "$($basePath)\Data" $theFilename $theTopHittersObj
 	LogWrite "File $($theFilename) was created!"
 
 

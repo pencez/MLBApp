@@ -4,10 +4,15 @@
 
 Function getMatchupData($includeResultsYN) {
 	#get thehitters from file
-	$theHitters = Get-Content -Raw -Path "$($basePath)\Data\hittingLeaders_$($theDay.Replace('/','')).json" | Out-String | ConvertFrom-Json
-	$theHittersDetails = Get-Content -Raw -Path "$($basePath)\Data\hittingLeaders_Details.json" | Out-String | ConvertFrom-Json
-	$theGameInfo = Get-Content -Raw -Path "$($basePath)\Data\pregame_$($theDay.Replace('/','')).json" | Out-String | ConvertFrom-Json
-	$theTeamFile = Get-Content -Raw -Path "$($basePath)\Data\teamInfo.json" | Out-String | ConvertFrom-Json
+	if ($testing -eq 1) {
+		$matchupFilePath = "$($basePath)\Data\Test"
+	} else {
+		$matchupFilePath = "$($basePath)\Data"
+	}
+	$theHitters = Get-Content -Raw -Path "$($matchupFilePath)\hittingLeaders_$($theDay.Replace('/','')).json" | Out-String | ConvertFrom-Json
+	$theHittersDetails = Get-Content -Raw -Path "$($matchupFilePath)\hittingLeaders_Details.json" | Out-String | ConvertFrom-Json
+	$theGameInfo = Get-Content -Raw -Path "$($matchupFilePath)\pregame_$($theDay.Replace('/','')).json" | Out-String | ConvertFrom-Json
+	$theTeamFile = Get-Content -Raw -Path "$($matchupFilePath)\teamInfo.json" | Out-String | ConvertFrom-Json
 	
 	LogWrite "Getting matchups_$($theDay.Replace('/','')) file started..."
 
@@ -36,10 +41,21 @@ Function getMatchupData($includeResultsYN) {
 					}
 
 		$theGamePk = $theGameInfo.GameInfo | where { $_.HomeTeamId -eq $theTeam } | Select -ExpandProperty GamePk
+		
+		# QUESTION - How do we want to handle Double-Headers since 2 gamepk ids will be found
+				#initially we'll get just GAME 1
+				if ($theGamePk -is [Array]) {
+					$theGamePk = $theGamePk[0]
+				}
+		
 		if ($theGamePk) {
 			$homeAway = "Home"
 		} else {
 			$theGamePk = $theGameInfo.GameInfo | where { $_.AwayTeamId -eq $theTeam } | Select -ExpandProperty GamePk
+				if ($theGamePk -is [Array]) {
+					# double-header - just get GAME 1
+					$theGamePk = $theGamePk[0]
+				}
 			if ($theGamePk) {
 				$homeAway = "Away"
 			} else {
@@ -200,7 +216,7 @@ Function getMatchupData($includeResultsYN) {
 	$theRootObj| Add-Member -MemberType NoteProperty -Name MatchupInfo -Value $theMatchupData
 	$theMatchupInfo += $theRootObj
 
-	WriteToJsonFile $basePath "matchups_$($theDay.Replace('/',''))" $theMatchupInfo
+	WriteToJsonFile "$($matchupFilePath)\" "matchups_$($theDay.Replace('/',''))" $theMatchupInfo
 	LogWrite "File matchups_$($theDay.Replace('/','')) was created!"
 
 	# Temporary return to CSV format for excel

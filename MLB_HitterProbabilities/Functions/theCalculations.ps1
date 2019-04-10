@@ -28,7 +28,8 @@ function advantageCounter() {
 function getRecentAvg ($timeFrame) {	
 	$frameStartDate = [datetime]::parseexact($theDay, 'MM/dd/yyyy', $null)
 	$frameStartDate = $frameStartDate.AddDays(-$($timeFrame)).ToString("MM/dd/yyyy")
-	$theUri = "https://statsapi.mlb.com/api/v1/people/$($theBatId)/stats?stats=byDateRange&group=hitting&gameType=$($gameType)&startDate=$($frameStartDate)&endDate=$($seasonCurrDate)"
+	#$theUri = "https://statsapi.mlb.com/api/v1/people/$($theBatId)/stats?stats=byDateRange&group=hitting&gameType=$($gameType)&startDate=$($frameStartDate)&endDate=$($seasonCurrDate)"
+	$theUri = "https://statsapi.mlb.com/api/v1/people/$($theBatId)/stats?stats=byDateRange&group=hitting&gameType=$($gameType)&startDate=$($frameStartDate)&endDate=$($theDay)"
 	$theFields = "stats"
 	$getRecentStats = GetApiData $theUri $theFields
 	
