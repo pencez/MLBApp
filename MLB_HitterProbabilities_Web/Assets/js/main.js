@@ -5,12 +5,63 @@
     var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
     var options = {
         format: 'mm/dd/yyyy',
-        startDate: '-1y',
+        startDate: '-2y',
         container: container,
         todayHighlight: true,
         autoclose: true
     };
     date_input.datepicker(options);
+
+    // This is to copy the results
+    $('#copyTableData').on("click", function () {
+
+
+        var el = document.getElementById('tbl_HitterData');
+        var body = document.body, range, sel;
+        if (document.createRange && window.getSelection) {
+            range = document.createRange();
+            sel = window.getSelection();
+            sel.removeAllRanges();
+            try {
+                range.selectNodeContents(el);
+                sel.addRange(range);
+            } catch (e) {
+                range.selectNode(el);
+                sel.addRange(range);
+            }
+        } else if (body.createTextRange) {
+            range = body.createTextRange();
+            range.moveToElementText(el);
+            range.select();
+        }
+
+        /*
+        //get the table data
+        var jsonTable = JSON.parse(getTableData());
+        var theExcelData = "";
+        //manipulate json so it is Excel ready
+        for (var i = 0; i < jsonTable.length; i++) {
+            //var rowNo = jsonTable[i].rowNo;
+            var busObjSub = jsonTable[i].busObjSub;
+            var description = jsonTable[i].description;
+            var sub = jsonTable[i].sub;
+            var subType = jsonTable[i].subType;
+            var amount = jsonTable[i].amount;
+            if (subType == null) { subType = ""; }
+            theExcelData = theExcelData + busObjSub + "\t" + description + "\t" + sub + "\t" + subType + "\t" + amount + "\n";
+        }
+        */
+        var xl = document.getElementById('excelDataBlob');
+        xl.value = sel;
+        //remove first line since it's blank
+        var newText = $('#excelDataBlob').val().replace(/^.*\n/g, "");
+        $('#excelDataBlob').val(newText);
+        //now select the data
+        xl.select();
+        //save array to clipboard
+        document.execCommand("copy");
+        alert("The table data is ready to paste to Excel.");
+    });
 
 
 
@@ -101,7 +152,9 @@
                         if (key == "BatterBabip2ndHalfSeason") { bBabip2H = val; }
 
                         if (key == "BatterResultAtBats") { rAB = val; }
+                            if (rAB == null) { rAB = 0; }
                         if (key == "BatterResultHits") { rH = val; }
+                            if (rH == null) { rH = 0; }
                         if (key == "HitAdvantage") { hAdv = val; }
                         if (key == "AVGYesterday") { aYdy = val; }
                         if (key == "BABIPYesterday") { bYdy = val; }
@@ -248,7 +301,11 @@
 
                     
 
-                    myNewRow = "<td>" + bName + " (" + bSide + ")</td><td>" + bTeam + "</td><td style='" + bTWLCC + "'>" + bTeamW + "-" + bTeamL + "</td><td>" + bAvg + "/" + bBabip + "</td><td>" + cAvg + "/" + cBabip + "</td>" +
+                    myNewRow = "<td>" + bName + " (" + bSide + ")</td>" +
+                        "<td>" + bTeam + "</td>" +
+                        "<td style='" + bTWLCC + "'>" + bTeamW + "-" + bTeamL + "</td>" +
+                        "<td>" + bAvg + "/" + bBabip + "</td>" +
+                        "<td>" + cAvg + "/" + cBabip + "</td>" +
                         "<td style='" + haCC + "'>" + ha + "</td><td>" + gDayWk + " - " + gTime + gAMPM + "</td><td>" + gDN + "</td>" +
                         "<td>" + pTeam + "</td><td style='" + pTWLCC + "'>" + pTeamW + "-" + pTeamL + "</td>" +
                         "<td>" + pName + " (" + pHand + ")</td><td style='" + pWLCC + "'>" + pWins + "-" + pLoss + "</td><td style='" + pEraCC + "'>" + pEra + "</td>" +
@@ -259,16 +316,19 @@
                         "<td style='" + hitsP0 + "'>" + aYdy + "/" + bYdy + "</td><td style='" + hitsP3 + "'>" + aL3D + "/" + bL3D + "</td>" +
                         "<td style='" + hitsP5 + "'>" + aL5D + "/" + bL5D + "</td><td style='" + hitsP7 + "'>" + aL7D + "/" + bL7D + "</td>" +
                         "<td style='" + hitsP10 + "'>" + aL10D + "/" + bL10D + "</td><td style='" + hitsP14 + "'>" + aL14D + "/" + bL14D + "</td>" +
-                        "<td>" + hitProb.toFixed(2) + "</td><td>" + zHit + "</td>";
-                        //"<td style='color:black;'> " + rH + " - " + rAB + "</td>";
+                        //"<td>" + hitProb.toFixed(2) + "</td>" +
+                        "<td>" + zHit + "</td>" + 
+                        "<td style='color:black;'> " + rH + " - " + rAB + "</td>";
                     myTableRows = myTableRows + "<tr>" + myNewRow + "</tr>"
                 });
 
                 $('#getDate').text("Top MLB Hitters Matchups for " + $('#gameDate').val());
                 $('#tbody_HitterData').html(myTableRows);                
                 $('#tbl_HitterData').DataTable({
-                    "order": [[23, "desc"]]
+                    "order": [[28, "desc"]],
+                    "paging": false
                 });
+                $('#copyRows').show();
             },
             error: function (response) {
                 //go back to calling js page to handle getAjaxData error

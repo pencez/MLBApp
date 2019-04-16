@@ -5,48 +5,72 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Hitters</title>
-    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />    
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
     <link href="../node_modules/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" />
     <style>
         .container {
             width: 100%;
+            max-width: 2840px;
             padding-right: 15px;
             padding-left: 15px;
             margin-right: 10%;
             margin-left: 1%;
         }
+        .hName { width: 150px; }
+        .hTeam { width: 200px; }
+        .hRecord { width: 50px; }
+        .hCurrAvg { width: 75px; }
+        .hCareerAvg { width: 75px; }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-lg-1">
                     <h6>Select Date:</h6>
-                    <input type="text" autocomplete="off" id="gameDate" name="date" placeholder="MM/DD/YYYY" />
+                    <input class="form-control" type="text" autocomplete="off" id="gameDate" name="date" placeholder="MM/DD/YYYY" />
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12" style="display:none;">
+                <div class="col-lg-12" style="display:none;">
                     <input type="button" id="load" value="Load" />
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12 text-center">  
+                <div class="col-lg-12 text-center">  
                     <h2 id="getDate"></h2>
                 </div>
             </div>
             <div class="row">
+                <div class="col-lg-12 text-left" id="copyRows" style="display:none;">
+                    <a class="btn btn-xs btn-info" id="copyTableData" style="padding-left:1.5em; padding-right:1.5em; color:white;" 
+                        data-toggle="tooltip" data-placement="left" title="Copy the 'Coding Information' table data to clipboard">
+                        <i class="fa fa-clipboard"></i> Copy All Rows
+                    </a>
+                </div>
+            </div>
+            <textarea id="excelDataBlob" readonly style="left:-5000px; top:-5000px; position:absolute;"></textarea>
+            <div class="row">
                 <div class="col-md-12">
                     <table class="table-bordered table-hover table-responsive-sm" id="tbl_HitterData">
                         <thead>
-                            <tr>
+                            <%--<tr>
                                 <th colspan="8">Hitter and Game Info</th>
                                 <th colspan="5">Opposing Team & Pitcher</th>
                                 <th colspan="8">Hitter Stats</th>
-                                <th colspan="6">Recent Stats</th>
-                            </tr>
+                                <th colspan="5">Recent Stats</th>
+                                <th style="text-align: center;">
+                                    <h6>
+                                        <a class="btn btn-xs btn-default" id="copyTableData" style="padding-left:.5em; padding-right:.5em;" 
+                                           data-toggle="tooltip" data-placement="left" title="Copy the 'Coding Information' table data to clipboard">
+                                            <i class="fa fa-clipboard"></i>
+                                        </a>
+                                    </h6>
+                                </th>
+                            </tr>--%>
                             <tr>
                                 <th>Name</th>
                                 <th>Team</th>

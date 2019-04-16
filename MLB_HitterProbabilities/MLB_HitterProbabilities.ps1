@@ -49,7 +49,7 @@ if ($testing -eq 0) {
 	$season = "2019"
 	$gameType = "R"
 	$theDay = Get-Date -format MM/dd/yyyy
-	#$theDay = "04/07/2019"
+	#$theDay = "04/15/2019"
 
 	$theHitters = GetTopAvgHitters $limit $season $gameType
 

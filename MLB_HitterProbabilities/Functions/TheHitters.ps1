@@ -64,9 +64,9 @@ function buildHitterDetailsObjectTesting($getTopHitters, $testing) {
 			}
 
 
-			$theSeason = $batterDebut.substring(0,4)
+			$theSeason = [int]$batterDebut.substring(0,4)
 			do {
-				$theSeason = [int]$theSeason
+				#$theSeason = [int]$theSeason
 				#write-host "Season is $($theSeason):"
 				$theUri = "https://statsapi.mlb.com/api/v1/people/$($batterID)?hydrate=stats(type=statSplits,sitCodes=[a,h,d,n,g,t,vl,vr,dsa,dsu,preas,posas,4,5,6,7,8,9,dmo,dtu,dwe,dth,dfr,twn,tls,taw,tal],sportId=1,gameType=$($gameType),season=$($theSeason))"
 				#$theUri = "https://statsapi.mlb.com/api/v1/people/$($batterID)?hydrate=stats(type=statSplits,sitCodes=[a,h],sportId=1,gameType=$($gameType),season=$($theSeason))"
@@ -134,7 +134,7 @@ function buildHitterDetailsObjectTesting($getTopHitters, $testing) {
 			
 				$theSeason++
 			# ********** change this to LT so you don't include current season **********
-			} while ($theSeason -lt [int]$currSeason)
+			} while ($theSeason -lt [int]$season)
 			
 			
 			write-host "Batter Career & Situational AVG/BABIP:"
@@ -177,12 +177,14 @@ function buildHitterDetailsObject($getTopHitters, $testing) {
 	for ($z=0; $z -lt $getTopHitters.leaders.length; $z++) {
 		$batterID = $getTopHitters.leaders[$z].person.id
 		# Do we need details for hitter?			
-		if ($theBatterList -match $batterID) {
+		<#if ($theBatterList -match $batterID) {
 			# We have batter details already			
 			$getDetailsYN = "No"
 		} else {			
 			$getDetailsYN = "Yes"	
-		} 
+		}#> 
+		# always get details in prod in order to refresh them!
+		$getDetailsYN = "Yes"
 
 		if ($getDetailsYN -eq "Yes") {
 			# Get the details for the batter
@@ -218,11 +220,11 @@ function buildHitterDetailsObject($getTopHitters, $testing) {
 			}
 
 
-			$theSeason = $batterDebut.substring(0,4)
+			$theSeason = [int]$batterDebut.substring(0,4)
 			do {
-				$theSeason = [int]$theSeason
+				#$theSeason = [int]$theSeason
 				#write-host "Season is $($theSeason):"
-				$theUri = "https://statsapi.mlb.com/api/v1/people/$($batterID)?hydrate=stats(type=statSplits,sitCodes=[a,h,d,n,g,t,vl,vr,dsa,dsu,preas,posas,4,5,6,7,8,9,dmo,dtu,dwe,dth,dfr,twn,tls,taw,tal,d1,d7,d30,ven],sportId=1,gameType=$($gameType),season=$($theSeason))"
+				$theUri = "https://statsapi.mlb.com/api/v1/people/$($batterID)?hydrate=stats(type=statSplits,sitCodes=[a,h,d,n,g,t,vl,vr,dsa,dsu,preas,posas,4,5,6,7,8,9,dmo,dtu,dwe,dth,dfr,twn,tls,taw,tal,d1,d7,d30],sportId=1,gameType=$($gameType),season=$($theSeason))"
 				#$theUri = "https://statsapi.mlb.com/api/v1/people/$($batterID)?hydrate=stats(type=statSplits,sitCodes=[a,h],sportId=1,gameType=$($gameType),season=$($theSeason))"
 				$theFields = "people"
 				$getHittersStats = GetApiData $theUri $theFields
@@ -288,7 +290,7 @@ function buildHitterDetailsObject($getTopHitters, $testing) {
 			
 				$theSeason++
 			# ********** change this to LT so you don't include current season **********
-			} while ($theSeason -lt [int]$currSeason)
+			} while ($theSeason -le [int]$season)
 			
 			
 			write-host "Batter Career & Situational AVG/BABIP:"
@@ -510,8 +512,11 @@ function GetTopAvgHitters($limit, $season, $gameType) {
 	$theTopHittersDetails = buildHitterDetailsObject $getTopHitters ""
 	$theFilename = "hittingLeaders_Details"	
 	$hitterDetailsJson = Get-Content -Raw -Path "$($basePath)\Data\$($theFilename).json" | Out-String | ConvertFrom-Json
-	$theExistingData = $hitterDetailsJson.TopHitterDetails		
-	$theAppendedTopHittersData = $theExistingData + $theTopHittersDetails
+	# REMOVE EXISTING DATA IN PROD
+		#$theExistingData = $hitterDetailsJson.TopHitterDetails		
+		#$theAppendedTopHittersData = $theExistingData + $theTopHittersDetails
+	$theAppendedTopHittersData = $theTopHittersDetails
+	
 	$theTopHittersDetailsObj = @()
 	$theRootObj = New-Object -TypeName psobject
 	$theRootObj | Add-Member -Type NoteProperty -Name TopHitterDetails -Value $theAppendedTopHittersData
