@@ -181,6 +181,7 @@ function GetGameDetails($feedUri) {
 	}
 	$venueSite = $getGameData.venue.name
 	
+	
 	#away team details	
 	if ($testing -eq 1) {
 		$awayTeamId = $getGameData.teams.away.teamId
@@ -195,6 +196,11 @@ function GetGameDetails($feedUri) {
 		$awayPitcherWins = $awayPlayerById.seasonStats.pitching.wins
 		$awayPitcherLoss = $awayPlayerById.seasonStats.pitching.losses
 		$awayPitcherEra = $awayPlayerById.seasonStats.pitching.era
+		$awayPitcherWalks = $awayPlayerById.seasonStats.pitching.baseOnBalls
+		$awayPitcherHits = $awayPlayerById.seasonStats.pitching.hits
+		$awayPitcherIP = $awayPlayerById.seasonStats.pitching.inningsPitched
+		$awayPitcherWHIP = [math]::round( $(($awayPitcherWalks + $awayPitcherHits) / $awayPitcherIP), 2).toString("##.##")
+		$awayPitcherH9IP = [math]::round( $(($awayPitcherHits * 9)/$awayPitcherIP), 2).toString("##.##") #not exact due to partial innings not included
 	} else {
 		$awayTeamId = $getGameData.teams.away.id
 		$awayTeam = $getGameData.teams.away.name
@@ -208,6 +214,10 @@ function GetGameDetails($feedUri) {
 		$awayPitcherWins = $awayPlayerById.seasonStats.pitching.wins
 		$awayPitcherLoss = $awayPlayerById.seasonStats.pitching.losses
 		$awayPitcherEra = $awayPlayerById.seasonStats.pitching.era
+		$awayPitcherHits = $awayPlayerById.seasonStats.pitching.hits
+		$awayPitcherIP = $awayPlayerById.seasonStats.pitching.inningsPitched
+		$awayPitcherWHIP = [math]::round( $(($awayPitcherWalks + $awayPitcherHits) / $awayPitcherIP), 2).toString("##.##")
+		$awayPitcherH9IP = [math]::round( $(($awayPitcherHits * 9)/$awayPitcherIP), 2).toString("##.##") #not exact due to partial innings not included
 	}
 	$theFields = "people"
 	if ($awayPitcherId) {
@@ -230,6 +240,10 @@ function GetGameDetails($feedUri) {
 		$homePitcherWins = $homePlayerById.seasonStats.pitching.wins
 		$homePitcherLoss = $homePlayerById.seasonStats.pitching.losses
 		$homePitcherEra = $homePlayerById.seasonStats.pitching.era
+		$homePitcherHits = $homePlayerById.seasonStats.pitching.hits
+		$homePitcherIP = $homePlayerById.seasonStats.pitching.inningsPitched
+		$homePitcherWHIP = [math]::round( $(($homePitcherWalks + $homePitcherHits) / $homePitcherIP), 2).toString("##.##")
+		$homePitcherH9IP = [math]::round( $(($homePitcherHits * 9)/$homePitcherIP), 2).toString("##.##") #not exact due to partial innings not included
 	} else {
 		$homeTeamId = $getGameData.teams.home.id
 		$homeTeam = $getGameData.teams.home.name
@@ -243,6 +257,10 @@ function GetGameDetails($feedUri) {
 		$homePitcherWins = $homePlayerById.seasonStats.pitching.wins
 		$homePitcherLoss = $homePlayerById.seasonStats.pitching.losses
 		$homePitcherEra = $homePlayerById.seasonStats.pitching.era
+		$homePitcherHits = $homePlayerById.seasonStats.pitching.hits
+		$homePitcherIP = $homePlayerById.seasonStats.pitching.inningsPitched
+		$homePitcherWHIP = [math]::round( $(($homePitcherWalks + $homePitcherHits) / $homePitcherIP), 2).toString("##.##")
+		$homePitcherH9IP = [math]::round( $(($homePitcherHits * 9)/$homePitcherIP), 2).toString("##.##") #not exact due to partial innings not included
 	}
 	$theFields = "people"
 	if ($homePitcherId) {
@@ -283,6 +301,10 @@ function BuildGamesData() {
 	$obj | Add-Member -MemberType NoteProperty -Name AwayPitcherWins -Value $awayPitcherWins
 	$obj | Add-Member -MemberType NoteProperty -Name AwayPitcherLoss -Value $awayPitcherLoss
 	$obj | Add-Member -MemberType NoteProperty -Name AwayPitcherEra -Value $awayPitcherEra
+	$obj | Add-Member -MemberType NoteProperty -Name AwayPitcherHits -Value $awayPitcherHits
+	$obj | Add-Member -MemberType NoteProperty -Name AwayPitcherIP -Value $awayPitcherIP
+	$obj | Add-Member -MemberType NoteProperty -Name AwayPitcherWHIP -Value $awayPitcherWHIP
+	$obj | Add-Member -MemberType NoteProperty -Name AwayPitcherH9IP -Value $awayPitcherH9IP
 	$obj | Add-Member -MemberType NoteProperty -Name HomeTeamId -Value $homeTeamId
 	$obj | Add-Member -MemberType NoteProperty -Name HomeTeamName -Value $homeTeam
 	$obj | Add-Member -MemberType NoteProperty -Name HomeTeamWins -Value $homeTeamW
@@ -297,6 +319,10 @@ function BuildGamesData() {
 	$obj | Add-Member -MemberType NoteProperty -Name HomePitcherWins -Value $homePitcherWins
 	$obj | Add-Member -MemberType NoteProperty -Name HomePitcherLoss -Value $homePitcherLoss
 	$obj | Add-Member -MemberType NoteProperty -Name HomePitcherEra -Value $homePitcherEra
+	$obj | Add-Member -MemberType NoteProperty -Name HomePitcherHits -Value $homePitcherHits
+	$obj | Add-Member -MemberType NoteProperty -Name HomePitcherIP -Value $homePitcherIP
+	$obj | Add-Member -MemberType NoteProperty -Name HomePitcherWHIP -Value $homePitcherWHIP
+	$obj | Add-Member -MemberType NoteProperty -Name HomePitcherH9IP -Value $homePitcherH9IP
 
 	return $obj
 }

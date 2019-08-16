@@ -335,18 +335,27 @@ function buildHitterObject($getTopHitters, $testing) {
 			$batterTeamName = $getTopHitters.leaders[$z].team.name
 			$batterSide = $getTopHitters.leaders[$z].person.batSide.code
 			$batterRank = $getTopHitters.leaders[$z].rank
-			$batterAverage = $getTopHitters.leaders[$z].person.stats[1].splits[0].stat.avg			
-			$batterHits = $getTopHitters.leaders[$z].person.stats[1].splits[0].stat.hits
-			$batterHRs = $getTopHitters.leaders[$z].person.stats[1].splits[0].stat.homeRuns
-			$batterABs = $getTopHitters.leaders[$z].person.stats[1].splits[0].stat.atBats
-			$batterKs = $getTopHitters.leaders[$z].person.stats[1].splits[0].stat.strikeOuts
-			$batterSFs = $getTopHitters.leaders[$z].person.stats[1].splits[0].stat.sacFlies
+			#$batterAverage = $getTopHitters.leaders[$z].person.stats[1].splits[0].stat.avg	
+			$batterAverage = $getTopHitters.leaders[$z].value			
+			
+			$statCnt = 0
+			if ($getTopHitters.leaders[$z].person.stats[$statCnt].type.displayName -ne "statSplits") {
+				DO {
+					$statCnt++
+					if ($statCnt -gt 3) { break }
+				} Until ($getTopHitters.leaders[$z].person.stats[$statCnt].group.displayName -eq "hitting")
+			}
+
+			$batterHits = $getTopHitters.leaders[$z].person.stats[$statCnt].splits[0].stat.hits
+			$batterHRs = $getTopHitters.leaders[$z].person.stats[$statCnt].splits[0].stat.homeRuns
+			$batterABs = $getTopHitters.leaders[$z].person.stats[$statCnt].splits[0].stat.atBats
+			$batterKs = $getTopHitters.leaders[$z].person.stats[$statCnt].splits[0].stat.strikeOuts
+			$batterSFs = $getTopHitters.leaders[$z].person.stats[$statCnt].splits[0].stat.sacFlies
 			if ( ($batterHits - $batterHRs) -eq 0 -or ($batterABs - $batterHRs - $batterKs + $batterSFs) -eq 0) {
 				$batterBABIP = ".000"
 			} else {
 				$batterBABIP = [math]::round( $(($batterHits - $batterHRs)/($batterABs - $batterHRs - $batterKs + $batterSFs)) ,3).toString(".###")				
 			}
-
 					
 			$theTopHitters += buildTopHitterObject "No"
 		}
@@ -506,7 +515,17 @@ function GetTopAvgHitters($limit, $season, $gameType) {
 	$theFields = "leagueLeaders"
 	$getTopHitters = GetApiData $theUri $theFields
 
-
+		
+	$theTopHittersDaily = @()
+	$theTopHittersDaily = buildHitterObject $getTopHitters ""
+	$theFilename = "hittingLeaders_$($theDay.Replace('/',''))"
+	$theTopHittersObj = @()
+	$theRootObj = New-Object -TypeName psobject
+	$theRootObj | Add-Member -MemberType NoteProperty -Name TopHitters -Value $theTopHittersDaily
+	$theTopHittersObj += $theRootObj
+	
+	$test = WriteToJsonFile "$($basePath)\Data" $theFilename $theTopHittersObj
+	LogWrite "File $($theFilename) was created!"
 	
 	$theTopHittersDetails = @()
 	$theTopHittersDetails = buildHitterDetailsObject $getTopHitters ""
@@ -525,17 +544,7 @@ function GetTopAvgHitters($limit, $season, $gameType) {
 	$test = WriteToJsonFile "$($basePath)\Data" $theFilename $theTopHittersDetailsObj
 	LogWrite "File $($theFilename) was updated!"
 	
-		
-	$theTopHittersDaily = @()
-	$theTopHittersDaily = buildHitterObject $getTopHitters ""
-	$theFilename = "hittingLeaders_$($theDay.Replace('/',''))"
-	$theTopHittersObj = @()
-	$theRootObj = New-Object -TypeName psobject
-	$theRootObj | Add-Member -MemberType NoteProperty -Name TopHitters -Value $theTopHittersDaily
-	$theTopHittersObj += $theRootObj
-	
-	$test = WriteToJsonFile "$($basePath)\Data" $theFilename $theTopHittersObj
-	LogWrite "File $($theFilename) was created!"
+
 
 
 

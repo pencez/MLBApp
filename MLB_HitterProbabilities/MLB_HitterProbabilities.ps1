@@ -7,12 +7,12 @@
 
 
 $testing = 0
-
+$justGetResultsData = 0
 
 
 
 $a = Get-Date -format yyyyMMddhhmmss
-$basePath = "C:\Users\pencez\source\repos\MLBApp\MLB_HitterProbabilities"  #for LT
+$basePath = "C:\Users\pencez\source\repos\MLBApp\MLB_HitterProbabilities"     #for LT
 $webPath = "C:\Users\pencez\source\repos\MLBApp\MLB_HitterProbabilities_Web"  #for LT
 $logFile = "$($basePath)\Logs\MLB_HitterProbabilities_$($a).log"
 
@@ -21,8 +21,8 @@ $logFile = "$($basePath)\Logs\MLB_HitterProbabilities_$($a).log"
 . "$basePath\Functions\ThePitchers.ps1"
 . "$basePath\Functions\TheGames.ps1"
 . "$basePath\Functions\TheMatchups.ps1"
+. "$basePath\Functions\TheResults.ps1"
 . "$basePath\Functions\TheCalculations.ps1"
-#. "$basePath\Functions\TheCalculation.ps1"
 . "$basePath\Models\ApiFunctions.ps1"
 . "$basePath\Models\FileFunctions.ps1"
 . "$basePath\Models\HelperFunctions.ps1"
@@ -36,88 +36,95 @@ Exit
 #>
 
 
+if ($justGetResultsData -eq 1) {
+	LogWrite "Going down result data path..."
+	getResultsData
 
-
-
-
-
-
-if ($testing -eq 0) {
-	
-	# Set the API query parameters
-	$limit = "20"
-	$season = "2019"
-	$gameType = "R"
-	$theDay = Get-Date -format MM/dd/yyyy
-	#$theDay = "04/15/2019"
-
-	$theHitters = GetTopAvgHitters $limit $season $gameType
-
-	# Get results for previous day
-	$theGameResults = updateTeamRecords $gameType $theDay
-	# Get information for today
-	$theGameInfo = GetGameInfo $gameType $theDay.Replace("/","%2F")
-
-
-	$theMatchups = getMatchupData "No"
-
-	# Copy the matchups file to the webapp
-	Copy-Item "$($basePath)\Data\matchups_$($theDay.Replace('/','')).json" -Destination "$($webPath)\AppData\"
-	LogWrite "Matchup file copied to web app"
+	LogWrite "Completed getting just the result data"
 
 } else {
-	# TESTING MODE
-	$logFile = "$($basePath)\Logs\MLB_HitterProbabilities_TEST_$($a).log"
-	$theDate = Get-Date "06/26/2018"
-
-	while ($testDate -ne "09/30/2018") {	
-		$testDate = $theDate.ToString("MM/dd/yyyy")
-		$testDtM1 = $theDate.AddDays(-1).ToString("MM/dd/yyyy")
 
 
-		# Set the API query parameters
-		# ****************************************************************************************************
-		# Use this for testing to get best average during date range(s)			
-		$season = "2018"
-		$gameType = "R"
-		$seasonStartDate = "03/29/$season".Replace("/","%2F")
-		$seasonCurrDate = $testDtM1.Replace("/","%2F")
-		$theDay = $testDate
-		$lastSeason = "2017"
-		$currSeason = "2018"	
-		$limit = "20"	
 
-		#<# 
-		$theHitters = GetTopAvgHittersTesting $limit $lastSeason $gameType $seasonStartDate $seasonCurrDate
-		# ****************************************************************************************************
-		#>
-		#<#
-		# Check matchups for today
-		###$theGameInfo = GetGameInfo $gameType $startDate $endDate
-		$theGameInfo = GetGameInfo $gameType $theDay.Replace("/","%2F")
-
-			# Get results for *testing* days
-			$theGameResults = GetGameResults $gameType $theDay.Replace("/","%2F")
-		#>
-
-
-		#<#
+	if ($testing -eq 0) {
 	
-		# Build results
-		# getMatchupData($includeResultsYN Yes/No) -- typically this is "no" for actual use but yes during testing
-		$theMatchups = getMatchupData "Yes"
+		# Set the API query parameters
+		$limit = "25"
+		$season = "2019"
+		$gameType = "R"
+		$theDay = Get-Date -format MM/dd/yyyy
+		#$theDay = "08/04/2019"
+
+		#<#
+		# Get top hitters by avg in MLB
+		$theHitters = GetTopAvgHitters $limit $season $gameType
+
+		# Get results for previous day
+		$theGameResults = updateTeamRecords $gameType $theDay
+		# Get information for today
+		$theGameInfo = GetGameInfo $gameType $theDay.Replace("/","%2F")
+		#>
+
+		$theMatchups = getMatchupData "No"
 
 		# Copy the matchups file to the webapp
-		Copy-Item "$($basePath)\Data\Test\matchups_$($theDay.Replace('/','')).json" -Destination "$($webPath)\AppData\"
+		Copy-Item "$($basePath)\Data\matchups_$($theDay.Replace('/','')).json" -Destination "$($webPath)\AppData\"
 		LogWrite "Matchup file copied to web app"
-		#>
+
+	} else {
+		# TESTING MODE
+		$logFile = "$($basePath)\Logs\MLB_HitterProbabilities_TEST_$($a).log"
+		$theDate = Get-Date "05/01/2018"
+
+		while ($testDate -ne "05/30/2018") {	
+			$testDate = $theDate.ToString("MM/dd/yyyy")
+			$testDtM1 = $theDate.AddDays(-1).ToString("MM/dd/yyyy")
 
 
-		$theDate = $theDate.AddDays(1)
+			# Set the API query parameters
+			# ****************************************************************************************************
+			# Use this for testing to get best average during date range(s)			
+			$season = "2018"
+			$gameType = "R"
+			$seasonStartDate = "03/29/$season".Replace("/","%2F")
+			$seasonCurrDate = $testDtM1.Replace("/","%2F")
+			$theDay = $testDate
+			$lastSeason = "2017"
+			$currSeason = "2018"	
+			$limit = "20"	
+
+			#<# 
+			$theHitters = GetTopAvgHittersTesting $limit $lastSeason $gameType $seasonStartDate $seasonCurrDate
+			# ****************************************************************************************************
+			#>
+			<#
+			# Check matchups for today
+			###$theGameInfo = GetGameInfo $gameType $startDate $endDate
+			$theGameInfo = GetGameInfo $gameType $theDay.Replace("/","%2F")
+
+				# Get results for *testing* days
+				$theGameResults = GetGameResults $gameType $theDay.Replace("/","%2F")
+			#>
+
+
+			#<#
+	
+			# Build results
+			# getMatchupData($includeResultsYN Yes/No) -- typically this is "no" for actual use but yes during testing
+			$theMatchups = getMatchupData "Yes"
+
+			# Copy the matchups file to the webapp
+			Copy-Item "$($basePath)\Data\Test\matchups_$($theDay.Replace('/','')).json" -Destination "$($webPath)\AppData\"
+			LogWrite "Matchup file copied to web app"
+			#>
+
+
+			$theDate = $theDate.AddDays(1)
+		}
 	}
+
+
 }
-
-
 
 #Get list of hit leaders and team id
 ##$theTopHitters = GetHitterList

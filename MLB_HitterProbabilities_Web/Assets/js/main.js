@@ -12,6 +12,118 @@
     };
     date_input.datepicker(options);
 
+
+    function getzScore(cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra, pWHIP, pH9IP,
+        pWins, pLoss, pTeamW, pTeamL, aL3D, aL5D, aL7D, aL10D, aL14D, bL3D, bL5D, bL7D, bL10D, bL14D) {
+        
+        var zScore = 3
+
+        if (ha == "Home") { zScore = zScore + 2; } else { zScore--; }
+
+        if (cAvg >= .275) { zScore = zScore + 2; }
+        if (bAvgHA >= .280) { zScore++; } else { zScore--; }
+        if (bAvgH >= .280) { zScore++; } else { zScore--; }
+        if (bAvgDW >= .280) { zScore++; } else { zScore--; }
+        if (bAvgDN >= .280) { zScore++; } else { zScore--; }
+
+        if ((parseInt(pTeamW) - parseInt(pTeamL)) <= 1) { zScore++; } else { zScore--; }
+        if ((parseInt(pTeamW) - parseInt(pTeamL)) <= -10) { zScore = zScore + 3; }
+        if (aceP == pName) { zScore = zScore - 2; }
+        if (twoP == pName) { zScore--; }
+        if ((parseInt(pWins) - parseInt(pLoss)) <= 1) { zScore++; } else { zScore--; }
+        if (pEra >= 3.00) { zScore++; } else { zScore--; }
+        if (pWHIP >= 1.00) { zScore = zScore + 3; } else { zScore = zScore - 2; }
+        if (pH9IP >= 9.00) { zScore = zScore + 3; } else { zScore = zScore - 2; }
+
+        //check recent averages
+        if ((aL3D >= .250) && (aL3D <= .500)) { zScore++; } else { zScore--; }
+        if ((aL5D >= .250) && (aL5D <= .500)) { zScore++; } else { zScore--; }
+        if ((aL7D >= .250) && (aL7D <= .500)) { zScore++; } else { zScore--; }
+        if ((aL10D >= .250) && (aL10D <= .500)) { zScore++; } else { zScore--; }
+        if ((aL14D >= .250) && (aL14D <= .500)) { zScore++; } else { zScore--; }
+        //check recent BABIP
+        if ((bL3D >= .250) && (bL3D <= .500)) { zScore++; } else { zScore--; }
+        if ((bL5D >= .250) && (bL5D <= .500)) { zScore++; } else { zScore--; }
+        if ((bL7D >= .280) && (bL7D <= .500)) { zScore++; } else { zScore--; }
+        if ((bL10D >= .280) && (bL10D <= .500)) { zScore++; } else { zScore--; }
+        if ((bL14D >= .250) && (bL14D <= .500)) { zScore++; } else { zScore--; }
+
+        if (bLGWL == "Win") {
+            if (bAvgATW >= .280) { zScore++; } else if (bAvgATW <= .280) { zScore = 0; } else { zScore--; }
+        } else {    //Loss
+            if (bAvgATL >= .280) { zScore++; } else if (bAvgATL <= .280) { zScore = 0; } else { zScore--; }
+        }
+
+
+        // zero out when condition is met
+        if (bAvgHA <= .275) { zScore = 0; }
+        if (bAvgDW <= .250) { zScore = 0; }
+        if (bAvgDN <= .250) { zScore = 0; }
+        if (bAvgH <= .250) { zScore = 0; }
+        if ((parseInt(pTeamW) - parseInt(pTeamL)) >= 10) { zScore = 0; }
+        if ((parseInt(pWins) - parseInt(pLoss)) >= 5) { zScore = 0; }
+        if (pWHIP <= .70) { zScore = 0; }
+        if (pH9IP <= 7.00) { zScore = 0; }
+        if (aceP == pName) { zScore = 0; }
+        if (pEra <= 2.00) { zScore = 0; }
+        if ((aL3D < .250) || (aL3D > .500)) { zScore = 0; }
+        if ((bL3D < .250) || (bL3D >= .600)) { zScore = 0; }
+        if ((aL5D < .250) || (aL5D > .500)) { zScore = 0; }
+        if ((bL5D < .250) || (bL5D >= .600)) { zScore = 0; }
+        if ((aL7D < .250) || (aL7D > .500)) { zScore = 0; }
+        if ((bL7D < .250) || (bL7D > .500)) { zScore = 0; }
+        if ((aL10D < .250) || (aL10D > .500)) { zScore = 0; }
+        if ((bL10D < .250) || (bL10D > .500)) { zScore = 0; }
+
+
+
+        return zScore;
+    }
+
+
+    function getzScore2(cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra,
+        pWins, pLoss, pTeamW, pTeamL, aL3D, aL5D, aL7D, aL10D, aL14D, bL3D, bL5D, bL7D, bL10D, bL14D) {
+
+        var zScore = 5
+
+        //get whip and pitchers babip
+
+
+        if (ha == "Home") { zScore++; } else { zScore = 0; }
+        /*
+        if (bAvgHA >= .280) { zScore++; } else { zScore--; }
+        if (bAvgH >= .280) { zScore++; } else { zScore--; }
+        if (bAvgDW >= .280) { zScore++; } else { zScore--; }
+        if (bAvgDN >= .280) { zScore++; } else { zScore--; }
+        if (bLGWL == "Win") {
+            if (bAvgATW >= .280) { zScore++; } else { zScore--; }
+        } else {    //Loss
+            if (bAvgATL >= .280) { zScore++; } else { zScore--; }
+        }
+        */
+
+        if (pEra >= 3.00) { zScore++; }
+        if (cAvg >= .275) { zScore++; }
+        if ((parseInt(pTeamW) - parseInt(pTeamL)) <= 1) { zScore++; } else { zScore = 0; }
+        if ((parseInt(pWins) - parseInt(pLoss)) <= 1) { zScore++; } else { zScore = 0; }
+
+        if (aceP == pName) { zScore = 0; }
+        if (twoP == pName) { zScore--; }
+
+        if ((aL3D < .250) || (aL3D >= .450)) { zScore = 0; }
+        if ((aL5D < .250) || (aL5D >= .450)) { zScore = 0; }
+        if ((aL7D < .280) || (aL7D >= .450)) { zScore = 0; }
+        if ((aL10D < .280) || (aL10D >= .450)) { zScore = 0; }
+        if ((aL14D < .280) || (aL14D >= .450)) { zScore--; }
+        if ((bL3D < .250) || (bL3D >= .450)) { zScore = 0; }
+        if ((bL5D < .250) || (bL5D >= .450)) { zScore = 0; }
+        if ((bL7D < .280) || (bL7D >= .450)) { zScore = 0; }
+        if ((bL10D < .280) || (bL10D >= .450)) { zScore = 0; }
+        if ((bL14D < .280) || (bL14D >= .450)) { zScore--; }
+        
+        return zScore;
+    }
+
     // This is to copy the results
     $('#copyTableData').on("click", function () {
 
@@ -35,22 +147,6 @@
             range.select();
         }
 
-        /*
-        //get the table data
-        var jsonTable = JSON.parse(getTableData());
-        var theExcelData = "";
-        //manipulate json so it is Excel ready
-        for (var i = 0; i < jsonTable.length; i++) {
-            //var rowNo = jsonTable[i].rowNo;
-            var busObjSub = jsonTable[i].busObjSub;
-            var description = jsonTable[i].description;
-            var sub = jsonTable[i].sub;
-            var subType = jsonTable[i].subType;
-            var amount = jsonTable[i].amount;
-            if (subType == null) { subType = ""; }
-            theExcelData = theExcelData + busObjSub + "\t" + description + "\t" + sub + "\t" + subType + "\t" + amount + "\n";
-        }
-        */
         var xl = document.getElementById('excelDataBlob');
         xl.value = sel;
         //remove first line since it's blank
@@ -64,21 +160,20 @@
     });
 
 
-
     $("#load").on("click", function () {
         var gameDay = $('#gameDate').val().replace(/\//g, '');
         $.ajax({
             type: "GET",
             //url: "../Controllers/CallData.aspx/GetJsonData",
-            url: "../AppData/matchups_" + gameDay + ".json?ver=1.0",
+            url: "../AppData/matchups_" + gameDay + ".json?pseudoParam=" + new Date().getTime(),
             data: {},
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 var result = data.MatchupInfo;
                 var writeRow = "Yes";
-                var bName = "", bSide = "", bAvg = "", bBabip = "", cAvg = "", cBabip = "", bTeam = "", bTeamW = "", bTeamL = "", bLGWL = "", ha = "", gDay = "",
-                    gTime = "", gAMPM = "", gDayWk = "", gDN = "", pTeam = "", pTeamW = "", pTeamL = "", pName = "", pHand = "", pWins = "", pLoss = "", pEra = "",
+                var bName = "", bSide = "", bAvg = "", bBabip = "", cAvg = "", cBabip = "", bTeam = "", bTeamW = "", bTeamL = "", bLGWL = "", bBench = "False", ha = "", gDay = "",
+                    gTime = "", gAMPM = "", gDayWk = "", gDN = "", pTeam = "", pTeamW = "", pTeamL = "", pName = "", pHand = "", pWins = "", pLoss = "", pEra = "", pHits = "", pWHIP = "", pH9IP = "",
                     bAvgHA = "", bBabipHA = "", bAvgDW = "", bBabipDW = "", bAvgMon = "", bBabipMon = "", bAvgDN = "", bBabipDN = "", bAvgH = "", bBabipH = "",
                     bAvgGr = "", bBabipGr = "", bAvgTu = "", bBabipTu = "", bAvgITW = "", bBabipITW = "", bAvgITL = "", bBabipITL = "", bAvgATW = "", bBabipATW = "",
                     bAvgATL = "", bBabipATL = "", bAvg1H = "", bBabip1H = "", bAvg2H = "", bBabip2H = "", venueAdvB = "", venueAdvP = "",
@@ -92,6 +187,23 @@
                     $('#tbl_HitterData').DataTable().destroy();
                 }
 
+                //get team info file
+                //$.getJSON("../AppData/teams/teamInfo.json", function (json) {
+                //    var teamInfo = json.TeamsData;
+                //});
+
+                var jqXHR = $.ajax({
+                    url: "../AppData/teams/teamInfo.json?pseudoParam=" + new Date().getTime(),
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        var teamInfo = data.TeamsData;
+                        //return teamInfo;
+                    }
+                });
+                
+                var teamInfo = JSON.parse(jqXHR.responseText);
+
                 $.each(result, function () {
                     var myNewRow = "";
                     $.each(this, function (key, val) {
@@ -103,6 +215,7 @@
                         if (key == "BatterTeamWins") { bTeamW = val; }
                         if (key == "BatterTeamLoss") { bTeamL = val; }
                         if (key == "BatterLastGameWL") { bLGWL = val; }
+                        if (key == "BatterOnBench") { bBench = val; }                       
                         if (key == "BattingSide") { bSide = val.substring(0, 1); }
                         if (key == "CareerAvg") { cAvg = val; }
                         if (key == "CareerBabip") { cBabip = val; }
@@ -112,7 +225,17 @@
                         if (key == "GameAMPM") { gAMPM = val; }
                         if (key == "GameDayofWk") { gDayWk = val; }
                         if (key == "GameDayNight") { gDN = val; }
-                        if (key == "OppPitcherTeam") { pTeam = val; }
+                        if (key == "OppPitcherTeam") {
+                            pTeam = val;
+                            for (var i = 0; i < teamInfo.TeamsData.length; i++) {
+                                if (teamInfo.TeamsData[i].TeamName == pTeam) {
+                                    aceP = teamInfo.TeamsData[i].AcePitcher;
+                                    twoP = teamInfo.TeamsData[i].TwoPitcher;
+                                    //get out of FOR loop
+                                    break;                                    
+                                }
+                            }
+                        }
                         if (key == "OppPitcherTeamWins") { pTeamW = val; }
                         if (key == "OppPitcherTeamLoss") { pTeamL = val; }
                         if (key == "OppPitcherName") { pName = val; }
@@ -122,6 +245,9 @@
                             if (val == null) { pLoss = 0; } else { pLoss = val; }
                         }
                         if (key == "OppPitcherEra") { pEra = val; }
+                        if (key == "OppPitcherHits") { pHits = val; }
+                        if (key == "OppPitcherWHIP") { pWHIP = val; }
+                        if (key == "OppPitcherH9IP") { pH9IP = val; }
                         if (key == "BatterAvgHomeAway") { bAvgHA = val; }
                         if (key == "BatterBabipHomeAway") { bBabipHA = val; }
                         if (key == "BatterAvgForMonth") { bAvgMon = val; }
@@ -180,8 +306,7 @@
                         if (venueAdvB == "True") { hitProb = hitProb + .15; }
                         if (venueAdvP == "True") { hitProb = hitProb - .1; }                        
                     } else {
-                        var haCC = warning; hitProb = hitProb - .1;
-                        
+                        var haCC = warning; hitProb = hitProb - .1;                        
                     }
                     //Batters Team W/L Record
                     if (parseInt(bTeamW) > parseInt(bTeamL)) {
@@ -240,16 +365,28 @@
                     } else {
                         var pEraCC = warning; hitProb = hitProb - .3;
                     }
+                    //Pitchers WHIP
+                    if (pWHIP >= 1.00) {
+                        var pWHIPCC = favorable;
+                    } else {
+                        var pWHIPCC = warning;
+                    }
+                    //Pitchers H9IP
+                    if (pH9IP >= 9.00) {
+                        var pH9IPCC = favorable;
+                    } else {
+                        var pH9IPCC = warning;
+                    }
                     //Hitter AVG at Home/Away
-                    if (bAvgHA >= .300) { var bAvgHACC = favorable; hitProb = hitProb + .1; } else { var bAvgHACC = warning; hitProb = hitProb - .15; }
+                    if (bAvgHA >= .275) { var bAvgHACC = favorable; hitProb = hitProb + .1; } else { var bAvgHACC = warning; hitProb = hitProb - .15; }
                     if (bBabipHA >= .300) { var bBabipHACC = favorable; hitProb = hitProb + .1; } else { var bBabipHACC = warning; hitProb = hitProb - .15; }
-                    if (bAvgMon >= .300) { var bAvgMonCC = favorable; hitProb = hitProb + .05; } else { var bAvgMonCC = warning; hitProb = hitProb - .1; }
+                    if (bAvgMon >= .275) { var bAvgMonCC = favorable; hitProb = hitProb + .05; } else { var bAvgMonCC = warning; hitProb = hitProb - .1; }
                     if (bBabipMon >= .300) { var bBabipMonCC = favorable; hitProb = hitProb + .05; } else { var bBabipMonCC = warning; hitProb = hitProb - .1; }
-                    if (bAvgDW >= .300) { var bAvgDWCC = favorable; hitProb = hitProb + .05; } else { var bAvgDWCC = warning; hitProb = hitProb - .1; }
+                    if (bAvgDW >= .275) { var bAvgDWCC = favorable; hitProb = hitProb + .05; } else { var bAvgDWCC = warning; hitProb = hitProb - .1; }
                     if (bBabipDW >= .300) { var bBabipDWCC = favorable; hitProb = hitProb + .05; } else { var bBabipDWCC = warning; hitProb = hitProb - .1; }
-                    if (bAvgDN >= .300) { var bAvgDNCC = favorable; hitProb = hitProb + .05; } else { var bAvgDNCC = warning; hitProb = hitProb - .1; }
+                    if (bAvgDN >= .275) { var bAvgDNCC = favorable; hitProb = hitProb + .05; } else { var bAvgDNCC = warning; hitProb = hitProb - .1; }
                     if (bBabipDN >= .300) { var bBabipDNCC = favorable; hitProb = hitProb + .05; } else { var bBabipDNCC = warning; hitProb = hitProb - .1; }
-                    if (bAvgH >= .300) { var bAvgHCC = favorable; hitProb = hitProb + .05; } else { var bAvgHCC = warning; hitProb = hitProb - .1; }
+                    if (bAvgH >= .275) { var bAvgHCC = favorable; hitProb = hitProb + .05; } else { var bAvgHCC = warning; hitProb = hitProb - .1; }
                     if (bBabipH >= .300) { var bBabipHCC = favorable; hitProb = hitProb + .05; } else { var bBabipHCC = warning; hitProb = hitProb - .1; }
 
                     //Hitter AVG between 1st half and 2nd half
@@ -265,24 +402,26 @@
                     } else {
                         bLGWL = "Loss";
                     }
-                    
-                    if (bAvgITW >= .300) { var bAvgITWCC = favorable; hitProb = hitProb + .05; } else { var bAvgITWCC = warning; hitProb = hitProb - .1; }
-                    if (bBabipITW >= .300) { var bBabipITWCC = favorable; hitProb = hitProb + .05; } else { var bBabipITWCC = warning; hitProb = hitProb - .1; }
-                    if (bAvgITL >= .300) { var bAvgITLCC = favorable; hitProb = hitProb + .05; } else { var bAvgITLCC = warning; hitProb = hitProb - .1; }
-                    if (bBabipITL >= .300) { var bBabipITLCC = favorable; hitProb = hitProb + .05; } else { var bBabipITLCC = warning; hitProb = hitProb - .1; }
-                    if (bAvgATW >= .300) { var bAvgATWCC = favorable; hitProb = hitProb + .05; } else { var bAvgATWCC = warning; hitProb = hitProb - .1; }
-                    if (bBabipATW >= .300) { var bBabipATWCC = favorable; hitProb = hitProb + .05; } else { var bBabipATWCC = warning; hitProb = hitProb - .1; }
-                    if (bAvgATL >= .300) { var bAvgATLCC = favorable; hitProb = hitProb + .05; } else { var bAvgATLCC = warning; hitProb = hitProb - .1; }
-                    if (bBabipATL >= .300) { var bBabipATLCC = favorable; hitProb = hitProb + .05; } else { var bBabipATLCC = warning; hitProb = hitProb - .1; }
+
+
+                    if (bAvgITW >= .280 && bAvgITW <= .450) { var bAvgITWCC = favorable; hitProb = hitProb + .05; } else { var bAvgITWCC = warning; hitProb = hitProb - .1; }
+                    if (bBabipITW >= .280 && bBabipITW <= .450) { var bBabipITWCC = favorable; hitProb = hitProb + .05; } else { var bBabipITWCC = warning; hitProb = hitProb - .1; }
+                    if (bAvgITL >= .260 && bAvgITL <= .450) { var bAvgITLCC = favorable; hitProb = hitProb + .05; } else { var bAvgITLCC = warning; hitProb = hitProb - .1; }
+                    if (bBabipITL >= .260 && bBabipITL <= .450) { var bBabipITLCC = favorable; hitProb = hitProb + .05; } else { var bBabipITLCC = warning; hitProb = hitProb - .1; }
+                    if (bAvgATW >= .280 && bAvgATW <= .450) { var bAvgATWCC = favorable; hitProb = hitProb + .05; } else { var bAvgATWCC = warning; hitProb = hitProb - .1; }
+                    if (bBabipATW >= .280 && bBabipATW <= .450) { var bBabipATWCC = favorable; hitProb = hitProb + .05; } else { var bBabipATWCC = warning; hitProb = hitProb - .1; }
+                    if (bAvgATL >= .280 && bAvgATL <= .450) { var bAvgATLCC = favorable; hitProb = hitProb + .05; } else { var bAvgATLCC = warning; hitProb = hitProb - .1; }
+                    if (bBabipATL >= .280 && bBabipATL <= .450) { var bBabipATLCC = favorable; hitProb = hitProb + .05; } else { var bBabipATLCC = warning; hitProb = hitProb - .1; }
 
                     if (aYdy == 1.000) { var hitsP0 = warning; hitProb = hitProb - .2; }
-                    if (aYdy == .000 && bYdy < cBabip) { var hitsP0 = favorable; hitProb = hitProb + .05; } else { var hitsP0 = warning; }
-                    if (aL3D >= .250 && bL3D < cBabip) { var hitsP3 = favorable; hitProb = hitProb + .35; } else { var hitsP3 = warning; hitProb = hitProb - .2; }
-                    if (aL5D >= .220 && bL5D < cBabip) { var hitsP5 = favorable; hitProb = hitProb + .35; } else { var hitsP5 = warning; hitProb = hitProb - .2; }
-                    if (aL7D >= .200 && bL7D < cBabip) { var hitsP7 = favorable; hitProb = hitProb + .35; } else { var hitsP7 = warning; hitProb = hitProb - .2; }
-                    if (aL10D >= .200 && bL10D < cBabip) { var hitsP10 = favorable; hitProb = hitProb + .35; } else { var hitsP10 = warning; hitProb = hitProb - .2; }
-                    if (aL14D >= .200 && bL14D < cBabip) { var hitsP14 = favorable; hitProb = hitProb + .05; } else { var hitsP14 = warning; hitProb = hitProb - .1; }
-                                        
+                    if (aYdy == .000 && aYdy < .500) { var hitsP0 = favorable; hitProb = hitProb + .05; } else { var hitsP0 = warning; }
+                    if (aL3D >= .250 && aL3D < .500) { var hitsP3 = favorable; hitProb = hitProb + .35; } else { var hitsP3 = warning; hitProb = hitProb - .2; }
+                    if (aL5D >= .250 && aL5D < .500) { var hitsP5 = favorable; hitProb = hitProb + .35; } else { var hitsP5 = warning; hitProb = hitProb - .2; }
+                    if (aL7D >= .250 && aL7D < .500) { var hitsP7 = favorable; hitProb = hitProb + .35; } else { var hitsP7 = warning; hitProb = hitProb - .2; }
+                    if (aL10D >= .250 && aL10D < .500) { var hitsP10 = favorable; hitProb = hitProb + .35; } else { var hitsP10 = warning; hitProb = hitProb - .2; }
+                    if (aL14D >= .250 && aL14D < .500) { var hitsP14 = favorable; hitProb = hitProb + .05; } else { var hitsP14 = warning; hitProb = hitProb - .1; }
+
+
                     var zHit = 0;
                     if (haCC == favorable) { zHit++; }
                     if (bTWLCC == favorable) { zHit++; }
@@ -297,27 +436,35 @@
                     if (bAvg1HCC == favorable) { zHit++; }
                     //if (bAvg2HCC == favorable) { zHit++; }
 
-                    var zScore = 3
 
+                    var zScore = getzScore(cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra, pWHIP, pH9IP, 
+                        pWins, pLoss, pTeamW, pTeamL, aL3D, aL5D, aL7D, aL10D, aL14D, bL3D, bL5D, bL7D, bL10D, bL14D)
                     
+                    var absPitTeamWLdiff = parseInt(parseInt(pTeamW) - parseInt(pTeamL)) * (-1);
+                    var absPitcherWLdiff = parseInt(parseInt(pWins) - parseInt(pLoss)) * (-1);
 
-                    myNewRow = "<td>" + bName + " (" + bSide + ")</td>" +
+                    if ((rH == 0) && (rAB != 0)) { hitCC = "background-color: red;"; } else { hitCC = ""; } 
+                    //if (bBench == "True") { hitCC = "background-color: black;"; }
+                    if (zScore >= 9) { hitCC = hitCC + "font-weight: bold;" }
+
+                    myNewRow = "<td style='" + hitCC + "'>" + bName + " (" + bSide + ")</td>" +
                         "<td>" + bTeam + "</td>" +
                         "<td style='" + bTWLCC + "'>" + bTeamW + "-" + bTeamL + "</td>" +
                         "<td>" + bAvg + "/" + bBabip + "</td>" +
                         "<td>" + cAvg + "/" + cBabip + "</td>" +
                         "<td style='" + haCC + "'>" + ha + "</td><td>" + gDayWk + " - " + gTime + gAMPM + "</td><td>" + gDN + "</td>" +
-                        "<td>" + pTeam + "</td><td style='" + pTWLCC + "'>" + pTeamW + "-" + pTeamL + "</td>" +
-                        "<td>" + pName + " (" + pHand + ")</td><td style='" + pWLCC + "'>" + pWins + "-" + pLoss + "</td><td style='" + pEraCC + "'>" + pEra + "</td>" +
-                        "<td style='" + bBabipHACC + "'>" + bAvgHA + "/" + bBabipHA + "</td><td style='" + bBabipDWCC + "'>" + bAvgDW + "/" + bBabipDW + "</td>" +
+                        "<td>" + pTeam + "</td><td style='" + pTWLCC + "'>" + absPitTeamWLdiff + " " + pTeamW + "-" + pTeamL + "</td>" +
+                        "<td>" + pName + " (" + pHand + ")</td><td style='" + pWLCC + "'>" + absPitcherWLdiff + " " + pWins + "-" + pLoss + "</td>" +
+                        "<td style='" + pEraCC + "'>" + pEra + "</td><td style='" + pWHIPCC + "'>" + pWHIP + "</td><td style='" + pH9IPCC + "'>" + pH9IP + "</td>" +
+                        "<td style='" + bBabipHACC + "'>" + bAvgHA + "/" + bBabipHA + "</td><td style='" + bAvgDWCC + "'>" + bAvgDW + "/" + bBabipDW + "</td>" +
                         "<td style='" + bBabipDNCC + "'>" + bAvgDN + "/" + bBabipDN + "</td><td style='" + bBabipHCC + "'>" + bAvgH + "/" + bBabipH + "</td>" +
-                        "<td style='" + bBabipITWCC + "'>" + bAvgITW + "/" + bBabipITW + "</td><td style='" + bBabipITLCC + "'>" + bAvgITL + "/" + bBabipITL + "</td>" +
-                        "<td style='" + bBabipATWCC + "'>" + bAvgATW + "/" + bBabipATW + "</td><td style='" + bBabipATLCC + "'>" + bAvgATL + "/" + bBabipATL + "</td><td>" + bLGWL + "</td>" +
+                        "<td style='" + bAvgITWCC + "'>" + bAvgITW + "/" + bBabipITW + "</td><td style='" + bAvgITLCC + "'>" + bAvgITL + "/" + bBabipITL + "</td>" +
+                        "<td style='" + bAvgATWCC + "'>" + bAvgATW + "/" + bBabipATW + "</td><td style='" + bAvgATLCC + "'>" + bAvgATL + "/" + bBabipATL + "</td><td>" + bLGWL + "</td>" +
                         "<td style='" + hitsP0 + "'>" + aYdy + "/" + bYdy + "</td><td style='" + hitsP3 + "'>" + aL3D + "/" + bL3D + "</td>" +
                         "<td style='" + hitsP5 + "'>" + aL5D + "/" + bL5D + "</td><td style='" + hitsP7 + "'>" + aL7D + "/" + bL7D + "</td>" +
                         "<td style='" + hitsP10 + "'>" + aL10D + "/" + bL10D + "</td><td style='" + hitsP14 + "'>" + aL14D + "/" + bL14D + "</td>" +
                         //"<td>" + hitProb.toFixed(2) + "</td>" +
-                        "<td>" + zHit + "</td>" + 
+                        "<td>" + zScore + "</td>" + 
                         "<td style='color:black;'> " + rH + " - " + rAB + "</td>";
                     myTableRows = myTableRows + "<tr>" + myNewRow + "</tr>"
                 });
@@ -325,7 +472,7 @@
                 $('#getDate').text("Top MLB Hitters Matchups for " + $('#gameDate').val());
                 $('#tbody_HitterData').html(myTableRows);                
                 $('#tbl_HitterData').DataTable({
-                    "order": [[28, "desc"]],
+                    "order": [[30, "desc"]],
                     "paging": false
                 });
                 $('#copyRows').show();

@@ -85,6 +85,8 @@
                                 <th>P Name</th>
                                 <th>P Win-Loss</th>
                                 <th>P ERA</th>
+                                <th>P WHIP</th>
+                                <th>P H9IP</th>
                                 <th>AVG H/A</th>
                                 <th>AVG Day</th>
                                 <th>AVG Time</th>

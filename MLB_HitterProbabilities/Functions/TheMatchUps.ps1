@@ -20,9 +20,9 @@ Function getMatchupData($includeResultsYN) {
 	for ($h=0; $h -lt $theHitters.TopHitters.Count; $h++) {	
 		$theTeam = $theHitters.TopHitters[$h].BatterTeamID
 		$theTeamName = $theHitters.TopHitters[$h].BatterTeamName		
-		$theTeamWins = $theTeamFile.TeamsData  | where { $_.TeamId -eq $theTeam } | Select -ExpandProperty TeamWins 
-		$theTeamLoss = $theTeamFile.TeamsData  | where { $_.TeamId -eq $theTeam } | Select -ExpandProperty TeamLoss 
-		$theLastGameWL = $theTeamFile.TeamsData  | where { $_.TeamId -eq $theTeam } | Select -ExpandProperty LastGameWin 
+		$theTeamWins = $theTeamFile.TeamsData | where { $_.TeamId -eq $theTeam } | Select -ExpandProperty TeamWins 
+		$theTeamLoss = $theTeamFile.TeamsData | where { $_.TeamId -eq $theTeam } | Select -ExpandProperty TeamLoss 
+		$theLastGameWL = $theTeamFile.TeamsData | where { $_.TeamId -eq $theTeam } | Select -ExpandProperty LastGameWin 
 		$theBatId = $theHitters.TopHitters[$h].BatterID
 		$theBatName = $theHitters.TopHitters[$h].BatterName
 		$batterSide = $theHitters.TopHitters[$h].BatterHittingSide
@@ -147,6 +147,10 @@ Function getMatchupData($includeResultsYN) {
 				$theVsPitcherWins = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty AwayPitcherWins
 				$theVsPitcherLoss = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty AwayPitcherLoss
 				$theVsPitcherEra = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty AwayPitcherEra
+				$theVsPitcherHits = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty AwayPitcherHits
+				$theVsPitcherIP = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty AwayPitcherIP
+				$theVsPitcherWHIP = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty AwayPitcherWHIP
+				$theVsPitcherH9IP = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty AwayPitcherH9IP
 			} else {
 				# Get Batters AVG for when AWAY
 				$theBatAvgHomeAway = $theHittersDetails.TopHitterDetails | where { $_.BatterID -eq $theBatId } | Select -ExpandProperty BatterAvgAway
@@ -166,6 +170,10 @@ Function getMatchupData($includeResultsYN) {
 				$theVsPitcherWins = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomePitcherWins
 				$theVsPitcherLoss = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomePitcherLoss
 				$theVsPitcherEra = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomePitcherEra
+				$theVsPitcherHits = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomePitcherHits
+				$theVsPitcherIP = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomePitcherIP
+				$theVsPitcherWHIP = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomePitcherWHIP
+				$theVsPitcherH9IP = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomePitcherH9IP
 			}			
 			if ($theVsPitcherHand -eq "R") { 
 				$theBatAvgVsHand = $theHittersDetails.TopHitterDetails | where { $_.BatterID -eq $theBatId } | Select -ExpandProperty BatterAvgToRighty
@@ -186,6 +194,20 @@ Function getMatchupData($includeResultsYN) {
 			$theBatBabip1stHalf = $theHittersDetails.TopHitterDetails | where { $_.BatterID -eq $theBatId } | Select -ExpandProperty batterBabipPreAllStar
 			$theBatAvg2ndHalf = $theHittersDetails.TopHitterDetails | where { $_.BatterID -eq $theBatId } | Select -ExpandProperty batterAvgPostAllStar
 			$theBatBabip2ndHalf = $theHittersDetails.TopHitterDetails | where { $_.BatterID -eq $theBatId } | Select -ExpandProperty batterBabipPostAllStar
+			
+			<#
+			# find if player is on bench			
+			$dateStamp = $theDay.Replace('/','')
+			$feedUri = "https://statsapi.mlb.com/api/v1/game/$($theGamePk)/feed/live?timecode=$($dateStamp)_010000"
+			$theFields = "liveData"
+			$getLiveData = GetApiData $feedUri $theFields
+			
+			$lowerHA = $homeAway.ToLower()
+			$playerPath = $getLiveData.boxscore.teams.$lowerHA.players
+			$thePlayerIDnId = "ID" + $theBatId
+			$thePlayerById = $playerPath.$thePlayerIDnId
+			$thePlayerBenched = $thePlayerById.gameStatus.isOnBench
+			#>
 						
 			if ($includeResultsYN -eq "Yes") {
 				# get results too
@@ -213,7 +235,7 @@ Function getMatchupData($includeResultsYN) {
 	
 	$theMatchupInfo = @()
 	$theRootObj = New-Object -TypeName psobject
-	$theRootObj| Add-Member -MemberType NoteProperty -Name MatchupInfo -Value $theMatchupData
+	$theRootObj | Add-Member -MemberType NoteProperty -Name MatchupInfo -Value $theMatchupData
 	$theMatchupInfo += $theRootObj
 
 	WriteToJsonFile "$($matchupFilePath)\" "matchups_$($theDay.Replace('/',''))" $theMatchupInfo
@@ -240,6 +262,7 @@ function BuildMatchupsData() {
 	$obj | Add-Member -MemberType NoteProperty -Name BatterTeamWins -Value $theTeamWins
 	$obj | Add-Member -MemberType NoteProperty -Name BatterTeamLoss -Value $theTeamLoss
 	$obj | Add-Member -MemberType NoteProperty -Name BatterLastGameWL -Value $theLastGameWL
+	$obj | Add-Member -MemberType NoteProperty -Name BatterOnBench -Value $thePlayerBenched
 	$obj | Add-Member -MemberType NoteProperty -Name HomeOrAway -Value $homeAway
 	$obj | Add-Member -MemberType NoteProperty -Name GamePk -Value $theGamePk
 	$obj | Add-Member -MemberType NoteProperty -Name GameDate -Value $theDay
@@ -257,6 +280,10 @@ function BuildMatchupsData() {
 	$obj | Add-Member -MemberType NoteProperty -Name OppPitcherWins -Value $theVsPitcherWins
 	$obj | Add-Member -MemberType NoteProperty -Name OppPitcherLoss -Value $theVsPitcherLoss
 	$obj | Add-Member -MemberType NoteProperty -Name OppPitcherEra -Value $theVsPitcherEra
+	$obj | Add-Member -MemberType NoteProperty -Name OppPitcherHits -Value $theVsPitcherHits
+	$obj | Add-Member -MemberType NoteProperty -Name OppPitcherIP -Value $theVsPitcherIP
+	$obj | Add-Member -MemberType NoteProperty -Name OppPitcherWHIP -Value $theVsPitcherWHIP
+	$obj | Add-Member -MemberType NoteProperty -Name OppPitcherH9IP -Value $theVsPitcherH9IP
 	$obj | Add-Member -MemberType NoteProperty -Name BatterStadiumAdv -Value $theHitterAdv 
 	$obj | Add-Member -MemberType NoteProperty -Name PitcherStadiumAdv -Value $thePitcherAdv
 	$obj | Add-Member -MemberType NoteProperty -Name BatterAvgHomeAway -Value $theBatAvgHomeAway
