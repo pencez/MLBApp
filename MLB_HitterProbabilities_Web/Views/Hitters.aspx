@@ -78,8 +78,8 @@
                                 <th>AVG/BABIP</th>
                                 <th>Career</th>
                                 <th>Location</th>
-                                <th>GameDay Info</th>
-                                <th>Day/Nite</th>
+                                <!--<th>GameDay Info</th>
+                                <th>Day/Nite</th>-->
                                 <th>P Team</th>
                                 <th>P Team W-L</th>
                                 <th>P Name</th>
@@ -103,6 +103,7 @@
                                 <th>Last 10 Days</th>
                                 <th>Last 14 Days</th>
                                 <th>Hit Prob</th>
+                                <th>zScore2</th>
                                 <th>Results</th>
                                 <%--<th>Results</th>--%>
                             </tr>

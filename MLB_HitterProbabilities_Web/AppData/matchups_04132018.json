@@ -10,8 +10,8 @@
                             "CareerBabip":  ".341",
                             "BatterTeamId":  142,
                             "BatterTeam":  "Minnesota Twins",
-                            "BatterTeamWins":  "5",
-                            "BatterTeamLoss":  "2",
+                            "BatterTeamWins":  "26",
+                            "BatterTeamLoss":  "30",
                             "BatterLastGameWL":  "True",
                             "HomeOrAway":  "Home",
                             "GamePk":  529600,
@@ -67,7 +67,11 @@
                             "AVG14Days":  ".448",
                             "BABIP14Days":  ".591",
                             "BatterResultAtBats":  6,
-                            "BatterResultHits":  2
+                            "BatterResultHits":  2,
+                            "OppPitcherHits":  "56",
+                            "OppPitcherIP":  "55.0",
+                            "OppPitcherWHIP":  "1.69",
+                            "OppPitcherH9IP":  "9.16"
                         },
                         {
                             "BatterId":  429664,
@@ -79,8 +83,8 @@
                             "CareerBabip":  ".319",
                             "BatterTeamId":  136,
                             "BatterTeam":  "Seattle Mariners",
-                            "BatterTeamWins":  "8",
-                            "BatterTeamLoss":  "2",
+                            "BatterTeamWins":  "6",
+                            "BatterTeamLoss":  "4",
                             "BatterLastGameWL":  "True",
                             "HomeOrAway":  "Home",
                             "GamePk":  529605,
@@ -136,7 +140,11 @@
                             "AVG14Days":  ".433",
                             "BABIP14Days":  ".565",
                             "BatterResultAtBats":  1,
-                            "BatterResultHits":  1
+                            "BatterResultHits":  1,
+                            "OppPitcherHits":  "8",
+                            "OppPitcherIP":  "10.2",
+                            "OppPitcherWHIP":  "1.18",
+                            "OppPitcherH9IP":  "7.06"
                         },
                         {
                             "BatterId":  518735,
@@ -148,8 +156,8 @@
                             "CareerBabip":  ".281",
                             "BatterTeamId":  119,
                             "BatterTeam":  "Los Angeles Dodgers",
-                            "BatterTeamWins":  "7",
-                            "BatterTeamLoss":  "2",
+                            "BatterTeamWins":  "4",
+                            "BatterTeamLoss":  "7",
                             "BatterLastGameWL":  "True",
                             "HomeOrAway":  "Home",
                             "GamePk":  529597,
@@ -205,7 +213,11 @@
                             "AVG14Days":  ".333",
                             "BABIP14Days":  ".429",
                             "BatterResultAtBats":  4,
-                            "BatterResultHits":  1
+                            "BatterResultHits":  1,
+                            "OppPitcherHits":  "14",
+                            "OppPitcherIP":  "10.2",
+                            "OppPitcherWHIP":  "1.37",
+                            "OppPitcherH9IP":  "12.35"
                         },
                         {
                             "BatterId":  457763,
@@ -217,7 +229,7 @@
                             "CareerBabip":  ".324",
                             "BatterTeamId":  137,
                             "BatterTeam":  "San Francisco Giants",
-                            "BatterTeamWins":  "3",
+                            "BatterTeamWins":  "6",
                             "BatterTeamLoss":  "6",
                             "BatterLastGameWL":  "True",
                             "HomeOrAway":  "Away",
@@ -274,7 +286,11 @@
                             "AVG14Days":  ".357",
                             "BABIP14Days":  ".342",
                             "BatterResultAtBats":  4,
-                            "BatterResultHits":  0
+                            "BatterResultHits":  0,
+                            "OppPitcherHits":  "11",
+                            "OppPitcherIP":  "12.0",
+                            "OppPitcherWHIP":  "1.17",
+                            "OppPitcherH9IP":  "8.25"
                         },
                         {
                             "BatterId":  605141,
@@ -286,8 +302,8 @@
                             "CareerBabip":  ".314",
                             "BatterTeamId":  111,
                             "BatterTeam":  "Boston Red Sox",
-                            "BatterTeamWins":  "2",
-                            "BatterTeamLoss":  "8",
+                            "BatterTeamWins":  "10",
+                            "BatterTeamLoss":  "2",
                             "BatterLastGameWL":  "False",
                             "HomeOrAway":  "Home",
                             "GamePk":  529599,
@@ -343,7 +359,11 @@
                             "AVG14Days":  ".370",
                             "BABIP14Days":  ".375",
                             "BatterResultAtBats":  4,
-                            "BatterResultHits":  1
+                            "BatterResultHits":  1,
+                            "OppPitcherHits":  "15",
+                            "OppPitcherIP":  "9.1",
+                            "OppPitcherWHIP":  "2.53",
+                            "OppPitcherH9IP":  "14.84"
                         },
                         {
                             "BatterId":  593428,
@@ -355,8 +375,8 @@
                             "CareerBabip":  ".331",
                             "BatterTeamId":  111,
                             "BatterTeam":  "Boston Red Sox",
-                            "BatterTeamWins":  "2",
-                            "BatterTeamLoss":  "8",
+                            "BatterTeamWins":  "10",
+                            "BatterTeamLoss":  "2",
                             "BatterLastGameWL":  "False",
                             "HomeOrAway":  "Home",
                             "GamePk":  529599,
@@ -412,7 +432,11 @@
                             "AVG14Days":  ".324",
                             "BABIP14Days":  ".36",
                             "BatterResultAtBats":  null,
-                            "BatterResultHits":  null
+                            "BatterResultHits":  null,
+                            "OppPitcherHits":  "15",
+                            "OppPitcherIP":  "9.1",
+                            "OppPitcherWHIP":  "2.53",
+                            "OppPitcherH9IP":  "14.84"
                         },
                         {
                             "BatterId":  656555,
@@ -424,8 +448,8 @@
                             "CareerBabip":  ".268",
                             "BatterTeamId":  143,
                             "BatterTeam":  "Philadelphia Phillies",
-                            "BatterTeamWins":  "5",
-                            "BatterTeamLoss":  "2",
+                            "BatterTeamWins":  "6",
+                            "BatterTeamLoss":  "5",
                             "BatterLastGameWL":  "False",
                             "HomeOrAway":  "Away",
                             "GamePk":  529606,
@@ -481,7 +505,11 @@
                             "AVG14Days":  ".303",
                             "BABIP14Days":  ".4",
                             "BatterResultAtBats":  3,
-                            "BatterResultHits":  0
+                            "BatterResultHits":  0,
+                            "OppPitcherHits":  "9",
+                            "OppPitcherIP":  "5.2",
+                            "OppPitcherWHIP":  "3.27",
+                            "OppPitcherH9IP":  "15.58"
                         },
                         {
                             "BatterId":  500874,
@@ -493,8 +521,8 @@
                             "CareerBabip":  ".350",
                             "BatterTeamId":  138,
                             "BatterTeam":  "St. Louis Cardinals",
-                            "BatterTeamWins":  "3",
-                            "BatterTeamLoss":  "5",
+                            "BatterTeamWins":  "6",
+                            "BatterTeamLoss":  "7",
                             "BatterLastGameWL":  "False",
                             "HomeOrAway":  "Away",
                             "GamePk":  529609,
@@ -550,7 +578,11 @@
                             "AVG14Days":  ".341",
                             "BABIP14Days":  ".333",
                             "BatterResultAtBats":  4,
-                            "BatterResultHits":  2
+                            "BatterResultHits":  2,
+                            "OppPitcherHits":  "10",
+                            "OppPitcherIP":  "10.2",
+                            "OppPitcherWHIP":  "1.27",
+                            "OppPitcherH9IP":  "8.82"
                         },
                         {
                             "BatterId":  434670,
@@ -562,8 +594,8 @@
                             "CareerBabip":  ".321",
                             "BatterTeamId":  111,
                             "BatterTeam":  "Boston Red Sox",
-                            "BatterTeamWins":  "2",
-                            "BatterTeamLoss":  "8",
+                            "BatterTeamWins":  "10",
+                            "BatterTeamLoss":  "2",
                             "BatterLastGameWL":  "False",
                             "HomeOrAway":  "Home",
                             "GamePk":  529599,
@@ -618,7 +650,11 @@
                             "AVG14Days":  ".385",
                             "BABIP14Days":  ".406",
                             "BatterResultAtBats":  null,
-                            "BatterResultHits":  null
+                            "BatterResultHits":  null,
+                            "OppPitcherHits":  "15",
+                            "OppPitcherIP":  "9.1",
+                            "OppPitcherWHIP":  "2.53",
+                            "OppPitcherH9IP":  "14.84"
                         },
                         {
                             "BatterId":  592743,
@@ -630,8 +666,8 @@
                             "CareerBabip":  ".280",
                             "BatterTeamId":  108,
                             "BatterTeam":  "Los Angeles Angels",
-                            "BatterTeamWins":  "3",
-                            "BatterTeamLoss":  "6",
+                            "BatterTeamWins":  "11",
+                            "BatterTeamLoss":  "3",
                             "BatterLastGameWL":  "True",
                             "HomeOrAway":  "Away",
                             "GamePk":  529602,
@@ -687,7 +723,11 @@
                             "AVG14Days":  ".345",
                             "BABIP14Days":  ".358",
                             "BatterResultAtBats":  3,
-                            "BatterResultHits":  0
+                            "BatterResultHits":  0,
+                            "OppPitcherHits":  "10",
+                            "OppPitcherIP":  "11.0",
+                            "OppPitcherWHIP":  "1.36",
+                            "OppPitcherH9IP":  "8.18"
                         },
                         {
                             "BatterId":  461314,
@@ -699,8 +739,8 @@
                             "CareerBabip":  ".338",
                             "BatterTeamId":  119,
                             "BatterTeam":  "Los Angeles Dodgers",
-                            "BatterTeamWins":  "7",
-                            "BatterTeamLoss":  "2",
+                            "BatterTeamWins":  "4",
+                            "BatterTeamLoss":  "7",
                             "BatterLastGameWL":  "True",
                             "HomeOrAway":  "Home",
                             "GamePk":  529597,
@@ -756,7 +796,11 @@
                             "AVG14Days":  ".333",
                             "BABIP14Days":  ".455",
                             "BatterResultAtBats":  5,
-                            "BatterResultHits":  1
+                            "BatterResultHits":  1,
+                            "OppPitcherHits":  "14",
+                            "OppPitcherIP":  "10.2",
+                            "OppPitcherWHIP":  "1.37",
+                            "OppPitcherH9IP":  "12.35"
                         },
                         {
                             "BatterId":  514888,
@@ -768,8 +812,8 @@
                             "CareerBabip":  ".340",
                             "BatterTeamId":  117,
                             "BatterTeam":  "Houston Astros",
-                            "BatterTeamWins":  "4",
-                            "BatterTeamLoss":  "5",
+                            "BatterTeamWins":  "9",
+                            "BatterTeamLoss":  "4",
                             "BatterLastGameWL":  "True",
                             "HomeOrAway":  "Home",
                             "GamePk":  529610,
@@ -825,7 +869,11 @@
                             "AVG14Days":  ".365",
                             "BABIP14Days":  ".404",
                             "BatterResultAtBats":  3,
-                            "BatterResultHits":  1
+                            "BatterResultHits":  1,
+                            "OppPitcherHits":  "17",
+                            "OppPitcherIP":  "16.0",
+                            "OppPitcherWHIP":  "1.62",
+                            "OppPitcherH9IP":  "9.56"
                         },
                         {
                             "BatterId":  518934,
@@ -837,8 +885,8 @@
                             "CareerBabip":  ".345",
                             "BatterTeamId":  115,
                             "BatterTeam":  "Colorado Rockies",
-                            "BatterTeamWins":  "3",
-                            "BatterTeamLoss":  "6",
+                            "BatterTeamWins":  "7",
+                            "BatterTeamLoss":  "7",
                             "BatterLastGameWL":  "False",
                             "HomeOrAway":  "Away",
                             "GamePk":  529601,
@@ -894,7 +942,11 @@
                             "AVG14Days":  ".333",
                             "BABIP14Days":  ".356",
                             "BatterResultAtBats":  4,
-                            "BatterResultHits":  0
+                            "BatterResultHits":  0,
+                            "OppPitcherHits":  "9",
+                            "OppPitcherIP":  "12.0",
+                            "OppPitcherWHIP":  "1.17",
+                            "OppPitcherH9IP":  "6.75"
                         },
                         {
                             "BatterId":  435062,
@@ -906,8 +958,8 @@
                             "CareerBabip":  ".340",
                             "BatterTeamId":  120,
                             "BatterTeam":  "Washington Nationals",
-                            "BatterTeamWins":  "3",
-                            "BatterTeamLoss":  "4",
+                            "BatterTeamWins":  "6",
+                            "BatterTeamLoss":  "7",
                             "BatterLastGameWL":  "False",
                             "HomeOrAway":  "Home",
                             "GamePk":  529601,
@@ -963,7 +1015,11 @@
                             "AVG14Days":  ".319",
                             "BABIP14Days":  ".35",
                             "BatterResultAtBats":  4,
-                            "BatterResultHits":  0
+                            "BatterResultHits":  0,
+                            "OppPitcherHits":  "12",
+                            "OppPitcherIP":  "11.1",
+                            "OppPitcherWHIP":  "1.44",
+                            "OppPitcherH9IP":  "9.73"
                         },
                         {
                             "BatterId":  621020,
@@ -975,8 +1031,8 @@
                             "CareerBabip":  ".302",
                             "BatterTeamId":  144,
                             "BatterTeam":  "Atlanta Braves",
-                            "BatterTeamWins":  "4",
-                            "BatterTeamLoss":  "4",
+                            "BatterTeamWins":  "7",
+                            "BatterTeamLoss":  "5",
                             "BatterLastGameWL":  "False",
                             "HomeOrAway":  "Away",
                             "GamePk":  529598,
@@ -1032,7 +1088,11 @@
                             "AVG14Days":  ".370",
                             "BABIP14Days":  ".457",
                             "BatterResultAtBats":  4,
-                            "BatterResultHits":  1
+                            "BatterResultHits":  1,
+                            "OppPitcherHits":  "7",
+                            "OppPitcherIP":  "10.1",
+                            "OppPitcherWHIP":  ".99",
+                            "OppPitcherH9IP":  "6.24"
                         },
                         {
                             "BatterId":  656305,
@@ -1044,8 +1104,8 @@
                             "CareerBabip":  ".319",
                             "BatterTeamId":  133,
                             "BatterTeam":  "Oakland Athletics",
-                            "BatterTeamWins":  "6",
-                            "BatterTeamLoss":  "6",
+                            "BatterTeamWins":  "5",
+                            "BatterTeamLoss":  "8",
                             "BatterLastGameWL":  "False",
                             "HomeOrAway":  "Away",
                             "GamePk":  529605,
@@ -1101,7 +1161,11 @@
                             "AVG14Days":  ".388",
                             "BABIP14Days":  ".4",
                             "BatterResultAtBats":  4,
-                            "BatterResultHits":  2
+                            "BatterResultHits":  2,
+                            "OppPitcherHits":  "8",
+                            "OppPitcherIP":  "12.0",
+                            "OppPitcherWHIP":  "1.25",
+                            "OppPitcherH9IP":  "6"
                         },
                         {
                             "BatterId":  592450,
@@ -1113,8 +1177,8 @@
                             "CareerBabip":  ".358",
                             "BatterTeamId":  147,
                             "BatterTeam":  "New York Yankees",
-                            "BatterTeamWins":  "4",
-                            "BatterTeamLoss":  "4",
+                            "BatterTeamWins":  "6",
+                            "BatterTeamLoss":  "7",
                             "BatterLastGameWL":  "True",
                             "HomeOrAway":  "Away",
                             "GamePk":  529604,
@@ -1170,7 +1234,11 @@
                             "AVG14Days":  ".327",
                             "BABIP14Days":  ".419",
                             "BatterResultAtBats":  4,
-                            "BatterResultHits":  1
+                            "BatterResultHits":  1,
+                            "OppPitcherHits":  "3",
+                            "OppPitcherIP":  "6.0",
+                            "OppPitcherWHIP":  ".67",
+                            "OppPitcherH9IP":  "4.5"
                         },
                         {
                             "BatterId":  592567,
@@ -1182,7 +1250,7 @@
                             "CareerBabip":  ".313",
                             "BatterTeamId":  134,
                             "BatterTeam":  "Pittsburgh Pirates",
-                            "BatterTeamWins":  "4",
+                            "BatterTeamWins":  "9",
                             "BatterTeamLoss":  "3",
                             "BatterLastGameWL":  "True",
                             "HomeOrAway":  "Away",
@@ -1239,7 +1307,11 @@
                             "AVG14Days":  ".343",
                             "BABIP14Days":  ".393",
                             "BatterResultAtBats":  null,
-                            "BatterResultHits":  null
+                            "BatterResultHits":  null,
+                            "OppPitcherHits":  "15",
+                            "OppPitcherIP":  "8.2",
+                            "OppPitcherWHIP":  "2.32",
+                            "OppPitcherH9IP":  "16.46"
                         },
                         {
                             "BatterId":  572816,
@@ -1251,7 +1323,7 @@
                             "CareerBabip":  ".328",
                             "BatterTeamId":  134,
                             "BatterTeam":  "Pittsburgh Pirates",
-                            "BatterTeamWins":  "4",
+                            "BatterTeamWins":  "9",
                             "BatterTeamLoss":  "3",
                             "BatterLastGameWL":  "True",
                             "HomeOrAway":  "Away",
@@ -1308,7 +1380,11 @@
                             "AVG14Days":  ".356",
                             "BABIP14Days":  ".405",
                             "BatterResultAtBats":  4,
-                            "BatterResultHits":  2
+                            "BatterResultHits":  2,
+                            "OppPitcherHits":  "15",
+                            "OppPitcherIP":  "8.2",
+                            "OppPitcherWHIP":  "2.32",
+                            "OppPitcherH9IP":  "16.46"
                         },
                         {
                             "BatterId":  519058,
@@ -1320,8 +1396,8 @@
                             "CareerBabip":  ".263",
                             "BatterTeamId":  118,
                             "BatterTeam":  "Kansas City Royals",
-                            "BatterTeamWins":  "2",
-                            "BatterTeamLoss":  "5",
+                            "BatterTeamWins":  "3",
+                            "BatterTeamLoss":  "8",
                             "BatterLastGameWL":  "False",
                             "HomeOrAway":  "Home",
                             "GamePk":  529602,
@@ -1377,7 +1453,11 @@
                             "AVG14Days":  ".326",
                             "BABIP14Days":  ".364",
                             "BatterResultAtBats":  4,
-                            "BatterResultHits":  1
+                            "BatterResultHits":  1,
+                            "OppPitcherHits":  "0",
+                            "OppPitcherIP":  "0.0",
+                            "OppPitcherWHIP":  "NaN",
+                            "OppPitcherH9IP":  "NaN"
                         }
                     ]
 }

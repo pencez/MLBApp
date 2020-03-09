@@ -203,21 +203,27 @@ function GetGameDetails($feedUri) {
 		$awayPitcherH9IP = [math]::round( $(($awayPitcherHits * 9)/$awayPitcherIP), 2).toString("##.##") #not exact due to partial innings not included
 	} else {
 		$awayTeamId = $getGameData.teams.away.id
+		$awayTeamId = $getGameData.teams.away.teamID #2018 - added 2/10/20
 		$awayTeam = $getGameData.teams.away.name
 		$awayTeamW = $getGameData.teams.away.record.wins
 		$awayTeamL = $getGameData.teams.away.record.losses
 		$awayPitcherId = $getGameData.probablePitchers.away.id
+		$awayPitcherId = $getLiveData.boxscore.teams.away.pitchers[0] #2018 - added 2/10/20
 		$awayPitcherName = $getGameData.probablePitchers.away.fullName
 		$awayPlayerPath = $getLiveData.boxscore.teams.away.players
-		$awayPlayerIDnId = "ID" + $awayPitcherId
-		$awayPlayerById = $awayPlayerPath.$awayPlayerIDnId
+		$awayPlayerIDnId = "ID" + $awayPitcherId		
+		$awayPlayerById = $awayPlayerPath.$awayPlayerIDnId #2018 - added 2/10/20
+		$awayPitcherName = $awayPlayerById.name.first + " " + $awayPlayerById.name.last #2018 - added 2/10/20
 		$awayPitcherWins = $awayPlayerById.seasonStats.pitching.wins
 		$awayPitcherLoss = $awayPlayerById.seasonStats.pitching.losses
 		$awayPitcherEra = $awayPlayerById.seasonStats.pitching.era
+		$awayPitcherWalks = $awayPlayerById.seasonStats.pitching.baseOnBalls
 		$awayPitcherHits = $awayPlayerById.seasonStats.pitching.hits
 		$awayPitcherIP = $awayPlayerById.seasonStats.pitching.inningsPitched
-		$awayPitcherWHIP = [math]::round( $(($awayPitcherWalks + $awayPitcherHits) / $awayPitcherIP), 2).toString("##.##")
-		$awayPitcherH9IP = [math]::round( $(($awayPitcherHits * 9)/$awayPitcherIP), 2).toString("##.##") #not exact due to partial innings not included
+		#$awayPitcherWHIP = [math]::round( $(($awayPitcherWalks + $awayPitcherHits) / $awayPitcherIP), 2).toString("##.##")
+		#$awayPitcherH9IP = [math]::round( $(($awayPitcherHits * 9)/$awayPitcherIP), 2).toString("##.##") #not exact due to partial innings not included
+		$awayPitcherWHIP = [math]::round( $(([int]$awayPitcherWalks + [int]$awayPitcherHits) / $awayPitcherIP), 2).toString("##.##")
+		$awayPitcherH9IP = [math]::round( $(([int]$awayPitcherHits * 9)/$awayPitcherIP), 2).toString("##.##") #not exact due to partial innings not included
 	}
 	$theFields = "people"
 	if ($awayPitcherId) {
@@ -229,6 +235,7 @@ function GetGameDetails($feedUri) {
 	#home team details
 	if ($testing -eq 1) {
 		$homeTeamId = $getGameData.teams.home.teamId
+		$homeTeamId = $getGameData.teams.home.teamID #2018 - added 2/10/20
 		$homeTeam = $getGameData.teams.home.name.full
 		$homeTeamW = $getGameData.teams.home.record.wins
 		$homeTeamL = $getGameData.teams.home.record.losses
@@ -241,6 +248,7 @@ function GetGameDetails($feedUri) {
 		$homePitcherLoss = $homePlayerById.seasonStats.pitching.losses
 		$homePitcherEra = $homePlayerById.seasonStats.pitching.era
 		$homePitcherHits = $homePlayerById.seasonStats.pitching.hits
+		$homePitcherWalks = $homePlayerById.seasonStats.pitching.baseOnBalls
 		$homePitcherIP = $homePlayerById.seasonStats.pitching.inningsPitched
 		$homePitcherWHIP = [math]::round( $(($homePitcherWalks + $homePitcherHits) / $homePitcherIP), 2).toString("##.##")
 		$homePitcherH9IP = [math]::round( $(($homePitcherHits * 9)/$homePitcherIP), 2).toString("##.##") #not exact due to partial innings not included
@@ -250,17 +258,22 @@ function GetGameDetails($feedUri) {
 		$homeTeamW = $getGameData.teams.home.record.wins
 		$homeTeamL = $getGameData.teams.home.record.losses
 		$homePitcherId = $getGameData.probablePitchers.home.id
-		$homePitcherName = $getGameData.probablePitchers.home.fullName
+		$homePitcherName = $getGameData.probablePitchers.home.fullName				
+		$homePitcherId = $getLiveData.boxscore.teams.home.pitchers[0] #2018 - added 2/10/20
 		$homePlayerPath = $getLiveData.boxscore.teams.home.players
 		$homePlayerIDnId = "ID" + $homePitcherId
 		$homePlayerById = $homePlayerPath.$homePlayerIDnId
+		$homePitcherName = $homePlayerById.name.first + " " + $homePlayerById.name.last #2018 - added 2/10/20
 		$homePitcherWins = $homePlayerById.seasonStats.pitching.wins
 		$homePitcherLoss = $homePlayerById.seasonStats.pitching.losses
 		$homePitcherEra = $homePlayerById.seasonStats.pitching.era
+		$homePitcherWalks = $homePlayerById.seasonStats.pitching.baseOnBalls
 		$homePitcherHits = $homePlayerById.seasonStats.pitching.hits
 		$homePitcherIP = $homePlayerById.seasonStats.pitching.inningsPitched
-		$homePitcherWHIP = [math]::round( $(($homePitcherWalks + $homePitcherHits) / $homePitcherIP), 2).toString("##.##")
-		$homePitcherH9IP = [math]::round( $(($homePitcherHits * 9)/$homePitcherIP), 2).toString("##.##") #not exact due to partial innings not included
+		#$homePitcherWHIP = [math]::round( $(($homePitcherWalks + $homePitcherHits) / $homePitcherIP), 2).toString("##.##")
+		#$homePitcherH9IP = [math]::round( $(($homePitcherHits * 9)/$homePitcherIP), 2).toString("##.##") #not exact due to partial innings not included
+		$homePitcherWHIP = [math]::round( $(([int]$homePitcherWalks + [int]$homePitcherHits) / $homePitcherIP), 2).toString("##.##")
+		$homePitcherH9IP = [math]::round( $(([int]$homePitcherHits * 9)/$homePitcherIP), 2).toString("##.##") #not exact due to partial innings not included
 	}
 	$theFields = "people"
 	if ($homePitcherId) {

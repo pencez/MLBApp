@@ -2,6 +2,66 @@
 # TheMatchups.ps1
 #
 
+Function addToMatchupData() {
+	# Used in off-season to append additional "new" data to matchups file
+	
+	#get thehitters from file
+	if ($testing -eq 1) {
+		$matchupFilePath = "$($basePath)\Data\Test"
+	} else {
+		$matchupFilePath = "$($basePath)\Data"
+	}
+
+	# get pitcher stats from pregame file
+	$theGameInfo = Get-Content -Raw -Path "$($matchupFilePath)\pregame_$($theDay.Replace('/','')).json" | Out-String | ConvertFrom-Json
+	LogWrite "Opened Game Info file for date: $theDay!"
+
+	$theMatchups = Get-Content -Raw -Path "$($matchupFilePath)\matchups_$($theDay.Replace('/','')).json" | Out-String | ConvertFrom-Json
+	LogWrite "Opened matchups file for date: $theDay!"
+	
+	
+	#$theMatchupData = @()
+	for ($h=0; $h -lt $theMatchups.MatchupInfo.Count; $h++) {
+		$theGamePk = $theMatchups.MatchupInfo[$h].GamePk
+		$thePitcherId = $theMatchups.MatchupInfo[$h].OppPitcherId
+				
+		$theAwayPitcherId = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty AwayPitcherId 
+		#$theHomePitcherId = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomePitcherId 
+
+		If ($thePitcherId -eq $theAwayPitcherId) {				
+			# Pitcher is Away Team
+			$thePitcherHits = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty AwayPitcherHits 
+			$thePitcherIP = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty AwayPitcherIP 
+			$thePitcherWHIP = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty AwayPitcherWHIP 
+			$thePitcherH9IP = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty AwayPitcherH9IP
+			# Batter is Home
+			$theBatterTeamWins = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty HomeTeamWins 
+			$theBatterTeamLoss = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty HomeTeamLoss
+		} else {
+			# Pitcher is Home Team
+			$thePitcherHits = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty HomePitcherHits 
+			$thePitcherIP = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty HomePitcherIP 
+			$thePitcherWHIP = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty HomePitcherWHIP 
+			$thePitcherH9IP = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty HomePitcherH9IP 
+			# Batter is Away
+			$theBatterTeamWins = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty AwayTeamWins 
+			$theBatterTeamLoss = $theGameInfo.GameInfo | Where-Object { $_.GamePk -eq $theGamePk } | Select-Object -ExpandProperty AwayTeamLoss
+		}
+		<#		
+		$theMatchups.MatchupInfo[$h] | Add-Member -MemberType NoteProperty -Name OppPitcherHits -Value $thePitcherHits
+		$theMatchups.MatchupInfo[$h] | Add-Member -MemberType NoteProperty -Name OppPitcherIP -Value $thePitcherIP		
+		$theMatchups.MatchupInfo[$h] | Add-Member -MemberType NoteProperty -Name OppPitcherWHIP -Value $thePitcherWHIP
+		$theMatchups.MatchupInfo[$h] | Add-Member -MemberType NoteProperty -Name OppPitcherH9IP -Value $thePitcherH9IP
+		#>
+		$theMatchups.MatchupInfo[$h] | Where-Object { $_.GamePk -eq $theGamePk } | ForEach-Object {$_.BatterTeamWins = $theBatterTeamWins }
+		$theMatchups.MatchupInfo[$h] | Where-Object { $_.GamePk -eq $theGamePk } | ForEach-Object {$_.BatterTeamLoss = $theBatterTeamLoss }		
+	}
+
+	WriteToJsonFile "$($matchupFilePath)\" "matchups_$($theDay.Replace('/',''))" $theMatchups
+	LogWrite "File matchups_$($theDay.Replace('/','')), WITH extra Pitching stats was created!"
+	
+}
+
 Function getMatchupData($includeResultsYN) {
 	#get thehitters from file
 	if ($testing -eq 1) {
@@ -135,6 +195,12 @@ Function getMatchupData($includeResultsYN) {
 				$theBatBabipHomeAway = $theHittersDetails.TopHitterDetails | where { $_.BatterID -eq $theBatId } | Select -ExpandProperty BatterBabipHome				
 				$theHitterAdv = $theTeamFile.TeamsData  | where { $_.TeamId -eq $theTeam } | Select -ExpandProperty HitterAdv 
 				$thePitcherAdv = $theTeamFile.TeamsData  | where { $_.TeamId -eq $theTeam } | Select -ExpandProperty PitcherAdv 
+								
+				if ($testing -eq 1) {
+					$theTeamWins = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomeTeamWins 
+					$theTeamLoss = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomeTeamLoss 
+					$theLastGameWL = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomeTeamWinLast 
+				}
 
 				# get AWAY team/pitcher matchup data since hitter is at Home
 				# "AwayTeamId":  "147", "AwayTeamName":  "New York Yankees", "AwayTeamWins":  "5", "AwayTeamLoss":  "6",
@@ -156,6 +222,12 @@ Function getMatchupData($includeResultsYN) {
 				$theBatAvgHomeAway = $theHittersDetails.TopHitterDetails | where { $_.BatterID -eq $theBatId } | Select -ExpandProperty BatterAvgAway
 				$theBatBabipHomeAway = $theHittersDetails.TopHitterDetails | where { $_.BatterID -eq $theBatId } | Select -ExpandProperty BatterBabipAway
 				
+				if ($testing -eq 1) {
+					$theTeamWins = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty AwayTeamWins 
+					$theTeamLoss = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty AwayTeamLoss 
+					$theLastGameWL = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty AwayTeamWinLast 
+				}
+
 				# get HOME team/pitcher matchup data
 				#"HomeTeamId":  "111", "HomeTeamName":  "Boston Red Sox", "HomeTeamWins":  "9", "HomeTeamLoss":  "1",			
 				$theVsTeamId = $theGameInfo.GameInfo | where { $_.GamePk -eq $theGamePk } | Select -ExpandProperty HomeTeamId		

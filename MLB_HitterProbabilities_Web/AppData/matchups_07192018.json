@@ -10,8 +10,8 @@
                             "CareerBabip":  ".333",
                             "BatterTeamId":  112,
                             "BatterTeam":  "Chicago Cubs",
-                            "BatterTeamWins":  "2",
-                            "BatterTeamLoss":  "6",
+                            "BatterTeamWins":  "55",
+                            "BatterTeamLoss":  "38",
                             "BatterLastGameWL":  "True",
                             "HomeOrAway":  "Home",
                             "GamePk":  530857,
@@ -67,7 +67,11 @@
                             "AVG14Days":  ".214",
                             "BABIP14Days":  ".261",
                             "BatterResultAtBats":  1,
-                            "BatterResultHits":  0
+                            "BatterResultHits":  0,
+                            "OppPitcherHits":  "78",
+                            "OppPitcherIP":  "90.2",
+                            "OppPitcherWHIP":  "1.39",
+                            "OppPitcherH9IP":  "7.78"
                         }
                     ]
 }

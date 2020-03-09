@@ -1,0 +1,48 @@
+{
+	"BallInfo": [
+		{
+			"ballNum": 3,
+			"rangeMin": 7,
+			"rangeMax": 43,	
+			"range": [
+				{ "number": 7, "odds": 1 },
+				{ "number": 8, "odds": 1 },
+				{ "number": 9, "odds": 1 },
+				{ "number": 10, "odds": 2 },
+				{ "number": 11, "odds": 1 },
+				{ "number": 12, "odds": 3 },
+				{ "number": 13, "odds": 3 },
+				{ "number": 14, "odds": 3 },
+				{ "number": 15, "odds": 3 },
+				{ "number": 16, "odds": 3 },
+				{ "number": 17, "odds": 3 },
+				{ "number": 18, "odds": 3 },
+				{ "number": 19, "odds": 3 },
+				{ "number": 20, "odds": 3 },
+				{ "number": 21, "odds": 5 },
+				{ "number": 22, "odds": 5 },
+				{ "number": 23, "odds": 3 },
+				{ "number": 24, "odds": 3 },
+				{ "number": 25, "odds": 4 },
+				{ "number": 26, "odds": 4 },
+				{ "number": 27, "odds": 5 },
+				{ "number": 28, "odds": 4 },
+				{ "number": 29, "odds": 4 },
+				{ "number": 30, "odds": 3 },
+				{ "number": 31, "odds": 5 },
+				{ "number": 32, "odds": 3 },
+				{ "number": 33, "odds": 3 },
+				{ "number": 34, "odds": 2 },
+				{ "number": 35, "odds": 2 },
+				{ "number": 36, "odds": 3 },
+				{ "number": 37, "odds": 2 },
+				{ "number": 38, "odds": 2 },
+				{ "number": 39, "odds": 1 },
+				{ "number": 40, "odds": 1 },
+				{ "number": 41, "odds": 1 },
+				{ "number": 42, "odds": 1 },
+				{ "number": 43, "odds": 1 }
+			]
+		}
+	]
+}

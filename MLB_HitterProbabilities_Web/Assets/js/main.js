@@ -12,8 +12,8 @@
     };
     date_input.datepicker(options);
 
-
-    function getzScore(cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra, pWHIP, pH9IP,
+    // Worked for 2019 - DO NOT TOUCH
+    function getzScore(gDay, cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra, pWHIP, pH9IP,
         pWins, pLoss, pTeamW, pTeamL, aL3D, aL5D, aL7D, aL10D, aL14D, bL3D, bL5D, bL7D, bL10D, bL14D) {
         
         var zScore = 3
@@ -28,8 +28,19 @@
 
         if ((parseInt(pTeamW) - parseInt(pTeamL)) <= 1) { zScore++; } else { zScore--; }
         if ((parseInt(pTeamW) - parseInt(pTeamL)) <= -10) { zScore = zScore + 3; }
-        if (aceP == pName) { zScore = zScore - 2; }
-        if (twoP == pName) { zScore--; }
+
+        if (gDay == '2018') {
+            //for 2018
+            aceP = aceP.split(",")[0]
+            twoP = twoP.split(",")[0]
+            if (pName.indexOf(aceP) !== -1) { zScore = zScore - 2 }
+            if (pName.indexOf(twoP) !== -1) { zScore--; }
+        } else {
+            //for 2019
+            if (aceP == pName) { zScore = zScore - 2; }
+            if (twoP == pName) { zScore--; }
+        }
+
         if ((parseInt(pWins) - parseInt(pLoss)) <= 1) { zScore++; } else { zScore--; }
         if (pEra >= 3.00) { zScore++; } else { zScore--; }
         if (pWHIP >= 1.00) { zScore = zScore + 3; } else { zScore = zScore - 2; }
@@ -72,8 +83,8 @@
         if ((bL5D < .250) || (bL5D >= .600)) { zScore = 0; }
         if ((aL7D < .250) || (aL7D > .500)) { zScore = 0; }
         if ((bL7D < .250) || (bL7D > .500)) { zScore = 0; }
-        if ((aL10D < .250) || (aL10D > .500)) { zScore = 0; }
-        if ((bL10D < .250) || (bL10D > .500)) { zScore = 0; }
+        if ((aL10D <= .250) || (aL10D > .500)) { zScore = 0; }
+        if ((bL10D <= .250) || (bL10D > .500)) { zScore = 0; }
 
 
 
@@ -81,48 +92,176 @@
     }
 
 
-    function getzScore2(cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra,
-        pWins, pLoss, pTeamW, pTeamL, aL3D, aL5D, aL7D, aL10D, aL14D, bL3D, bL5D, bL7D, bL10D, bL14D) {
+    function getzScore2(gDay, cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra, pWHIP, pH9IP,
+        bTeamW, bTeamL, pWins, pLoss, pTeamW, pTeamL, aYdy, bYdy, aL3D, aL5D, aL7D, aL10D, aL14D, bL3D, bL5D, bL7D, bL10D, bL14D) {
 
-        var zScore = 5
+        var zScore = .30
 
-        //get whip and pitchers babip
+        if (ha == "Home") { zScore = zScore + .1; }
 
+        if (bAvgHA >= .300) { zScore = zScore + .1; }
+        if (bAvgH >= .300) { zScore = zScore + .05; }
+        if (bAvgDW >= .300) { zScore = zScore + .05; }
+        if (bAvgDN >= .300) { zScore = zScore + .05; }
 
-        if (ha == "Home") { zScore++; } else { zScore = 0; }
-        /*
-        if (bAvgHA >= .280) { zScore++; } else { zScore--; }
-        if (bAvgH >= .280) { zScore++; } else { zScore--; }
-        if (bAvgDW >= .280) { zScore++; } else { zScore--; }
-        if (bAvgDN >= .280) { zScore++; } else { zScore--; }
-        if (bLGWL == "Win") {
-            if (bAvgATW >= .280) { zScore++; } else { zScore--; }
-        } else {    //Loss
-            if (bAvgATL >= .280) { zScore++; } else { zScore--; }
+        //if ((parseInt(pTeamW) - parseInt(pTeamL)) <= 1) { zScore++; } else { zScore--; }
+        //    if ((parseInt(pTeamW) - parseInt(pTeamL)) <= -10) { zScore = zScore + 3; }
+
+        if (gDay == '2018') {
+            //for 2018
+            aceP = aceP.split(",")[0]
+            twoP = twoP.split(",")[0]
+            if (pName.indexOf(aceP) !== -1) { zScore = zScore - .25; }
+            if (pName.indexOf(twoP) !== -1) { zScore = zScore - .1; }
+        } else {
+            //for 2019
+            if (aceP == pName) { zScore = zScore - .25; }
+            if (twoP == pName) { zScore = zScore - .1; }
         }
+
+
+
+
+        //if ((parseInt(pWins) - parseInt(pLoss)) <= 1) { zScore++; } else { zScore--; }
+        if (pEra >= 3.00) { zScore = zScore + .05; }
+        if (pWHIP >= .90) { zScore = zScore + .1; }
+        if (pH9IP >= 9.00) { zScore = zScore + .2; }
+        /*
+        //check recent averages
+        if ((aL3D > .250) && (aL3D < .500)) { zScore++; } else { zScore--; }
+        if (aL3D <= .250) { zScore = zScore - 5; }
+        if ((aL5D > .250) && (aL5D < .500)) { zScore++; } else { zScore--; }
+        if ((aL7D >= .250) && (aL7D <= .500)) { zScore++; } else { zScore--; }
+        if ((aL10D >= .250) && (aL10D <= .500)) { zScore++; } else { zScore--; }
+        if ((aL14D >= .250) && (aL14D <= .500)) { zScore++; } else { zScore--; }
+        //check recent BABIP
+        if ((bL3D > .250) && (bL3D < .500)) { zScore++; } else { zScore--; }
+        if ((bL5D > .250) && (bL5D < .500)) { zScore++; } else { zScore--; }
+        if ((bL7D >= .280) && (bL7D <= .500)) { zScore++; } else { zScore--; }
+        if ((bL10D >= .280) && (bL10D <= .500)) { zScore++; } else { zScore--; }
+        if ((bL14D >= .250) && (bL14D <= .500)) { zScore++; } else { zScore--; }
+        */
+        if (bLGWL == "Win") {
+            if (bAvgATW >= .300) { zScore = zScore + .05; }
+            //else if (bAvgATW <= .280) { zScore = 0; }
+            //else { zScore--; }
+        } else {    //Loss
+            if (bAvgATL >= .300) { zScore = zScore + .1; }
+            //else if (bAvgATL <= .280) { zScore = 0; } 
+            //else { zScore--; }
+        }
+
+
+        // zero out when condition is met
+        var zeroTF = false;
+
+
+        //team and pitcher records
+        var absHitTeamWLdiff = parseInt(parseInt(bTeamW) - parseInt(bTeamL));
+        if (absHitTeamWLdiff >= 10) { zScore = zScore + .05; } 
+        if (absHitTeamWLdiff >= 20) { zScore = zScore + .05; }
+        if (absHitTeamWLdiff >= 30) { zScore = zScore + .05; }
+        if (absHitTeamWLdiff >= 40) { zScore = zScore + .1; }
+        var absPitTeamWLdiff = parseInt(parseInt(pTeamW) - parseInt(pTeamL)) * (-1);
+        if (absPitTeamWLdiff <= -1) { zScore = zScore - .1; }
+        if (absPitTeamWLdiff <= -20) { zeroTF = true; }
+        var absPitcherWLdiff = parseInt(parseInt(pWins) - parseInt(pLoss)) * (-1);
+        if (absPitcherWLdiff <= -1) { zScore = zScore - .05; }
+        if (absPitcherWLdiff <= -3) { zScore = zScore - .2; }
+        if (absPitcherWLdiff <= -6) { zeroTF = true; }
+
+        //batting stats
+        if (bAvgHA <= .275) { zeroTF = true; }
+        if (bAvgDW <= .250) { zeroTF = true; }
+        if (bAvgDN <= .250) { zeroTF = true; }
+        if (bAvgH <= .250) { zeroTF = true; }
+        //if ((parseInt(pTeamW) - parseInt(pTeamL)) >= 10) { zScore = 0; }
+        //if ((parseInt(pWins) - parseInt(pLoss)) >= 5) { zScore = 0; }
+        if (pWHIP <= .70) { zeroTF = true; }
+        if (pH9IP <= 7.00) { zeroTF = true; }
+        //if (aceP == pName) { zeroTF = true; }
+        if (pEra <= 2.00) { zeroTF = true; }
+        if ((aYdy == .000) || (aYdy >= .750)) { zeroTF = true; }
+        if ((bYdy == .000) || (bYdy >= .750)) { zeroTF = true; }
+
+        if ((aL3D <= .250) || (aL3D > .500)) { zeroTF = true; }
+        if ((bL3D <= .250) || (bL3D > .500)) { zeroTF = true; }
+        if ((aL5D <= .250) || (aL5D > .500)) { zeroTF = true; }
+        if ((bL5D <= .250) || (bL5D > .500)) { zeroTF = true; }
+        
+        if ((aL7D <= .250) || (aL7D > .500)) { zeroTF = true; }
+        if ((bL7D <= .250) || (bL7D > .500)) { zeroTF = true; }
+        /*
+        if ((aL10D <= .250) || (aL10D > .500)) { zScore = 0; }
+        if ((bL10D <= .250) || (bL10D > .500)) { zScore = 0; }
+        if ((aL14D <= .250) || (aL14D > .500)) { zScore = 0; }
+        if ((bL14D <= .250) || (bL14D > .500)) { zScore = 0; }
         */
 
-        if (pEra >= 3.00) { zScore++; }
-        if (cAvg >= .275) { zScore++; }
-        if ((parseInt(pTeamW) - parseInt(pTeamL)) <= 1) { zScore++; } else { zScore = 0; }
-        if ((parseInt(pWins) - parseInt(pLoss)) <= 1) { zScore++; } else { zScore = 0; }
+        // Only set zScore to 0 if zScore is greater than 0 already; I want negative scores to remain
+        if (zScore > .300 && zeroTF == true) { zScore = .200; }
 
-        if (aceP == pName) { zScore = 0; }
-        if (twoP == pName) { zScore--; }
+        var zScore2 = zScore;
 
-        if ((aL3D < .250) || (aL3D >= .450)) { zScore = 0; }
-        if ((aL5D < .250) || (aL5D >= .450)) { zScore = 0; }
-        if ((aL7D < .280) || (aL7D >= .450)) { zScore = 0; }
-        if ((aL10D < .280) || (aL10D >= .450)) { zScore = 0; }
-        if ((aL14D < .280) || (aL14D >= .450)) { zScore--; }
-        if ((bL3D < .250) || (bL3D >= .450)) { zScore = 0; }
-        if ((bL5D < .250) || (bL5D >= .450)) { zScore = 0; }
-        if ((bL7D < .280) || (bL7D >= .450)) { zScore = 0; }
-        if ((bL10D < .280) || (bL10D >= .450)) { zScore = 0; }
-        if ((bL14D < .280) || (bL14D >= .450)) { zScore--; }
-        
-        return zScore;
+        return zScore2;
     }
+
+    function getzScore3(gDay, cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra, pWHIP, pH9IP,
+        bName, bTeamW, bTeamL, pWins, pLoss, pTeamW, pTeamL, aYdy, bYdy, aL3D, aL5D, aL7D, aL10D, aL14D, bL3D, bL5D, bL7D, bL10D, bL14D) {
+
+        zScore = 0
+        // zero out when condition is met
+        var zeroTF = false;
+        
+        //if (ha == "Home") { zScore++; }
+        //if (parseInt(pLoss) > parseInt(pWins)) { zScore++; }
+        //if (pEra >= 3.50) { zScore++; }
+        //if (pWHIP >= .90) { zScore++; }
+        if (pH9IP >= 9.00) { zScore++; }
+
+
+        //check recent averages and BABIP
+        if (aL3D > .300 && aL3D < .500 && bL3D > .250 && bL3D < .600) { zScore++; } else { zeroTF = true; }
+        if (aL5D > .300 && aL5D < .500 && bL5D > .250 && bL5D < .600) { zScore++; } else { zeroTF = true; }
+        if (aL7D >= .300 && aL7D <= .500 && bL7D >= .250 && bL7D <= .600) { zScore++; } else { zeroTF = true; }
+
+        if (cAvg < .280) { zeroTF = true; }
+
+        //if (parseFloat(parseFloat(aL7D) - parseFloat(aL3D)) >= .100) { zeroTF = true; }
+
+        if (bAvgDW <= .250) { zeroTF = true; }
+        if (gDay == '2018') {
+            //for 2018
+            aceP = aceP.split(",")[0]
+            twoP = twoP.split(",")[0]
+            if (pName.indexOf(aceP) !== -1) { zeroTF = true; }
+            //if (pName.indexOf(twoP) !== -1) { zScore--; }
+        } else {
+            //for 2019
+            if (aceP == pName) { zeroTF = true; }
+            //if (twoP == pName) { zScore--; }
+        }
+
+        //if (((aL10D >= .250) && (aL10D <= .500)) && ((bL10D >= .250) && (bL10D <= .500))) { zScore++; } else { zScore--; }
+        //if (((aL14D >= .250) && (aL14D <= .500)) && ((bL14D >= .250) && (bL14D <= .500))) { zScore++; } else { zScore--; }
+
+        /*
+        //team and pitcher records
+        var absHitTeamWLdiff = parseInt(parseInt(bTeamW) - parseInt(bTeamL));
+        if (absHitTeamWLdiff >= 1) { zScore++; } else { zeroTF = true; }
+        var absPitTeamWLdiff = parseInt(parseInt(pTeamW) - parseInt(pTeamL)) * (-1);
+        if (absPitTeamWLdiff >= 1) { zScore++; } else { zeroTF = true; }
+        var absPitcherWLdiff = parseInt(parseInt(pWins) - parseInt(pLoss)) * (-1);
+        if (absPitcherWLdiff >= 1) { zScore++; } else { zeroTF = true; }
+
+        
+        */
+        if (zScore >= 1 && zeroTF == true) { zScore = 0; }
+        
+        var zScore3 = zScore;
+        return zScore3;
+    }
+
 
     // This is to copy the results
     $('#copyTableData').on("click", function () {
@@ -323,6 +462,22 @@
                             hitProb = hitProb - .15;
                         }
                     }
+
+                    if (gDay.split("/")[2] == '2018') {
+                        //for 2018
+                        console.debug('2018');
+                        aceP = aceP.split(",")[0]
+                        twoP = twoP.split(",")[0]
+                        if (pName.indexOf(aceP) !== -1) { var pNameCC = warning; }
+                        if (pName.indexOf(twoP) !== -1) { var pNameCC = mediocre; }
+                    } else {
+                        //for 2019
+                        console.debug('2019');
+                        if (aceP == pName) { var pNameCC = warning; }
+                        if (twoP == pName) { var pNameCC = mediocre; }
+                    }
+
+
                     //Pitchers Team W/L Record
                     if (parseInt(pTeamW) < parseInt(pTeamL)) {
                         var pTWLCC = favorable;
@@ -366,7 +521,7 @@
                         var pEraCC = warning; hitProb = hitProb - .3;
                     }
                     //Pitchers WHIP
-                    if (pWHIP >= 1.00) {
+                    if (pWHIP >= .90) {
                         var pWHIPCC = favorable;
                     } else {
                         var pWHIPCC = warning;
@@ -415,8 +570,9 @@
 
                     if (aYdy == 1.000) { var hitsP0 = warning; hitProb = hitProb - .2; }
                     if (aYdy == .000 && aYdy < .500) { var hitsP0 = favorable; hitProb = hitProb + .05; } else { var hitsP0 = warning; }
-                    if (aL3D >= .250 && aL3D < .500) { var hitsP3 = favorable; hitProb = hitProb + .35; } else { var hitsP3 = warning; hitProb = hitProb - .2; }
-                    if (aL5D >= .250 && aL5D < .500) { var hitsP5 = favorable; hitProb = hitProb + .35; } else { var hitsP5 = warning; hitProb = hitProb - .2; }
+                    //if (aL3D > .250 && aL3D < .500 || bL3D > .250 && bL3D < .500) { var hitsP3 = favorable; hitProb = hitProb + .35; } else { var hitsP3 = warning; hitProb = hitProb - .2; }
+                    if (aL3D > .250 && aL3D < .500) { var hitsP3 = favorable; hitProb = hitProb + .35; } else { var hitsP3 = warning; hitProb = hitProb - .2; }
+                    if (aL5D > .250 && aL5D < .500) { var hitsP5 = favorable; hitProb = hitProb + .35; } else { var hitsP5 = warning; hitProb = hitProb - .2; }
                     if (aL7D >= .250 && aL7D < .500) { var hitsP7 = favorable; hitProb = hitProb + .35; } else { var hitsP7 = warning; hitProb = hitProb - .2; }
                     if (aL10D >= .250 && aL10D < .500) { var hitsP10 = favorable; hitProb = hitProb + .35; } else { var hitsP10 = warning; hitProb = hitProb - .2; }
                     if (aL14D >= .250 && aL14D < .500) { var hitsP14 = favorable; hitProb = hitProb + .05; } else { var hitsP14 = warning; hitProb = hitProb - .1; }
@@ -437,25 +593,37 @@
                     //if (bAvg2HCC == favorable) { zHit++; }
 
 
-                    var zScore = getzScore(cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra, pWHIP, pH9IP, 
-                        pWins, pLoss, pTeamW, pTeamL, aL3D, aL5D, aL7D, aL10D, aL14D, bL3D, bL5D, bL7D, bL10D, bL14D)
-                    
+                    //var zScore = getzScore(gDay, cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra, pWHIP, pH9IP, pWins, pLoss, pTeamW, pTeamL, aL3D, aL5D, aL7D, aL10D, aL14D, bL3D, bL5D, bL7D, bL10D, bL14D)
+
+                    var zScore2 = getzScore2(gDay, cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra, pWHIP, pH9IP,
+                        bTeamW, bTeamL, pWins, pLoss, pTeamW, pTeamL, aYdy, bYdy, aL3D, aL5D, aL7D, aL10D, aL14D, bL3D, bL5D, bL7D, bL10D, bL14D)
+                    var zScore = getzScore3(gDay, cAvg, ha, bAvgDN, bAvgHA, bAvgDW, bAvgH, bLGWL, bAvgATW, bAvgATL, pName, aceP, twoP, pEra, pWHIP, pH9IP,
+                        bName, bTeamW, bTeamL, pWins, pLoss, pTeamW, pTeamL, aYdy, bYdy, aL3D, aL5D, aL7D, aL10D, aL14D, bL3D, bL5D, bL7D, bL10D, bL14D)
+
+
+                    var absHitTeamWLdiff = parseInt(parseInt(bTeamW) - parseInt(bTeamL));
                     var absPitTeamWLdiff = parseInt(parseInt(pTeamW) - parseInt(pTeamL)) * (-1);
                     var absPitcherWLdiff = parseInt(parseInt(pWins) - parseInt(pLoss)) * (-1);
 
-                    if ((rH == 0) && (rAB != 0)) { hitCC = "background-color: red;"; } else { hitCC = ""; } 
+
+                    if ((rH == 0) && (rAB != 0)) { hitCC = "background-color: red;"; } else { hitCC = ""; }                    
+                    if (((parseInt(pWins) == 0) || (parseInt(pWins) == 1)) && ((parseInt(pLoss) == 0) || (parseInt(pLoss) == 1))) { hitCC = hitCC + "color: orange;"; }
                     //if (bBench == "True") { hitCC = "background-color: black;"; }
-                    if (zScore >= 9) { hitCC = hitCC + "font-weight: bold;" }
+                    //use w/ orig zScore
+                    //if (zScore >= 9) { hitCC = hitCC + "font-weight: bold;" }
+
+                    //use w/ zScore3
+                    if (zScore >= 7) { hitCC = hitCC + "font-weight: bold;" }
 
                     myNewRow = "<td style='" + hitCC + "'>" + bName + " (" + bSide + ")</td>" +
                         "<td>" + bTeam + "</td>" +
-                        "<td style='" + bTWLCC + "'>" + bTeamW + "-" + bTeamL + "</td>" +
+                        "<td style='" + bTWLCC + "'>" + absHitTeamWLdiff + " " + bTeamW + "-" + bTeamL + "</td>" +
                         "<td>" + bAvg + "/" + bBabip + "</td>" +
                         "<td>" + cAvg + "/" + cBabip + "</td>" +
-                        "<td style='" + haCC + "'>" + ha + "</td><td>" + gDayWk + " - " + gTime + gAMPM + "</td><td>" + gDN + "</td>" +
+                        "<td style='" + haCC + "'>" + ha + //"</td><td>" + gDayWk + " - " + gTime + gAMPM + "</td><td>" + gDN + "</td>" +
                         "<td>" + pTeam + "</td><td style='" + pTWLCC + "'>" + absPitTeamWLdiff + " " + pTeamW + "-" + pTeamL + "</td>" +
-                        "<td>" + pName + " (" + pHand + ")</td><td style='" + pWLCC + "'>" + absPitcherWLdiff + " " + pWins + "-" + pLoss + "</td>" +
-                        "<td style='" + pEraCC + "'>" + pEra + "</td><td style='" + pWHIPCC + "'>" + pWHIP + "</td><td style='" + pH9IPCC + "'>" + pH9IP + "</td>" +
+                        "<td style='" + pNameCC + "'>" + pName + " (" + pHand + ")</td><td style='" + pWLCC + "'>" + absPitcherWLdiff + " " + pWins + "-" + pLoss + "</td>" +
+                        "<td style='" + pEraCC + "'>" + pEra + "</td><td style='" + pWHIPCC + "'>" + pWHIP + "</td><td style='" + pH9IPCC + "'>" + parseFloat(pH9IP) + "</td>" +
                         "<td style='" + bBabipHACC + "'>" + bAvgHA + "/" + bBabipHA + "</td><td style='" + bAvgDWCC + "'>" + bAvgDW + "/" + bBabipDW + "</td>" +
                         "<td style='" + bBabipDNCC + "'>" + bAvgDN + "/" + bBabipDN + "</td><td style='" + bBabipHCC + "'>" + bAvgH + "/" + bBabipH + "</td>" +
                         "<td style='" + bAvgITWCC + "'>" + bAvgITW + "/" + bBabipITW + "</td><td style='" + bAvgITLCC + "'>" + bAvgITL + "/" + bBabipITL + "</td>" +
@@ -464,7 +632,9 @@
                         "<td style='" + hitsP5 + "'>" + aL5D + "/" + bL5D + "</td><td style='" + hitsP7 + "'>" + aL7D + "/" + bL7D + "</td>" +
                         "<td style='" + hitsP10 + "'>" + aL10D + "/" + bL10D + "</td><td style='" + hitsP14 + "'>" + aL14D + "/" + bL14D + "</td>" +
                         //"<td>" + hitProb.toFixed(2) + "</td>" +
-                        "<td>" + zScore + "</td>" + 
+                        "<td>" + zScore + "</td>" +
+                        //"<td>" + zScore3 + "</td>" +
+                        "<td>" + zScore2.toFixed(3) + "</td>" + 
                         "<td style='color:black;'> " + rH + " - " + rAB + "</td>";
                     myTableRows = myTableRows + "<tr>" + myNewRow + "</tr>"
                 });
@@ -472,7 +642,11 @@
                 $('#getDate').text("Top MLB Hitters Matchups for " + $('#gameDate').val());
                 $('#tbody_HitterData').html(myTableRows);                
                 $('#tbl_HitterData').DataTable({
-                    "order": [[30, "desc"]],
+                    "columnDefs": [
+                        { "type": "html-num", "targets": [12, 23, 24, 25] }
+                    ],
+                    "order": [[12, "desc"], [23, "desc"], [24, "desc"], [25, "desc"]],
+                    //"order": [[28, "desc"]],
                     "paging": false
                 });
                 $('#copyRows').show();

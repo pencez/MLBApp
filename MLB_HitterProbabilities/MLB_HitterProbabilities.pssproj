@@ -7,6 +7,9 @@
     <RootNamespace>MyApplication</RootNamespace>
     <AssemblyName>MyApplication</AssemblyName>
     <Name>MLB_HitterProbabilities</Name>
+    <PackageEntryPoint>Lucky4Life.ps1</PackageEntryPoint>
+    <DotNetVersion>v4.7.2</DotNetVersion>
+    <PackageType>Console</PackageType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,6 +40,7 @@
     <Compile Include="Functions\TheMatchups.ps1" />
     <Compile Include="Functions\ThePitchers.ps1" />
     <Compile Include="Functions\theResults.ps1" />
+    <Compile Include="Lucky4Life.ps1" />
     <Compile Include="MLB_HitterProbabilities.ps1" />
     <Compile Include="Models\FileFunctions.ps1" />
     <Compile Include="Models\ApiFunctions.ps1" />

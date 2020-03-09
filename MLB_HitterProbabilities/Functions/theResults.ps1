@@ -4,7 +4,7 @@
 Function getResultsData() {
 	# Use if you need to override the defualt of the previous day	
 	$theDay = (Get-Date).AddDays(-1).ToString("MM/dd/yyyy")
-	#$theDay = "08/04/2019"
+	$theDay = "07/02/2019"
 	
 	#get thehitters from file
 	if ($testing -eq 1) {

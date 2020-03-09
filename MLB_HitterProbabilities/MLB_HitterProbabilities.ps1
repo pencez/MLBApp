@@ -53,30 +53,46 @@ if ($justGetResultsData -eq 1) {
 		$season = "2019"
 		$gameType = "R"
 		$theDay = Get-Date -format MM/dd/yyyy
-		#$theDay = "08/04/2019"
+		$theDay = "04/01/2018"
 
-		#<#
-		# Get top hitters by avg in MLB
-		$theHitters = GetTopAvgHitters $limit $season $gameType
+		# use for the while loop
+		$dayNum = 1
+		$mM = "04"
+		$dD = "{0:00}" -f $dayNum
+		$theDay = "$mM/$dD/2018" #have run for 4/1/18
+		while ($theDay -ne "$mM/31/2018") {	
+			#<#
+			# Get top hitters by avg in MLB
+			#$theHitters = GetTopAvgHitters $limit $season $gameType
 
-		# Get results for previous day
-		$theGameResults = updateTeamRecords $gameType $theDay
-		# Get information for today
-		$theGameInfo = GetGameInfo $gameType $theDay.Replace("/","%2F")
-		#>
-
-		$theMatchups = getMatchupData "No"
-
-		# Copy the matchups file to the webapp
-		Copy-Item "$($basePath)\Data\matchups_$($theDay.Replace('/','')).json" -Destination "$($webPath)\AppData\"
-		LogWrite "Matchup file copied to web app"
+			# Get results for previous day
+			#$theGameResults = updateTeamRecords $gameType $theDay
+			# Get information for today
+			$theGameInfo = GetGameInfo $gameType $theDay.Replace("/","%2F")
+			#>
+		
+			# Used in off-season to collect extra data and append to matchups data
+			$theMatchups = addToMatchupData "No"
+		
+			# Get matchups details for day
+			#$theMatchups = getMatchupData "No"
+		         
+			# Copy the matchups file to the webapp
+			Copy-Item "$($basePath)\Data\matchups_$($theDay.Replace('/','')).json" -Destination "$($webPath)\AppData\"
+			LogWrite "Matchup file copied to web app"
+		
+			
+			$dayNum++
+			$dD = "{0:00}" -f $dayNum
+			$theDay = "$mM/$dD/2018"
+		}
 
 	} else {
 		# TESTING MODE
 		$logFile = "$($basePath)\Logs\MLB_HitterProbabilities_TEST_$($a).log"
-		$theDate = Get-Date "05/01/2018"
+		$theDate = Get-Date "06/01/2019"
 
-		while ($testDate -ne "05/30/2018") {	
+		while ($testDate -ne "06/25/2019") {	
 			$testDate = $theDate.ToString("MM/dd/yyyy")
 			$testDtM1 = $theDate.AddDays(-1).ToString("MM/dd/yyyy")
 
@@ -84,17 +100,17 @@ if ($justGetResultsData -eq 1) {
 			# Set the API query parameters
 			# ****************************************************************************************************
 			# Use this for testing to get best average during date range(s)			
-			$season = "2018"
+			$season = "2019"
 			$gameType = "R"
 			$seasonStartDate = "03/29/$season".Replace("/","%2F")
 			$seasonCurrDate = $testDtM1.Replace("/","%2F")
 			$theDay = $testDate
-			$lastSeason = "2017"
-			$currSeason = "2018"	
+			$lastSeason = "2018"
+			$currSeason = "2019"	
 			$limit = "20"	
 
 			#<# 
-			$theHitters = GetTopAvgHittersTesting $limit $lastSeason $gameType $seasonStartDate $seasonCurrDate
+			#$theHitters = GetTopAvgHittersTesting $limit $lastSeason $gameType $seasonStartDate $seasonCurrDate
 			# ****************************************************************************************************
 			#>
 			<#
@@ -114,7 +130,7 @@ if ($justGetResultsData -eq 1) {
 			$theMatchups = getMatchupData "Yes"
 
 			# Copy the matchups file to the webapp
-			Copy-Item "$($basePath)\Data\Test\matchups_$($theDay.Replace('/','')).json" -Destination "$($webPath)\AppData\"
+			Copy-Item "$($basePath)\Data\Test\matchups_$($theDay.Replace('/','')).json" -Destination "$($webPath)\AppData\Test\"
 			LogWrite "Matchup file copied to web app"
 			#>
 
